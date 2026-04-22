@@ -125,6 +125,7 @@ function setEnquiryFormFromSearch() {
 }
 
 function prefill(lawyerName, city, specialty) {
+  setEnquiryFormFromSearch();
   const hiddenLawyer = document.getElementById('hidden-lawyer');
   const hiddenCity = document.getElementById('hidden-city');
   const regionSelect = document.getElementById('enquiry-region');
