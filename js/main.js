@@ -121,11 +121,11 @@ function prefill(lawyerName, city, specialty) {
   if (hiddenCity) hiddenCity.value = selectedSearchCity;
 
   if (regionSelect) {
-    regionSelect.value = regionValueMap[selectedSearchCity] || '';
+    setSelectValue(regionSelect, regionValueMap[selectedSearchCity] || '');
   }
 
   if (specialtySelect) {
-    specialtySelect.value = specialtyValueMap[selectedSearchSpecialty] || '';
+    setSelectValue(specialtySelect, specialtyValueMap[selectedSearchSpecialty] || '');
   }
 
   // Show the lawyer banner
