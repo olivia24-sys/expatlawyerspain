@@ -87,14 +87,14 @@ function filterListings(city, specialty) {
   noResults.style.display = visible === 0 ? 'block' : 'none';
 }
 
-function prefill(lawyerName, city) {
+function prefill(lawyerName, city, specialty) {
   const hiddenLawyer = document.getElementById('hidden-lawyer');
   const hiddenCity = document.getElementById('hidden-city');
   const form = document.querySelector('.contact-form');
   const regionSelect = form ? form.querySelector('select[name="region"]') : null;
   const specialtySelect = form ? form.querySelector('select[name="specialty"]') : null;
-  const selectedSearchCity = window.lastSearchFilters?.city || document.getElementById('city-select')?.value || city || '';
-  const selectedSearchSpecialty = window.lastSearchFilters?.specialty || document.getElementById('specialty-select')?.value || '';
+  const selectedSearchCity = city || window.lastSearchFilters?.city || document.getElementById('city-select')?.value || '';
+  const selectedSearchSpecialty = specialty || window.lastSearchFilters?.specialty || document.getElementById('specialty-select')?.value || '';
   const regionValueMap = {
     barcelona: 'Barcelona',
     madrid: 'Madrid',
@@ -119,14 +119,14 @@ function prefill(lawyerName, city) {
   };
 
   if (hiddenLawyer) hiddenLawyer.value = lawyerName;
-  if (hiddenCity) hiddenCity.value = selectedSearchCity || city;
+  if (hiddenCity) hiddenCity.value = selectedSearchCity;
 
-  if (regionSelect && selectedSearchCity && regionValueMap[selectedSearchCity]) {
-    setSelectValue(regionSelect, regionValueMap[selectedSearchCity]);
+  if (regionSelect) {
+    setSelectValue(regionSelect, regionValueMap[selectedSearchCity] || selectedSearchCity);
   }
 
-  if (specialtySelect && selectedSearchSpecialty && specialtyValueMap[selectedSearchSpecialty]) {
-    setSelectValue(specialtySelect, specialtyValueMap[selectedSearchSpecialty]);
+  if (specialtySelect) {
+    setSelectValue(specialtySelect, specialtyValueMap[selectedSearchSpecialty] || selectedSearchSpecialty);
   }
 
   // Show the lawyer banner

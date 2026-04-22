@@ -140,7 +140,7 @@
           <p class="specialty-tag">Immigration · Property · Tax · Business</p>
           <p class="lawyer-bio">International law firm dedicated to helping foreigners move to, invest in and live in Spain. Specialists in visas, residency, NIE, property purchases, business setup and taxation. Fully English-speaking team with a personalised approach.</p>
           <div class="card-tags"><span>English</span><span>Spanish</span><span class="location-tag">📍 Barcelona</span></div>
-          <a href="#contact-form" class="btn-contact" onclick="prefill('Balcells Group','barcelona')">Send enquiry →</a>
+          <a href="#contact-form" class="btn-contact" onclick="prefill('Balcells Group', document.getElementById('city-select').value || 'barcelona', document.getElementById('specialty-select').value)">Send enquiry →</a>
         </div>
 
         <div class="lawyer-card featured" data-city="costa-del-sol,nationwide" data-specialty="immigration,property,wills,tax">
@@ -155,7 +155,7 @@
           <p class="specialty-tag">Immigration · Property · Wills & Inheritance · Tax</p>
           <p class="lawyer-bio">Law firm serving expats across Spain with immigration, property, inheritance and tax support. Clear English-language positioning, practical cross-border focus and broad geographic reach make it a strong option for international clients.</p>
           <div class="card-tags"><span>English</span><span>Spanish</span><span class="location-tag">📍 Costa del Sol</span><span class="location-tag">Nationwide</span></div>
-          <a href="#contact-form" class="btn-contact" onclick="prefill('CostaLuz Lawyers','costa-del-sol')">Send enquiry →</a>
+          <a href="#contact-form" class="btn-contact" onclick="prefill('CostaLuz Lawyers', document.getElementById('city-select').value || 'costa-del-sol', document.getElementById('specialty-select').value)">Send enquiry →</a>
         </div>
 
         <div class="lawyer-card featured" data-city="nationwide" data-specialty="property,family,employment,wills">
@@ -170,7 +170,7 @@
           <p class="specialty-tag">Property · Family · Employment · Wills</p>
           <p class="lawyer-bio">English-speaking law firm offering broad legal support across Spain for expats, covering property, family, employment and wills matters with nationwide reach.</p>
           <div class="card-tags"><span>English</span><span>Spanish</span><span class="location-tag">📍 Nationwide</span></div>
-          <a href="#contact-form" class="btn-contact" onclick="prefill('SpainLawyer','nationwide')">Send enquiry →</a>
+          <a href="#contact-form" class="btn-contact" onclick="prefill('SpainLawyer', document.getElementById('city-select').value || 'nationwide', document.getElementById('specialty-select').value)">Send enquiry →</a>
         </div>
 
         <div class="lawyer-card featured" data-city="marbella,costa-del-sol" data-specialty="property,immigration,wills,tax">
@@ -185,7 +185,7 @@
           <p class="specialty-tag">Property · Immigration · Wills & Inheritance · Tax</p>
           <p class="lawyer-bio">English-speaking law firm in Marbella serving international clients with property purchases, residency support, mortgage disputes and cross-border inheritance matters on the Costa del Sol.</p>
           <div class="card-tags"><span>English</span><span>Spanish</span><span class="location-tag">📍 Marbella</span><span class="location-tag">Costa del Sol</span></div>
-          <a href="#contact-form" class="btn-contact" onclick="prefill('Lawbird Legal Services','marbella')">Send enquiry →</a>
+          <a href="#contact-form" class="btn-contact" onclick="prefill('Lawbird Legal Services', document.getElementById('city-select').value || 'marbella', document.getElementById('specialty-select').value)">Send enquiry →</a>
         </div>
 
         <div class="lawyer-card featured" data-city="madrid,barcelona,ibiza,palma,marbella,jerez,london" data-specialty="tax,business,immigration">
@@ -200,7 +200,7 @@
           <p class="specialty-tag">Tax & Fiscal · Business · Immigration</p>
           <p class="lawyer-bio">Boutique international law firm specialising in tax, business and immigration law for high-net-worth individuals, entrepreneurs and companies operating between Spain and the UK. Bilingual team, cross-border expertise across Madrid, Barcelona, Ibiza, Mallorca, Marbella, Jerez and London.</p>
           <div class="card-tags"><span>English</span><span>Spanish</span><span class="location-tag">📍 Madrid</span><span class="location-tag">Barcelona</span><span class="location-tag">Ibiza</span><span class="location-tag">Mallorca</span><span class="location-tag">Marbella</span><span class="location-tag">Jerez</span><span class="location-tag">London</span></div>
-          <a href="#contact-form" class="btn-contact" onclick="prefill('Del Canto Chambers','madrid')">Send enquiry →</a>
+          <a href="#contact-form" class="btn-contact" onclick="prefill('Del Canto Chambers', document.getElementById('city-select').value || 'madrid', document.getElementById('specialty-select').value)">Send enquiry →</a>
         </div>
 
         <div class="lawyer-card featured" data-city="alicante,costa-blanca" data-specialty="immigration,property,tax,family">
@@ -215,7 +215,7 @@
           <p class="specialty-tag">Immigration · Property · Tax · Family</p>
           <p class="lawyer-bio">Alicante law firm with clear expat relevance across immigration, property, tax and family matters on the Costa Blanca. Multilingual positioning and practical resources make it a strong fit for international clients.</p>
           <div class="card-tags"><span>English</span><span>German</span><span>Spanish</span><span class="location-tag">📍 Alicante</span></div>
-          <a href="#contact-form" class="btn-contact" onclick="prefill('Pellicer & Heredia','alicante')">Send enquiry →</a>
+          <a href="#contact-form" class="btn-contact" onclick="prefill('Pellicer & Heredia', document.getElementById('city-select').value || 'alicante', document.getElementById('specialty-select').value)">Send enquiry →</a>
         </div>
 
         <div class="lawyer-card featured" data-city="malaga,costa-del-sol" data-specialty="property,wills,tax">
@@ -230,7 +230,7 @@
           <p class="specialty-tag">Property · Wills & Inheritance · Tax</p>
           <p class="lawyer-bio">Multilingual legal and tax advisory firm serving international clients on the Costa del Sol, with a strong fit for property conveyancing, inheritance and Spanish tax matters.</p>
           <div class="card-tags"><span>English</span><span>German</span><span>Dutch</span><span class="location-tag">📍 Málaga</span></div>
-          <a href="#contact-form" class="btn-contact" onclick="prefill('Spanish Solicitors','malaga')">Send enquiry →</a>
+          <a href="#contact-form" class="btn-contact" onclick="prefill('Spanish Solicitors', document.getElementById('city-select').value || 'malaga', document.getElementById('specialty-select').value)">Send enquiry →</a>
         </div>
 
         <div class="lawyer-card featured" data-city="barcelona" data-specialty="business,employment,immigration">
@@ -245,7 +245,7 @@
           <p class="specialty-tag">Business · Employment · Immigration</p>
           <p class="lawyer-bio">Barcelona-based law firm specialising in employment law, business formation and immigration for international professionals and startups. Practical, results-focused advice in plain English for expats working or building businesses in Spain.</p>
           <div class="card-tags"><span>English</span><span>Spanish</span><span class="location-tag">📍 Barcelona</span></div>
-          <a href="#contact-form" class="btn-contact" onclick="prefill('Lean Abogados','barcelona')">Send enquiry →</a>
+          <a href="#contact-form" class="btn-contact" onclick="prefill('Lean Abogados', document.getElementById('city-select').value || 'barcelona', document.getElementById('specialty-select').value)">Send enquiry →</a>
         </div>
 
         <div class="lawyer-card featured" data-city="malaga,marbella,nerja,costa-del-sol" data-specialty="property,immigration,tax">
@@ -260,7 +260,7 @@
           <p class="specialty-tag">Property · Immigration · Tax</p>
           <p class="lawyer-bio">English-speaking law firm based in Málaga serving international clients across the Costa del Sol. Strong fit for expats needing help with property purchases, Spanish residency, NIE numbers, tax matters and wider investment planning in southern Spain.</p>
           <div class="card-tags"><span>English</span><span>Spanish</span><span class="location-tag">📍 Málaga</span><span class="location-tag">Costa del Sol</span></div>
-          <a href="#contact-form" class="btn-contact" onclick="prefill('Tejada Solicitors','malaga')">Send enquiry →</a>
+          <a href="#contact-form" class="btn-contact" onclick="prefill('Tejada Solicitors', document.getElementById('city-select').value || 'malaga', document.getElementById('specialty-select').value)">Send enquiry →</a>
         </div>
 
 
@@ -276,7 +276,7 @@
           <p class="specialty-tag">Property · Wills · Tax · Business</p>
           <p class="lawyer-bio">Mallorca law firm with clear English-speaking positioning for expat and international clients, covering Balearic property purchases, wills, inheritance tax and business law.</p>
           <div class="card-tags"><span>English</span><span>German</span><span>Spanish</span><span class="location-tag">📍 Palma</span></div>
-          <a href="#contact-form" class="btn-contact" onclick="prefill('Bufete Buades','palma')">Send enquiry →</a>
+          <a href="#contact-form" class="btn-contact" onclick="prefill('Bufete Buades', document.getElementById('city-select').value || 'palma', document.getElementById('specialty-select').value)">Send enquiry →</a>
         </div>
 
         <div class="lawyer-card featured" data-city="barcelona,madrid,reus" data-specialty="employment,business,property">
@@ -291,7 +291,7 @@
           <p class="specialty-tag">Employment · Business · Property · Litigation</p>
           <p class="lawyer-bio">English-speaking law firm serving companies, investors and private clients, with offices in Barcelona, Madrid and Reus and relevant coverage for business, employment and property matters.</p>
           <div class="card-tags"><span>English</span><span>Spanish</span><span class="location-tag">📍 Barcelona</span></div>
-          <a href="#contact-form" class="btn-contact" onclick="prefill('Forcam Lawyers','barcelona')">Send enquiry →</a>
+          <a href="#contact-form" class="btn-contact" onclick="prefill('Forcam Lawyers', document.getElementById('city-select').value || 'barcelona', document.getElementById('specialty-select').value)">Send enquiry →</a>
         </div>
 
         <div class="lawyer-card featured" data-city="nationwide" data-specialty="immigration">
@@ -306,7 +306,7 @@
           <p class="specialty-tag">Immigration · Visas · Global Mobility</p>
           <p class="lawyer-bio">International immigration law firm with strong English-language positioning, suitable for expats needing visa, mobility and cross-border immigration support in Spain.</p>
           <div class="card-tags"><span>English</span><span>International</span><span class="location-tag">Global</span></div>
-          <a href="#contact-form" class="btn-contact" onclick="prefill('Fragomen Global','malaga')">Send enquiry →</a>
+          <a href="#contact-form" class="btn-contact" onclick="prefill('Fragomen Global', document.getElementById('city-select').value || 'malaga', document.getElementById('specialty-select').value)">Send enquiry →</a>
         </div>
 
         <div class="lawyer-card featured" data-city="nationwide" data-specialty="immigration">
@@ -321,7 +321,7 @@
           <p class="specialty-tag">Immigration · NIE · Residency</p>
           <p class="lawyer-bio">English-speaking law firm offering immigration support for expats across Spain, with clear positioning around NIE numbers, residency processes and practical relocation-related legal help.</p>
           <div class="card-tags"><span>English</span><span>Spanish</span><span class="location-tag">📍 Nationwide</span></div>
-          <a href="#contact-form" class="btn-contact" onclick="prefill('SpainLawyer','nationwide')">Send enquiry →</a>
+          <a href="#contact-form" class="btn-contact" onclick="prefill('SpainLawyer', document.getElementById('city-select').value || 'nationwide', document.getElementById('specialty-select').value)">Send enquiry →</a>
         </div>
 
         <div class="lawyer-card featured" data-city="barcelona,madrid,malaga" data-specialty="immigration">
@@ -336,7 +336,7 @@
           <p class="specialty-tag">Immigration · Visas · Residency</p>
           <p class="lawyer-bio">English-speaking international law firm with strong Spain immigration positioning and visible offices in Barcelona, Madrid and Málaga, serving expats with visas, residency and relocation support.</p>
           <div class="card-tags"><span>English</span><span class="location-tag">📍 Barcelona</span><span class="location-tag">📍 Madrid</span><span class="location-tag">📍 Málaga</span></div>
-          <a href="#contact-form" class="btn-contact" onclick="prefill('Lexidy','barcelona')">Send enquiry →</a>
+          <a href="#contact-form" class="btn-contact" onclick="prefill('Lexidy', document.getElementById('city-select').value || 'barcelona', document.getElementById('specialty-select').value)">Send enquiry →</a>
         </div>
 
         <!-- ===== 10 BASIC LISTINGS ===== -->
