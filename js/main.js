@@ -68,8 +68,30 @@ function filterListings(city, specialty) {
 function prefill(lawyerName, city) {
   const hiddenLawyer = document.getElementById('hidden-lawyer');
   const hiddenCity = document.getElementById('hidden-city');
+  const searchCitySelect = document.getElementById('city-select');
+  const searchSpecialtySelect = document.getElementById('specialty-select');
+  const form = document.querySelector('.contact-form');
+  const regionSelect = form ? form.querySelector('select[name="region"]') : null;
+  const specialtySelect = form ? form.querySelector('select[name="specialty"]') : null;
+
   if (hiddenLawyer) hiddenLawyer.value = lawyerName;
   if (hiddenCity) hiddenCity.value = city;
+
+  if (regionSelect && searchCitySelect && searchCitySelect.value) {
+    const selectedCityLabel = searchCitySelect.options[searchCitySelect.selectedIndex]?.text?.trim();
+    const matchingRegionOption = Array.from(regionSelect.options).find(option => option.text.trim() === selectedCityLabel);
+    if (matchingRegionOption) {
+      regionSelect.value = matchingRegionOption.value || matchingRegionOption.text;
+    }
+  }
+
+  if (specialtySelect && searchSpecialtySelect && searchSpecialtySelect.value) {
+    const selectedSpecialtyLabel = searchSpecialtySelect.options[searchSpecialtySelect.selectedIndex]?.text?.trim();
+    const matchingSpecialtyOption = Array.from(specialtySelect.options).find(option => option.text.trim() === selectedSpecialtyLabel);
+    if (matchingSpecialtyOption) {
+      specialtySelect.value = matchingSpecialtyOption.value || matchingSpecialtyOption.text;
+    }
+  }
 
   // Show the lawyer banner
   const banner = document.getElementById('form-lawyer-banner');
