@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Expat Lawyer Spain - Find English-Speaking Lawyers in Spain</title>
+  <meta name="description" content="Find trusted, English-speaking lawyers in Spain. Immigration, residency, property, employment and more. Serving expats from the UK, US, Ireland, Australia and beyond." />
+  <meta name="keywords" content="English speaking lawyer Spain, immigration lawyer Spain, expat lawyer Spain, lawyer Barcelona, lawyer Madrid, lawyer Malaga, residency Spain lawyer" />
+  <link rel="icon" href="favicon.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <!-- Privacy-friendly analytics by Plausible -->
+  <script async src="https://plausible.io/js/pa-1lgv7qQUuUqWDwfrn5MDR.js"></script>
+  <script>
+    window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+    plausible.init()
+  </script>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="container header-inner">
+      <a href="index.html" class="logo">
+        <img src="images/logo-tree.png" alt="ExpatLawyerSpain" class="logo-icon" />
+        <span>ExpatLawyer<strong>Spain</strong></span>
+      </a>
+      <nav>
+        <a href="#find">Find a Lawyer</a>
+        <a href="blog/index.html">Guides</a>
+        <a href="#list-your-firm" class="btn-nav">List Your Firm</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge">Serving English-speaking expats across Spain</div>
+      <h1>Find a trusted English-speaking lawyer in Spain</h1>
+      <p class="hero-sub">Moving to Spain? Buying property? Need residency help? We connect expats with verified, English-speaking lawyers and legal advisors across Spain - no language barrier, no stress.</p>
+      <div class="search-box" id="find">
+        <select id="city-select">
+          <option value="">📍 Select a city</option>
+          <option value="barcelona">Barcelona</option>
+          <option value="madrid">Madrid</option>
+          <option value="malaga">Málaga</option>
+          <option value="valencia">Valencia</option>
+          <option value="alicante">Alicante</option>
+          <option value="seville">Seville</option>
+          <option value="marbella">Marbella</option>
+          <option value="costa-del-sol">Costa del Sol</option>
+          <option value="palma">Palma de Mallorca</option>
+          <option value="nationwide">Nationwide / Remote</option>
+        </select>
+        <select id="specialty-select">
+          <option value="">Select a specialty</option>
+          <option value="immigration">Immigration & Residency</option>
+          <option value="property">Property Law</option>
+          <option value="employment">Employment Law</option>
+          <option value="family">Family Law</option>
+          <option value="criminal">Criminal Law</option>
+          <option value="tax">Tax & Fiscal</option>
+          <option value="business">Business & Corporate</option>
+          <option value="wills">Wills & Inheritance</option>
+        </select>
+        <button onclick="searchLawyers()" class="btn-search">Search</button>
+      </div>
+      <p class="hero-trust">
+        <svg class="trust-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4h12a1 1 0 011 1v6a1 1 0 01-1 1H2a1 1 0 01-1-1V5a1 1 0 011-1z"/><path d="M1 5l7 4.5L15 5" stroke-linecap="round"/></svg>
+        English-speaking lawyers &nbsp;|&nbsp; Free to search &nbsp;|&nbsp; No hidden fees
+      </p>
+    </div>
+  </section>
+
+
+
+  <!-- SPECIALTIES -->
+  <section class="specialties" id="specialties">
+    <div class="container">
+      <h2>What do you need help with?</h2>
+      <p class="section-sub">Click a specialty to find the right lawyer</p>
+      <div class="specialty-grid">
+        <div class="specialty-card" onclick="filterSpecialty('immigration')">
+          <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/><circle cx="12" cy="15" r="2"/></svg>
+          <span>Immigration & Residency</span>
+        </div>
+        <div class="specialty-card" onclick="filterSpecialty('property')">
+          <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12L12 3l9 9"/><path d="M9 21V12h6v9"/></svg>
+          <span>Property Law</span>
+        </div>
+        <div class="specialty-card" onclick="filterSpecialty('employment')">
+          <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="17"/><line x1="9.5" y1="14.5" x2="14.5" y2="14.5"/></svg>
+          <span>Employment Law</span>
+        </div>
+        <div class="specialty-card" onclick="filterSpecialty('family')">
+          <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><circle cx="17" cy="9" r="2"/><path d="M3 21v-2a5 5 0 0110 0v2"/><path d="M17 21v-1a4 4 0 00-3-3.87"/></svg>
+          <span>Family Law</span>
+        </div>
+        <div class="specialty-card" onclick="filterSpecialty('tax')">
+          <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          <span>Tax & Fiscal</span>
+        </div>
+        <div class="specialty-card" onclick="filterSpecialty('business')">
+          <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-4h6v4"/></svg>
+          <span>Business & Corporate</span>
+        </div>
+        <div class="specialty-card" onclick="filterSpecialty('wills')">
+          <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          <span>Wills & Inheritance</span>
+        </div>
+        <div class="specialty-card" onclick="filterSpecialty('criminal')">
+          <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 6v6c0 5.25 3.5 10.15 8 11.5C16.5 22.15 20 17.25 20 12V6z"/><polyline points="9 12 11 14 15 10"/></svg>
+          <span>Criminal Law</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LISTINGS -->
+  <section class="listings" id="cities">
+    <div class="container">
+      <h2>English-Speaking Lawyers in Spain</h2>
+      <p class="section-sub">Browse verified lawyers - send enquiries directly through our platform</p>
+
+      <div class="listings-grid" id="listings-grid">
+
+        <!-- ===== 10 FEATURED LISTINGS ===== -->
+
+        <div class="lawyer-card featured" data-city="barcelona" data-specialty="immigration,property,tax,business">
+          <div class="card-top">
+            <div class="lawyer-avatar"><img src="images/firm-logos/balcells-group.png" alt="Balcells Group logo" /></div>
+            <div class="lawyer-info">
+              <h3>Balcells Group</h3>
+              <p class="firm">Barcelona</p>
+            </div>
+            <span class="badge featured-badge">⭐ Featured</span>
+          </div>
+          <p class="specialty-tag">Immigration · Property · Tax · Business</p>
+          <p class="lawyer-bio">International law firm dedicated to helping foreigners move to, invest in and live in Spain. Specialists in visas, residency, NIE, property purchases, business setup and taxation. Fully English-speaking team with a personalised approach.</p>
+          <div class="card-tags"><span>English</span><span>Spanish</span><span class="location-tag">📍 Barcelona</span></div>
+          <a href="#contact-form" class="btn-contact" onclick="prefill('Balcells Group','barcelona')">Send enquiry →</a>
+        </div>
+
+        <div class="lawyer-card featured" data-city="costa-del-sol,nationwide" data-specialty="immigration,property,wills,tax">
+          <div class="card-top">
+            <div class="lawyer-avatar"><img src="images/firm-logos/costaluz-lawyers.png" alt="CostaLuz Lawyers logo" /></div>
+            <div class="lawyer-info">
+              <h3>CostaLuz Lawyers</h3>
+              <p class="firm">Algeciras · Costa del Sol · Nationwide</p>
+            </div>
+            <span class="badge featured-badge">⭐ Featured</span>
+          </div>
+          <p class="specialty-tag">Immigration · Property · Wills & Inheritance · Tax</p>
+          <p class="lawyer-bio">Law firm serving expats across Spain with immigration, property, inheritance and tax support. Clear English-language positioning, practical cross-border focus and broad geographic reach make it a strong option for international clients.</p>
+          <div class="card-tags"><span>English</span><span>Spanish</span><span class="location-tag">📍 Costa del Sol</span><span class="location-tag">Nationwide</span></div>
+          <a href="#contact-form" class="btn-contact" onclick="prefill('CostaLuz Lawyers','costa-del-sol')">Send enquiry →</a>
+        </div>
+
+        <div class="lawyer-card featured" data-city="nationwide" data-specialty="property,family,employment,wills">
+          <div class="card-top">
+            <div class="lawyer-avatar"><img src="images/firm-logos/spainlawyer.ico" alt="SpainLawyer logo" /></div>
+            <div class="lawyer-info">
+              <h3>SpainLawyer</h3>
+              <p class="firm">Nationwide</p>
+            </div>
+            <span class="badge featured-badge">⭐ Featured</span>
+          </div>
+          <p class="specialty-tag">Property · Family · Employment · Wills</p>
+          <p class="lawyer-bio">English-speaking law firm offering broad legal support across Spain for expats, covering property, family, employment and wills matters with nationwide reach.</p>
+          <div class="card-tags"><span>English</span><span>Spanish</span><span class="location-tag">📍 Nationwide</span></div>
+          <a href="#contact-form" class="btn-contact" onclick="prefill('SpainLawyer','nationwide')">Send enquiry →</a>
+        </div>
+
+        <div class="lawyer-card featured" data-city="marbella,costa-del-sol" data-specialty="property,immigration,wills,tax">
+          <div class="card-top">
+            <div class="lawyer-avatar"><img src="images/firm-logos/lawbird.ico" alt="Lawbird Legal Services logo" /></div>
+            <div class="lawyer-info">
+              <h3>Lawbird Legal Services</h3>
+              <p class="firm">Marbella · Costa del Sol</p>
+            </div>
+            <span class="badge featured-badge">⭐ Featured</span>
+          </div>
+          <p class="specialty-tag">Property · Immigration · Wills & Inheritance · Tax</p>
+          <p class="lawyer-bio">English-speaking law firm in Marbella serving international clients with property purchases, residency support, mortgage disputes and cross-border inheritance matters on the Costa del Sol.</p>
+          <div class="card-tags"><span>English</span><span>Spanish</span><span class="location-tag">📍 Marbella</span><span class="location-tag">Costa del Sol</span></div>
+          <a href="#contact-form" class="btn-contact" onclick="prefill('Lawbird Legal Services','marbella')">Send enquiry →</a>
+        </div>
+
+        <div class="lawyer-card featured" data-city="madrid,barcelona,ibiza,palma,marbella,jerez,london" data-specialty="tax,business,immigration">
+          <div class="card-top">
+            <div class="lawyer-avatar"><img src="images/firm-logos/del-canto-chambers.webp" alt="Del Canto Chambers logo" /></div>
+            <div class="lawyer-info">
+              <h3>Del Canto Chambers</h3>
+              <p class="firm">Madrid · Barcelona · Ibiza · Mallorca · Marbella · Jerez · London</p>
+            </div>
+            <span class="badge featured-badge">⭐ Featured</span>
+          </div>
+          <p class="specialty-tag">Tax & Fiscal · Business · Immigration</p>
+          <p class="lawyer-bio">Boutique international law firm specialising in tax, business and immigration law for high-net-worth individuals, entrepreneurs and companies operating between Spain and the UK. Bilingual team, cross-border expertise across Madrid, Barcelona, Ibiza, Mallorca, Marbella, Jerez and London.</p>
+          <div class="card-tags"><span>English</span><span>Spanish</span><span class="location-tag">📍 Madrid</span><span class="location-tag">Barcelona</span><span class="location-tag">Ibiza</span><span class="location-tag">Mallorca</span><span class="location-tag">Marbella</span><span class="location-tag">Jerez</span><span class="location-tag">London</span></div>
+          <a href="#contact-form" class="btn-contact" onclick="prefill('Del Canto Chambers','madrid')">Send enquiry →</a>
+        </div>
+
+        <div class="lawyer-card featured" data-city="alicante,costa-blanca" data-specialty="immigration,property,tax,family">
+          <div class="card-top">
+            <div class="lawyer-avatar"><img src="images/firm-logos/pellicer-heredia-user.png" alt="Pellicer & Heredia logo" /></div>
+            <div class="lawyer-info">
+              <h3>Pellicer & Heredia</h3>
+              <p class="firm">Alicante · Costa Blanca</p>
+            </div>
+            <span class="badge featured-badge">⭐ Featured</span>
+          </div>
+          <p class="specialty-tag">Immigration · Property · Tax · Family</p>
+          <p class="lawyer-bio">Alicante law firm with clear expat relevance across immigration, property, tax and family matters on the Costa Blanca. Multilingual positioning and practical resources make it a strong fit for international clients.</p>
+          <div class="card-tags"><span>English</span><span>German</span><span>Spanish</span><span class="location-tag">📍 Alicante</span></div>
+          <a href="#contact-form" class="btn-contact" onclick="prefill('Pellicer & Heredia','alicante')">Send enquiry →</a>
+        </div>
+
+        <div class="lawyer-card featured" data-city="malaga,costa-del-sol" data-specialty="property,wills,tax">
+          <div class="card-top">
+            <div class="lawyer-avatar"><img src="images/firm-logos/spanish-solicitors.ico" alt="Spanish Solicitors logo" /></div>
+            <div class="lawyer-info">
+              <h3>Spanish Solicitors</h3>
+              <p class="firm">Málaga · Costa del Sol</p>
+            </div>
+            <span class="badge featured-badge">⭐ Featured</span>
+          </div>
+          <p class="specialty-tag">Property · Wills & Inheritance · Tax</p>
+          <p class="lawyer-bio">Multilingual legal and tax advisory firm serving international clients on the Costa del Sol, with a strong fit for property conveyancing, inheritance and Spanish tax matters.</p>
+          <div class="card-tags"><span>English</span><span>German</span><span>Dutch</span><span class="location-tag">📍 Málaga</span></div>
+          <a href="#contact-form" class="btn-contact" onclick="prefill('Spanish Solicitors','malaga')">Send enquiry →</a>
+        </div>
+
+        <div class="lawyer-card featured" data-city="barcelona" data-specialty="business,employment,immigration">
+          <div class="card-top">
+            <div class="lawyer-avatar"><img src="images/firm-logos/lean-abogados.ico" alt="Lean Abogados logo" /></div>
+            <div class="lawyer-info">
+              <h3>Lean Abogados</h3>
+              <p class="firm">Barcelona</p>
+            </div>
+            <span class="badge featured-badge">⭐ Featured</span>
+          </div>
+          <p class="specialty-tag">Business · Employment · Immigration</p>
+          <p class="lawyer-bio">Barcelona-based law firm specialising in employment law, business formation and immigration for international professionals and startups. Practical, results-focused advice in plain English for expats working or building businesses in Spain.</p>
+          <div class="card-tags"><span>English</span><span>Spanish</span><span class="location-tag">📍 Barcelona</span></div>
+          <a href="#contact-form" class="btn-contact" onclick="prefill('Lean Abogados','barcelona')">Send enquiry →</a>
+        </div>
+
+        <div class="lawyer-card featured" data-city="malaga,marbella,nerja,costa-del-sol" data-specialty="property,immigration,tax">
+          <div class="card-top">
+            <div class="lawyer-avatar"><img src="images/firm-logos/tejada-solicitors.jpg" alt="Tejada Solicitors logo" /></div>
+            <div class="lawyer-info">
+              <h3>Tejada Solicitors</h3>
+              <p class="firm">Málaga · Marbella · Nerja</p>
+            </div>
+            <span class="badge featured-badge">⭐ Featured</span>
+          </div>
+          <p class="specialty-tag">Property · Immigration · Tax</p>
+          <p class="lawyer-bio">English-speaking law firm based in Málaga serving international clients across the Costa del Sol. Strong fit for expats needing help with property purchases, Spanish residency, NIE numbers, tax matters and wider investment planning in southern Spain.</p>
+          <div class="card-tags"><span>English</span><span>Spanish</span><span class="location-tag">📍 Málaga</span><span class="location-tag">Costa del Sol</span></div>
+          <a href="#contact-form" class="btn-contact" onclick="prefill('Tejada Solicitors','malaga')">Send enquiry →</a>
+        </div>
+
+
+        <div class="lawyer-card featured" data-city="palma" data-specialty="property,wills,tax,business">
+          <div class="card-top">
+            <div class="lawyer-avatar"><img src="images/firm-logos/bufete-buades-user.png" alt="Bufete Buades logo" /></div>
+            <div class="lawyer-info">
+              <h3>Bufete Buades</h3>
+              <p class="firm">Palma de Mallorca · Balearic Islands</p>
+            </div>
+            <span class="badge featured-badge">⭐ Featured</span>
+          </div>
+          <p class="specialty-tag">Property · Wills · Tax · Business</p>
+          <p class="lawyer-bio">Mallorca law firm with clear English-speaking positioning for expat and international clients, covering Balearic property purchases, wills, inheritance tax and business law.</p>
+          <div class="card-tags"><span>English</span><span>German</span><span>Spanish</span><span class="location-tag">📍 Palma</span></div>
+          <a href="#contact-form" class="btn-contact" onclick="prefill('Bufete Buades','palma')">Send enquiry →</a>
+        </div>
+
+        <div class="lawyer-card featured" data-city="barcelona,madrid,reus" data-specialty="employment,business,property">
+          <div class="card-top">
+            <div class="lawyer-avatar"><img src="images/firm-logos/forcam-lawyers.svg" alt="Forcam Lawyers logo" /></div>
+            <div class="lawyer-info">
+              <h3>Forcam Lawyers</h3>
+              <p class="firm">Barcelona · Madrid · Reus</p>
+            </div>
+            <span class="badge featured-badge">⭐ Featured</span>
+          </div>
+          <p class="specialty-tag">Employment · Business · Property · Litigation</p>
+          <p class="lawyer-bio">English-speaking law firm serving companies, investors and private clients, with offices in Barcelona, Madrid and Reus and relevant coverage for business, employment and property matters.</p>
+          <div class="card-tags"><span>English</span><span>Spanish</span><span class="location-tag">📍 Barcelona</span></div>
+          <a href="#contact-form" class="btn-contact" onclick="prefill('Forcam Lawyers','barcelona')">Send enquiry →</a>
+        </div>
+
+        <div class="lawyer-card featured" data-city="nationwide" data-specialty="immigration">
+          <div class="card-top">
+            <div class="lawyer-avatar"><img src="images/firm-logos/fragomen-global.png" alt="Fragomen Global logo" /></div>
+            <div class="lawyer-info">
+              <h3>Fragomen Global</h3>
+              <p class="firm">Immigration firm · International</p>
+            </div>
+            <span class="badge featured-badge">⭐ Featured</span>
+          </div>
+          <p class="specialty-tag">Immigration · Visas · Global Mobility</p>
+          <p class="lawyer-bio">International immigration law firm with strong English-language positioning, suitable for expats needing visa, mobility and cross-border immigration support in Spain.</p>
+          <div class="card-tags"><span>English</span><span>International</span><span class="location-tag">Global</span></div>
+          <a href="#contact-form" class="btn-contact" onclick="prefill('Fragomen Global','malaga')">Send enquiry →</a>
+        </div>
+
+        <div class="lawyer-card featured" data-city="nationwide" data-specialty="immigration">
+          <div class="card-top">
+            <div class="lawyer-avatar"><img src="images/firm-logos/spainlawyer.ico" alt="SpainLawyer logo" /></div>
+            <div class="lawyer-info">
+              <h3>SpainLawyer</h3>
+              <p class="firm">Nationwide</p>
+            </div>
+            <span class="badge featured-badge">⭐ Featured</span>
+          </div>
+          <p class="specialty-tag">Immigration · NIE · Residency</p>
+          <p class="lawyer-bio">English-speaking law firm offering immigration support for expats across Spain, with clear positioning around NIE numbers, residency processes and practical relocation-related legal help.</p>
+          <div class="card-tags"><span>English</span><span>Spanish</span><span class="location-tag">📍 Nationwide</span></div>
+          <a href="#contact-form" class="btn-contact" onclick="prefill('SpainLawyer','nationwide')">Send enquiry →</a>
+        </div>
+
+        <div class="lawyer-card featured" data-city="barcelona,madrid,malaga" data-specialty="immigration">
+          <div class="card-top">
+            <div class="lawyer-avatar"><img src="images/firm-logos/lexidy-favicon.png" alt="Lexidy logo" /></div>
+            <div class="lawyer-info">
+              <h3>Lexidy</h3>
+              <p class="firm">Barcelona · Madrid · Málaga</p>
+            </div>
+            <span class="badge featured-badge">⭐ Featured</span>
+          </div>
+          <p class="specialty-tag">Immigration · Visas · Residency</p>
+          <p class="lawyer-bio">English-speaking international law firm with strong Spain immigration positioning and visible offices in Barcelona, Madrid and Málaga, serving expats with visas, residency and relocation support.</p>
+          <div class="card-tags"><span>English</span><span class="location-tag">📍 Barcelona</span><span class="location-tag">📍 Madrid</span><span class="location-tag">📍 Málaga</span></div>
+          <a href="#contact-form" class="btn-contact" onclick="prefill('Lexidy','barcelona')">Send enquiry →</a>
+        </div>
+
+        <!-- ===== 10 BASIC LISTINGS ===== -->
+
+        <div class="lawyer-card basic" data-city="barcelona,madrid" data-specialty="business,tax">
+          <div class="card-top">
+            <div class="lawyer-avatar basic-avatar">LW</div>
+            <div class="lawyer-info">
+              <h3>Lawants</h3>
+              <p class="firm">Barcelona · Madrid</p>
+              <p class="specialty-tag">Business · Tax · Litigation</p>
+            </div>
+          </div>
+          <div class="card-tags"><span>English</span><span class="location-tag">📍 Barcelona</span><span class="location-tag">📍 Madrid</span></div>
+          <div class="basic-cta"><p>International business law and tax practice with Barcelona and Madrid relevance, added to strengthen cross-border company, tax and commercial demand.</p></div>
+        </div>
+
+        <div class="lawyer-card basic" data-city="costa-del-sol,alicante" data-specialty="property,tax">
+          <div class="card-top">
+            <div class="lawyer-avatar basic-avatar">BL</div>
+            <div class="lawyer-info">
+              <h3>BLG Abogados</h3>
+              <p class="firm">Costa Brava · Torrevieja · Orihuela Costa</p>
+              <p class="specialty-tag">Property · Tax · Business</p>
+            </div>
+          </div>
+          <div class="card-tags"><span>English</span><span class="location-tag">Costa Brava</span></div>
+          <div class="basic-cta"><p>English-speaking expat-focused law firm added to the research list. Submit an enquiry below and we'll connect you with a suitable lawyer in this area.</p></div>
+        </div>
+
+        <div class="lawyer-card basic" data-city="nationwide" data-specialty="immigration">
+          <div class="card-top">
+            <div class="lawyer-avatar basic-avatar">IL</div>
+            <div class="lawyer-info">
+              <h3>Immigration Lawyers Spain</h3>
+              <p class="firm">Spain</p>
+              <p class="specialty-tag">Immigration · Residency · Work Permits</p>
+            </div>
+          </div>
+          <div class="card-tags"><span>English</span><span class="location-tag">Spain</span></div>
+          <div class="basic-cta"><p>English-speaking immigration specialist added to the research list. Submit an enquiry below and we'll connect you with a suitable lawyer in this area.</p></div>
+        </div>
+
+        <div class="lawyer-card basic" data-city="alicante,costa-blanca" data-specialty="property,immigration,tax">
+          <div class="card-top">
+            <div class="lawyer-avatar basic-avatar">ÁA</div>
+            <div class="lawyer-info">
+              <h3>Ábaco Advisers</h3>
+              <p class="firm">Alicante · Costa Blanca</p>
+              <p class="specialty-tag">Property · Immigration · Tax</p>
+            </div>
+          </div>
+          <div class="card-tags"><span>English</span><span class="location-tag">📍 Alicante</span></div>
+          <div class="basic-cta"><p>On our call list. Submit an enquiry below and we'll connect you with a suitable lawyer in this area.</p></div>
+        </div>
+
+        <div class="lawyer-card basic" data-city="marbella,costa-del-sol" data-specialty="wills,property,immigration">
+          <div class="card-top">
+            <div class="lawyer-avatar basic-avatar">BC</div>
+            <div class="lawyer-info">
+              <h3>Bennett & Co Solicitors</h3>
+              <p class="firm">Marbella · Costa del Sol</p>
+              <p class="specialty-tag">Wills & Inheritance · Property · Immigration</p>
+            </div>
+          </div>
+          <div class="card-tags"><span>English</span><span class="location-tag">📍 Marbella</span></div>
+          <div class="basic-cta"><p>On our call list. Submit an enquiry below and we'll connect you with a suitable lawyer in this area.</p></div>
+        </div>
+
+        <div class="lawyer-card basic" data-city="valencia" data-specialty="property,immigration,family">
+          <div class="card-top">
+            <div class="lawyer-avatar basic-avatar">VL</div>
+            <div class="lawyer-info">
+              <h3>Valencia Lawyers</h3>
+              <p class="firm">Valencia</p>
+              <p class="specialty-tag">Property · Immigration · Family</p>
+            </div>
+          </div>
+          <div class="card-tags"><span>English</span><span class="location-tag">📍 Valencia</span></div>
+          <div class="basic-cta"><p>On our call list. Submit an enquiry below and we'll connect you with a suitable lawyer in this area.</p></div>
+        </div>
+
+        <div class="lawyer-card basic" data-city="seville" data-specialty="immigration,family,tax">
+          <div class="card-top">
+            <div class="lawyer-avatar basic-avatar">SA</div>
+            <div class="lawyer-info">
+              <h3>Sevilla Abogados Expat</h3>
+              <p class="firm">Seville</p>
+              <p class="specialty-tag">Immigration · Family · Tax</p>
+            </div>
+          </div>
+          <div class="card-tags"><span>English</span><span class="location-tag">📍 Seville</span></div>
+          <div class="basic-cta"><p>On our call list. Submit an enquiry below and we'll connect you with a suitable lawyer in this area.</p></div>
+        </div>
+
+        <div class="lawyer-card basic" data-city="malaga" data-specialty="criminal,employment">
+          <div class="card-top">
+            <div class="lawyer-avatar basic-avatar">MC</div>
+            <div class="lawyer-info">
+              <h3>Málaga Criminal Defence</h3>
+              <p class="firm">Málaga</p>
+              <p class="specialty-tag">Criminal Law · Employment</p>
+            </div>
+          </div>
+          <div class="card-tags"><span>English</span><span class="location-tag">📍 Málaga</span></div>
+          <div class="basic-cta"><p>On our call list. Submit an enquiry below and we'll connect you with a suitable lawyer in this area.</p></div>
+        </div>
+
+
+        <div class="lawyer-card basic" data-city="barcelona" data-specialty="family,wills">
+          <div class="card-top">
+            <div class="lawyer-avatar basic-avatar">BF</div>
+            <div class="lawyer-info">
+              <h3>Barcelona Family Law</h3>
+              <p class="firm">Barcelona</p>
+              <p class="specialty-tag">Family Law · Divorce · Wills</p>
+            </div>
+          </div>
+          <div class="card-tags"><span>English</span><span class="location-tag">📍 Barcelona</span></div>
+          <div class="basic-cta"><p>On our call list. Submit an enquiry below and we'll connect you with a suitable lawyer in this area.</p></div>
+        </div>
+
+        <div class="lawyer-card basic" data-city="nationwide" data-specialty="tax,business,wills">
+          <div class="card-top">
+            <div class="lawyer-avatar basic-avatar">GT</div>
+            <div class="lawyer-info">
+              <h3>Global Tax Spain</h3>
+              <p class="firm">Nationwide · Remote</p>
+              <p class="specialty-tag">Tax · Business · Wills & Inheritance</p>
+            </div>
+          </div>
+          <div class="card-tags"><span>English</span><span class="location-tag">Nationwide</span></div>
+          <div class="basic-cta"><p>On our call list. Submit an enquiry below and we'll connect you with a suitable lawyer in this area.</p></div>
+        </div>
+
+        <div class="lawyer-card basic" data-city="costa-del-sol" data-specialty="property,wills,tax">
+          <div class="card-top">
+            <div class="lawyer-avatar basic-avatar">CS</div>
+            <div class="lawyer-info">
+              <h3>Costa Sol Legal</h3>
+              <p class="firm">Estepona · Costa del Sol</p>
+              <p class="specialty-tag">Property · Wills · Tax</p>
+            </div>
+          </div>
+          <div class="card-tags"><span>English</span><span class="location-tag">📍 Costa del Sol</span></div>
+          <div class="basic-cta"><p>On our call list. Submit an enquiry below and we'll connect you with a suitable lawyer in this area.</p></div>
+        </div>
+
+        <div class="lawyer-card basic" data-city="madrid" data-specialty="employment,business,immigration">
+          <div class="card-top">
+            <div class="lawyer-avatar basic-avatar">ME</div>
+            <div class="lawyer-info">
+              <h3>Madrid Employment Law</h3>
+              <p class="firm">Madrid</p>
+              <p class="specialty-tag">Employment · Business · Immigration</p>
+            </div>
+          </div>
+          <div class="card-tags"><span>English</span><span class="location-tag">📍 Madrid</span></div>
+          <div class="basic-cta"><p>On our call list. Submit an enquiry below and we'll connect you with a suitable lawyer in this area.</p></div>
+        </div>
+
+        <div class="lawyer-card basic" data-city="palma" data-specialty="immigration,property,tax">
+          <div class="card-top">
+            <div class="lawyer-avatar basic-avatar">MI</div>
+            <div class="lawyer-info">
+              <h3>Mallorca Immigration Law</h3>
+              <p class="firm">Palma de Mallorca</p>
+              <p class="specialty-tag">Immigration · Property · Tax</p>
+            </div>
+          </div>
+          <div class="card-tags"><span>English</span><span class="location-tag">📍 Palma</span></div>
+          <div class="basic-cta"><p>On our call list. Submit an enquiry below and we'll connect you with a suitable lawyer in this area.</p></div>
+        </div>
+
+      </div>
+
+      <div class="no-results" id="no-results" style="display:none;">
+        <p>No lawyers found for that combination yet. <a href="#contact-form">Submit a general enquiry</a> and we'll find the right lawyer for you.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY US -->
+  <section class="why-us">
+    <div class="container">
+      <h2>Why use ExpatLawyerSpain?</h2>
+      <div class="why-grid">
+        <div class="why-card">
+          <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          <h3>English-speaking</h3><p>Every featured lawyer communicates fluently in English. No language barrier, no misunderstandings.</p>
+        </div>
+        <div class="why-card">
+          <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 6v6c0 5.25 3.5 10.15 8 11.5C16.5 22.15 20 17.25 20 12V6z"/><polyline points="9 12 11 14 15 10"/></svg>
+          <h3>Verified listings</h3><p>We check every firm before listing. No random results, no outdated contacts.</p>
+        </div>
+        <div class="why-card">
+          <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <h3>Local expertise</h3><p>Find lawyers who know your region: Barcelona, Madrid, Costa del Sol and more.</p>
+        </div>
+        <div class="why-card">
+          <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+          <h3>Free to search</h3><p>Always free for expats to browse and submit enquiries. No hidden fees, ever.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT FORM -->
+  <section class="contact-section" id="contact-form">
+    <div class="container">
+      <div class="contact-box">
+        <div id="form-lawyer-banner" style="display:none; background:#EFF5FB; border:1.5px solid #1F4E7A; border-radius:8px; padding:14px 18px; margin-bottom:18px;">
+          <p style="margin:0; font-size:0.92rem; color:#1F4E7A;"><strong>Enquiring about:</strong> <span id="form-lawyer-name"></span></p>
+          <p style="margin:4px 0 0; font-size:0.82rem; color:#666;">Your message will be sent to this firm via ExpatLawyerSpain. <a href="#" onclick="clearPrefill(); return false;" style="color:#C94F1A;">Send a general enquiry instead</a></p>
+        </div>
+        <h2 id="form-title">Send an enquiry</h2>
+        <p id="form-subtitle">Tell us what you need and we'll connect you with the right English-speaking lawyer - usually within 24 hours.</p>
+        <form class="contact-form" action="https://formspree.io/f/xojywvzv" method="POST">
+          <input type="hidden" id="hidden-lawyer" name="lawyer" value="" />
+          <input type="hidden" id="hidden-city" name="city" value="" />
+          <input type="hidden" name="source" value="expatlawyerspain.com" />
+          <input type="hidden" name="form_name" value="els_lead_capture" />
+          <input type="hidden" name="_subject" value="New enquiry via ExpatLawyerSpain.com" />
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="text" name="name" placeholder="Your full name" required />
+          <input type="email" name="email" placeholder="Your email address" required />
+          <input type="tel" name="phone" placeholder="Your phone number (optional)" />
+          <select name="specialty" required>
+            <option value="">What do you need help with?</option>
+            <option>Immigration & Residency</option>
+            <option>Property Law</option>
+            <option>Employment Law</option>
+            <option>Family Law</option>
+            <option>Tax & Fiscal</option>
+            <option>Business & Corporate</option>
+            <option>Wills & Inheritance</option>
+            <option>Criminal Law</option>
+            <option>Other</option>
+          </select>
+          <select name="region" required>
+            <option value="">Which city/region?</option>
+            <option>Barcelona</option>
+            <option>Madrid</option>
+            <option>Málaga</option>
+            <option>Valencia</option>
+            <option>Alicante</option>
+            <option>Seville</option>
+            <option>Marbella</option>
+            <option>Costa del Sol</option>
+            <option>Palma de Mallorca</option>
+            <option>Other / Nationwide</option>
+          </select>
+          <textarea name="message" placeholder="Briefly describe your situation (optional)" rows="3"></textarea>
+          <button type="submit" class="btn-submit">Send my enquiry →</button>
+        </form>
+        <div class="form-success" id="form-success" style="display:none;">
+          <p>✅ Thanks! We'll connect you with a suitable lawyer within 24 hours.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIST YOUR FIRM -->
+  <section class="list-firm" id="list-your-firm">
+    <div class="container">
+      <div class="list-firm-inner">
+        <div>
+          <h2>Are you a lawyer in Spain?</h2>
+          <p>Get your firm in front of thousands of English-speaking expats actively searching for legal help in Spain.</p>
+          <ul>
+            <li>✅ Featured listing - full profile, bio, photo, top of results</li>
+            <li>✅ Qualified leads delivered directly to your inbox</li>
+            <li>✅ Flexible packages tailored to your firm</li>
+          </ul>
+        </div>
+        <div class="list-firm-cta">
+          <p class="price-label">Get in touch</p>
+          <p class="price-sub">We will discuss the right package for your firm.</p>
+          <a href="mailto:hello@expatlawyerspain.com?subject=List my firm on ExpatLawyerSpain" class="btn-list">Get listed →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container footer-inner">
+      <div class="logo">
+        <img src="images/logo-tree.png" alt="ExpatLawyerSpain" class="logo-icon" />
+        <span>ExpatLawyer<strong>Spain</strong></span>
+      </div>
+      <p>Connecting English-speaking expats with trusted lawyers across Spain.</p>
+      <p class="footer-links"><a href="/privacy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="/terms.html">Terms</a> &nbsp;|&nbsp; <a href="mailto:hello@expatlawyerspain.com">hello@expatlawyerspain.com</a></p>
+      <p class="footer-small">© 2026 ExpatLawyerSpain.com - Not a law firm. Directory service only.</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
