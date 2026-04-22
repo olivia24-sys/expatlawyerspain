@@ -87,45 +87,7 @@ function filterListings(city, specialty) {
   noResults.style.display = visible === 0 ? 'block' : 'none';
 }
 
-function setEnquiryFormFromSearch() {
-  const regionSelect = document.getElementById('enquiry-region');
-  const specialtySelect = document.getElementById('enquiry-specialty');
-  const selectedSearchCity = document.getElementById('city-select')?.value || '';
-  const selectedSearchSpecialty = document.getElementById('specialty-select')?.value || '';
-  const regionValueMap = {
-    barcelona: 'Barcelona',
-    madrid: 'Madrid',
-    malaga: 'Málaga',
-    valencia: 'Valencia',
-    alicante: 'Alicante',
-    seville: 'Seville',
-    marbella: 'Marbella',
-    'costa-del-sol': 'Costa del Sol',
-    palma: 'Palma de Mallorca',
-    nationwide: 'Other / Nationwide'
-  };
-  const specialtyValueMap = {
-    immigration: 'Immigration & Residency',
-    property: 'Property Law',
-    employment: 'Employment Law',
-    family: 'Family Law',
-    criminal: 'Criminal Law',
-    tax: 'Tax & Fiscal',
-    business: 'Business & Corporate',
-    wills: 'Wills & Inheritance'
-  };
-
-  if (regionSelect) {
-    regionSelect.value = regionValueMap[selectedSearchCity] || '';
-  }
-
-  if (specialtySelect) {
-    specialtySelect.value = specialtyValueMap[selectedSearchSpecialty] || '';
-  }
-}
-
 function prefill(lawyerName, city, specialty) {
-  setEnquiryFormFromSearch();
   const hiddenLawyer = document.getElementById('hidden-lawyer');
   const hiddenCity = document.getElementById('hidden-city');
   const regionSelect = document.getElementById('enquiry-region');
