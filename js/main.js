@@ -90,11 +90,10 @@ function filterListings(city, specialty) {
 function prefill(lawyerName, city, specialty) {
   const hiddenLawyer = document.getElementById('hidden-lawyer');
   const hiddenCity = document.getElementById('hidden-city');
-  const form = document.querySelector('.contact-form');
-  const regionSelect = form ? form.querySelector('select[name="region"]') : null;
-  const specialtySelect = form ? form.querySelector('select[name="specialty"]') : null;
-  const selectedSearchCity = city || window.lastSearchFilters?.city || document.getElementById('city-select')?.value || '';
-  const selectedSearchSpecialty = specialty || window.lastSearchFilters?.specialty || document.getElementById('specialty-select')?.value || '';
+  const regionSelect = document.getElementById('enquiry-region');
+  const specialtySelect = document.getElementById('enquiry-specialty');
+  const selectedSearchCity = city || document.getElementById('city-select')?.value || window.lastSearchFilters?.city || '';
+  const selectedSearchSpecialty = specialty || document.getElementById('specialty-select')?.value || window.lastSearchFilters?.specialty || '';
   const regionValueMap = {
     barcelona: 'Barcelona',
     madrid: 'Madrid',
@@ -122,11 +121,11 @@ function prefill(lawyerName, city, specialty) {
   if (hiddenCity) hiddenCity.value = selectedSearchCity;
 
   if (regionSelect) {
-    setSelectValue(regionSelect, regionValueMap[selectedSearchCity] || selectedSearchCity);
+    regionSelect.value = regionValueMap[selectedSearchCity] || '';
   }
 
   if (specialtySelect) {
-    setSelectValue(specialtySelect, specialtyValueMap[selectedSearchSpecialty] || selectedSearchSpecialty);
+    specialtySelect.value = specialtyValueMap[selectedSearchSpecialty] || '';
   }
 
   // Show the lawyer banner
