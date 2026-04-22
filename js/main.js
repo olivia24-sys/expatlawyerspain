@@ -1,16 +1,35 @@
 // ExpatLawyerSpain - Main JS
 
+window.lastSearchFilters = window.lastSearchFilters || { city: '', specialty: '' };
+
+function updateLastSearchFilters(city, specialty) {
+  window.lastSearchFilters = {
+    city: city || document.getElementById('city-select')?.value || '',
+    specialty: specialty || document.getElementById('specialty-select')?.value || ''
+  };
+}
+
+function setSelectValue(selectEl, targetValue) {
+  if (!selectEl || !targetValue) return;
+  const option = Array.from(selectEl.options).find(opt => (opt.value || opt.text).trim() === targetValue);
+  if (option) {
+    selectEl.value = option.value || option.text;
+    option.selected = true;
+    selectEl.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+}
+
 function searchLawyers() {
   const city = document.getElementById('city-select').value;
   const specialty = document.getElementById('specialty-select').value;
-  window.lastSearchFilters = { city, specialty };
+  updateLastSearchFilters(city, specialty);
   filterListings(city, specialty);
   document.getElementById('listings-grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function filterSpecialty(specialty) {
   document.getElementById('specialty-select').value = specialty;
-  window.lastSearchFilters = { city: '', specialty };
+  updateLastSearchFilters('', specialty);
   filterListings('', specialty);
   document.getElementById('listings-grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
@@ -28,7 +47,7 @@ function applyFiltersFromUrl() {
   if (citySelect && city) citySelect.value = city;
   if (specialtySelect && specialty) specialtySelect.value = specialty;
 
-  window.lastSearchFilters = { city, specialty };
+  updateLastSearchFilters(city, specialty);
   filterListings(city, specialty);
 
   const listingsGrid = document.getElementById('listings-grid');
@@ -103,11 +122,11 @@ function prefill(lawyerName, city) {
   if (hiddenCity) hiddenCity.value = selectedSearchCity || city;
 
   if (regionSelect && selectedSearchCity && regionValueMap[selectedSearchCity]) {
-    regionSelect.value = regionValueMap[selectedSearchCity];
+    setSelectValue(regionSelect, regionValueMap[selectedSearchCity]);
   }
 
   if (specialtySelect && selectedSearchSpecialty && specialtyValueMap[selectedSearchSpecialty]) {
-    specialtySelect.value = specialtyValueMap[selectedSearchSpecialty];
+    setSelectValue(specialtySelect, specialtyValueMap[selectedSearchSpecialty]);
   }
 
   // Show the lawyer banner
@@ -150,5 +169,8 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     }
   });
 });
+
+document.getElementById('city-select')?.addEventListener('change', () => updateLastSearchFilters());
+document.getElementById('specialty-select')?.addEventListener('change', () => updateLastSearchFilters());
 
 applyFiltersFromUrl();
