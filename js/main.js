@@ -3,12 +3,14 @@
 function searchLawyers() {
   const city = document.getElementById('city-select').value;
   const specialty = document.getElementById('specialty-select').value;
+  window.lastSearchFilters = { city, specialty };
   filterListings(city, specialty);
   document.getElementById('listings-grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function filterSpecialty(specialty) {
   document.getElementById('specialty-select').value = specialty;
+  window.lastSearchFilters = { city: '', specialty };
   filterListings('', specialty);
   document.getElementById('listings-grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
@@ -26,6 +28,7 @@ function applyFiltersFromUrl() {
   if (citySelect && city) citySelect.value = city;
   if (specialtySelect && specialty) specialtySelect.value = specialty;
 
+  window.lastSearchFilters = { city, specialty };
   filterListings(city, specialty);
 
   const listingsGrid = document.getElementById('listings-grid');
@@ -68,29 +71,43 @@ function filterListings(city, specialty) {
 function prefill(lawyerName, city) {
   const hiddenLawyer = document.getElementById('hidden-lawyer');
   const hiddenCity = document.getElementById('hidden-city');
-  const searchCitySelect = document.getElementById('city-select');
-  const searchSpecialtySelect = document.getElementById('specialty-select');
   const form = document.querySelector('.contact-form');
   const regionSelect = form ? form.querySelector('select[name="region"]') : null;
   const specialtySelect = form ? form.querySelector('select[name="specialty"]') : null;
+  const selectedSearchCity = window.lastSearchFilters?.city || document.getElementById('city-select')?.value || city || '';
+  const selectedSearchSpecialty = window.lastSearchFilters?.specialty || document.getElementById('specialty-select')?.value || '';
+  const regionValueMap = {
+    barcelona: 'Barcelona',
+    madrid: 'Madrid',
+    malaga: 'Málaga',
+    valencia: 'Valencia',
+    alicante: 'Alicante',
+    seville: 'Seville',
+    marbella: 'Marbella',
+    'costa-del-sol': 'Costa del Sol',
+    palma: 'Palma de Mallorca',
+    nationwide: 'Other / Nationwide'
+  };
+  const specialtyValueMap = {
+    immigration: 'Immigration & Residency',
+    property: 'Property Law',
+    employment: 'Employment Law',
+    family: 'Family Law',
+    criminal: 'Criminal Law',
+    tax: 'Tax & Fiscal',
+    business: 'Business & Corporate',
+    wills: 'Wills & Inheritance'
+  };
 
   if (hiddenLawyer) hiddenLawyer.value = lawyerName;
-  if (hiddenCity) hiddenCity.value = city;
+  if (hiddenCity) hiddenCity.value = selectedSearchCity || city;
 
-  if (regionSelect && searchCitySelect && searchCitySelect.value) {
-    const selectedCityLabel = searchCitySelect.options[searchCitySelect.selectedIndex]?.text?.trim();
-    const matchingRegionOption = Array.from(regionSelect.options).find(option => option.text.trim() === selectedCityLabel);
-    if (matchingRegionOption) {
-      regionSelect.value = matchingRegionOption.value || matchingRegionOption.text;
-    }
+  if (regionSelect && selectedSearchCity && regionValueMap[selectedSearchCity]) {
+    regionSelect.value = regionValueMap[selectedSearchCity];
   }
 
-  if (specialtySelect && searchSpecialtySelect && searchSpecialtySelect.value) {
-    const selectedSpecialtyLabel = searchSpecialtySelect.options[searchSpecialtySelect.selectedIndex]?.text?.trim();
-    const matchingSpecialtyOption = Array.from(specialtySelect.options).find(option => option.text.trim() === selectedSpecialtyLabel);
-    if (matchingSpecialtyOption) {
-      specialtySelect.value = matchingSpecialtyOption.value || matchingSpecialtyOption.text;
-    }
+  if (specialtySelect && selectedSearchSpecialty && specialtyValueMap[selectedSearchSpecialty]) {
+    specialtySelect.value = specialtyValueMap[selectedSearchSpecialty];
   }
 
   // Show the lawyer banner
