@@ -122,12 +122,23 @@ function prefill(lawyerName, city, specialty = '') {
     'nationwide': 'Other / Nationwide'
   };
 
+  const specialtyMap = {
+    'immigration': 'Immigration & Residency',
+    'property': 'Property Law',
+    'employment': 'Employment Law',
+    'family': 'Family Law',
+    'criminal': 'Criminal Law',
+    'tax': 'Tax & Fiscal',
+    'business': 'Business & Corporate',
+    'wills': 'Wills & Inheritance'
+  };
+
   if (regionSelect && regionMap[city]) {
     regionSelect.value = regionMap[city];
   }
 
-  if (specialtySelect && specialty) {
-    specialtySelect.value = specialty;
+  if (specialtySelect && specialtyMap[specialty]) {
+    specialtySelect.value = specialtyMap[specialty];
   }
 
   const banner = document.getElementById('form-lawyer-banner');
