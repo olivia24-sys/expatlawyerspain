@@ -14,12 +14,12 @@ function startEnquiry(e) {
   const email = document.getElementById('hero-email');
   const form = document.querySelector('.contact-form');
 
-  const specialtyTarget = document.querySelector('.contact-form select[name="specialty"]');
-  const regionTarget = document.querySelector('.contact-form select[name="region"]');
+  const specialtyTarget = document.getElementById('enquiry-specialty');
+  const regionTarget = document.getElementById('enquiry-region');
   const emailTarget = document.querySelector('.contact-form input[name="email"]');
 
-  if (specialty && specialtyTarget) specialtyTarget.value = specialty.value;
-  if (region && regionTarget) regionTarget.value = region.value;
+  if (specialty && specialtyTarget) setSelectValue(specialtyTarget, specialty.value);
+  if (region && regionTarget) setSelectValue(regionTarget, region.value);
   if (email && emailTarget) emailTarget.value = email.value;
 
   clearPrefill();
@@ -100,11 +100,30 @@ function filterListings(city, specialty) {
   noResults.style.display = visible === 0 ? 'block' : 'none';
 }
 
+function setSelectValue(selectEl, value) {
+  if (!selectEl) return;
+
+  const options = Array.from(selectEl.options || []);
+  const normalizedValue = String(value || '').trim().toLowerCase();
+  if (!normalizedValue) return;
+
+  let match = options.find(opt => String(opt.value || '').trim().toLowerCase() === normalizedValue);
+  if (!match) {
+    match = options.find(opt => String(opt.textContent || '').trim().toLowerCase() === normalizedValue);
+  }
+
+  if (match) {
+    selectEl.value = match.value;
+    selectEl.selectedIndex = options.indexOf(match);
+    selectEl.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+}
+
 function prefill(lawyerName, city, specialty = '') {
   const hiddenLawyer = document.getElementById('hidden-lawyer');
   const hiddenCity = document.getElementById('hidden-city');
-  const regionSelect = document.querySelector('select[name="region"]');
-  const specialtySelect = document.querySelector('select[name="specialty"]');
+  const regionSelect = document.getElementById('enquiry-region');
+  const specialtySelect = document.getElementById('enquiry-specialty');
 
   if (hiddenLawyer) hiddenLawyer.value = lawyerName;
   if (hiddenCity) hiddenCity.value = city;
@@ -134,12 +153,11 @@ function prefill(lawyerName, city, specialty = '') {
   };
 
   if (regionSelect && regionMap[city]) {
-    regionSelect.value = regionMap[city];
+    setSelectValue(regionSelect, regionMap[city]);
   }
 
   if (specialtySelect && specialtyMap[specialty]) {
-    specialtySelect.value = specialtyMap[specialty];
-    specialtySelect.dispatchEvent(new Event('change', { bubbles: true }));
+    setSelectValue(specialtySelect, specialtyMap[specialty]);
   }
 
   const banner = document.getElementById('form-lawyer-banner');
