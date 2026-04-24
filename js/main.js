@@ -1,35 +1,14 @@
 // ExpatLawyerSpain - Main JS
 
-window.lastSearchFilters = window.lastSearchFilters || { city: '', specialty: '' };
-
-function updateLastSearchFilters(city, specialty) {
-  window.lastSearchFilters = {
-    city: city || document.getElementById('city-select')?.value || '',
-    specialty: specialty || document.getElementById('specialty-select')?.value || ''
-  };
-}
-
-function setSelectValue(selectEl, targetValue) {
-  if (!selectEl || !targetValue) return;
-  const option = Array.from(selectEl.options).find(opt => (opt.value || opt.text).trim() === targetValue);
-  if (option) {
-    selectEl.value = option.value || option.text;
-    option.selected = true;
-    selectEl.dispatchEvent(new Event('change', { bubbles: true }));
-  }
-}
-
 function searchLawyers() {
   const city = document.getElementById('city-select').value;
   const specialty = document.getElementById('specialty-select').value;
-  updateLastSearchFilters(city, specialty);
   filterListings(city, specialty);
   document.getElementById('listings-grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function filterSpecialty(specialty) {
   document.getElementById('specialty-select').value = specialty;
-  updateLastSearchFilters('', specialty);
   filterListings('', specialty);
   document.getElementById('listings-grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
@@ -47,7 +26,6 @@ function applyFiltersFromUrl() {
   if (citySelect && city) citySelect.value = city;
   if (specialtySelect && specialty) specialtySelect.value = specialty;
 
-  updateLastSearchFilters(city, specialty);
   filterListings(city, specialty);
 
   const listingsGrid = document.getElementById('listings-grid');
@@ -87,48 +65,31 @@ function filterListings(city, specialty) {
   noResults.style.display = visible === 0 ? 'block' : 'none';
 }
 
-function prefill(lawyerName, city, specialty) {
+function prefill(lawyerName, city) {
   const hiddenLawyer = document.getElementById('hidden-lawyer');
   const hiddenCity = document.getElementById('hidden-city');
-  const regionSelect = document.getElementById('enquiry-region');
-  const specialtySelect = document.getElementById('enquiry-specialty');
-  const selectedSearchCity = city || document.getElementById('city-select')?.value || window.lastSearchFilters?.city || '';
-  const selectedSearchSpecialty = specialty || document.getElementById('specialty-select')?.value || window.lastSearchFilters?.specialty || '';
-  const regionValueMap = {
-    barcelona: 'Barcelona',
-    madrid: 'Madrid',
-    malaga: 'Málaga',
-    valencia: 'Valencia',
-    alicante: 'Alicante',
-    seville: 'Seville',
-    marbella: 'Marbella',
-    'costa-del-sol': 'Costa del Sol',
-    palma: 'Palma de Mallorca',
-    nationwide: 'Other / Nationwide'
-  };
-  const specialtyValueMap = {
-    immigration: 'Immigration & Residency',
-    property: 'Property Law',
-    employment: 'Employment Law',
-    family: 'Family Law',
-    criminal: 'Criminal Law',
-    tax: 'Tax & Fiscal',
-    business: 'Business & Corporate',
-    wills: 'Wills & Inheritance'
-  };
+  const regionSelect = document.querySelector('select[name="region"]');
 
   if (hiddenLawyer) hiddenLawyer.value = lawyerName;
-  if (hiddenCity) hiddenCity.value = selectedSearchCity;
+  if (hiddenCity) hiddenCity.value = city;
 
-  if (regionSelect) {
-    setSelectValue(regionSelect, regionValueMap[selectedSearchCity] || '');
+  const regionMap = {
+    'barcelona': 'Barcelona',
+    'madrid': 'Madrid',
+    'malaga': 'Málaga',
+    'valencia': 'Valencia',
+    'alicante': 'Alicante',
+    'seville': 'Seville',
+    'marbella': 'Marbella',
+    'costa-del-sol': 'Costa del Sol',
+    'palma': 'Palma de Mallorca',
+    'nationwide': 'Other / Nationwide'
+  };
+
+  if (regionSelect && regionMap[city]) {
+    regionSelect.value = regionMap[city];
   }
 
-  if (specialtySelect) {
-    setSelectValue(specialtySelect, specialtyValueMap[selectedSearchSpecialty] || '');
-  }
-
-  // Show the lawyer banner
   const banner = document.getElementById('form-lawyer-banner');
   const nameSpan = document.getElementById('form-lawyer-name');
   const title = document.getElementById('form-title');
@@ -136,8 +97,8 @@ function prefill(lawyerName, city, specialty) {
   if (banner && nameSpan) {
     nameSpan.textContent = lawyerName;
     banner.style.display = 'block';
-    title.textContent = 'Send an enquiry to ' + lawyerName;
-    subtitle.textContent = 'Fill in your details below and we will forward your message to this firm within 24 hours.';
+    title.textContent = 'Send your enquiry to ' + lawyerName;
+    subtitle.textContent = 'Fill in your details below and we will forward your message to this firm, usually within 24 hours.';
   }
 
   document.getElementById('contact-form').scrollIntoView({ behavior: 'smooth' });
@@ -147,8 +108,8 @@ function clearPrefill() {
   document.getElementById('hidden-lawyer').value = '';
   document.getElementById('hidden-city').value = '';
   document.getElementById('form-lawyer-banner').style.display = 'none';
-  document.getElementById('form-title').textContent = 'Send an enquiry';
-  document.getElementById('form-subtitle').textContent = 'Tell us what you need and we\'ll connect you with the right English-speaking lawyer - usually within 24 hours.';
+  document.getElementById('form-title').textContent = 'Send your enquiry';
+  document.getElementById('form-subtitle').textContent = 'Tell us what you need and we\'ll connect you with the right English-speaking lawyer, usually within 24 hours.';
 }
 
 function submitForm(e) {
@@ -168,8 +129,5 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     }
   });
 });
-
-document.getElementById('city-select')?.addEventListener('change', () => updateLastSearchFilters());
-document.getElementById('specialty-select')?.addEventListener('change', () => updateLastSearchFilters());
 
 applyFiltersFromUrl();
