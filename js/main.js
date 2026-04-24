@@ -100,10 +100,11 @@ function filterListings(city, specialty) {
   noResults.style.display = visible === 0 ? 'block' : 'none';
 }
 
-function prefill(lawyerName, city) {
+function prefill(lawyerName, city, specialty = '') {
   const hiddenLawyer = document.getElementById('hidden-lawyer');
   const hiddenCity = document.getElementById('hidden-city');
   const regionSelect = document.querySelector('select[name="region"]');
+  const specialtySelect = document.querySelector('select[name="specialty"]');
 
   if (hiddenLawyer) hiddenLawyer.value = lawyerName;
   if (hiddenCity) hiddenCity.value = city;
@@ -123,6 +124,10 @@ function prefill(lawyerName, city) {
 
   if (regionSelect && regionMap[city]) {
     regionSelect.value = regionMap[city];
+  }
+
+  if (specialtySelect && specialty) {
+    specialtySelect.value = specialty;
   }
 
   const banner = document.getElementById('form-lawyer-banner');
