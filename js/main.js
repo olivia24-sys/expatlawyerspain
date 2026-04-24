@@ -7,6 +7,30 @@ function searchLawyers() {
   document.getElementById('listings-grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
+function startEnquiry(e) {
+  e.preventDefault();
+  const specialty = document.getElementById('hero-specialty');
+  const region = document.getElementById('hero-region');
+  const email = document.getElementById('hero-email');
+  const form = document.querySelector('.contact-form');
+
+  const specialtyTarget = document.querySelector('.contact-form select[name="specialty"]');
+  const regionTarget = document.querySelector('.contact-form select[name="region"]');
+  const emailTarget = document.querySelector('.contact-form input[name="email"]');
+
+  if (specialty && specialtyTarget) specialtyTarget.value = specialty.value;
+  if (region && regionTarget) regionTarget.value = region.value;
+  if (email && emailTarget) emailTarget.value = email.value;
+
+  clearPrefill();
+  document.getElementById('contact-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  if (form) {
+    const nameField = form.querySelector('input[name="name"]');
+    if (nameField) nameField.focus();
+  }
+}
+
 function filterSpecialty(specialty) {
   document.getElementById('specialty-select').value = specialty;
   filterListings('', specialty);
@@ -44,6 +68,7 @@ function getDataList(card, key) {
 
 function filterListings(city, specialty) {
   const cards = document.querySelectorAll('.lawyer-card');
+  const helper = document.getElementById('results-helper');
   let visible = 0;
 
   cards.forEach(card => {
@@ -60,6 +85,16 @@ function filterListings(city, specialty) {
       card.style.display = 'none';
     }
   });
+
+  if (helper) {
+    if (city || specialty) {
+      helper.innerHTML = visible > 0
+        ? `Showing ${visible} matching ${visible === 1 ? 'firm' : 'firms'}. Want the fastest route? <a href="#contact-form">Send one enquiry instead.</a>`
+        : 'No exact lawyer match yet. <a href="#contact-form">Send a general enquiry</a> and we will route it for you.';
+    } else {
+      helper.innerHTML = 'Showing featured firms first. Want the fastest route? <a href="#contact-form">Send one enquiry instead.</a>';
+    }
+  }
 
   const noResults = document.getElementById('no-results');
   noResults.style.display = visible === 0 ? 'block' : 'none';

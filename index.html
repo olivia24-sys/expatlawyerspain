@@ -36,16 +36,15 @@
 
   <!-- HERO -->
   <section class="hero">
-    <div class="container">
+    <div class="container hero-centered">
       <div class="hero-badge">Serving English-speaking expats across Spain</div>
-      <h1>Find the right English-speaking lawyer in Spain, then send your enquiry in minutes</h1>
-      <p class="hero-sub">Tell us your city and legal issue, view matching lawyers, and send one enquiry through ExpatLawyerSpain. No language barrier, no digging through random directories.</p>
+      <h1>Find the right English-speaking lawyer in Spain</h1>
+      <p class="hero-sub">A simple route for expats who need legal help.<br />Browse lawyers or send one enquiry and we'll route you to the best fit.</p>
       <div class="hero-actions">
-        <a href="#contact-form" class="btn-hero-primary">Send an enquiry now</a>
-        <a href="#find" class="btn-hero-secondary">Browse matching lawyers</a>
+        <a href="#contact-form" class="btn-hero-primary">Start your enquiry</a>
+        <a href="#find" class="btn-hero-secondary">Browse lawyers first</a>
       </div>
-      <p class="hero-microcopy">Usually routed within 24 hours. Free for expats.</p>
-      <div class="search-box" id="find">
+      <div class="search-box hero-search-box" id="find">
         <select id="city-select">
           <option value="">📍 Select a city</option>
           <option value="barcelona">Barcelona</option>
@@ -74,7 +73,7 @@
       </div>
       <p class="hero-trust">
         <svg class="trust-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4h12a1 1 0 011 1v6a1 1 0 01-1 1H2a1 1 0 01-1-1V5a1 1 0 011-1z"/><path d="M1 5l7 4.5L15 5" stroke-linecap="round"/></svg>
-        English-speaking lawyers &nbsp;|&nbsp; One enquiry form &nbsp;|&nbsp; Usually routed within 24 hours
+        English-speaking lawyers. One enquiry form. No hidden fees.
       </p>
     </div>
   </section>
@@ -126,9 +125,10 @@
   <!-- LISTINGS -->
   <section class="listings" id="cities">
     <div class="container">
-      <h2>Choose a lawyer or send one general enquiry</h2>
-      <p class="section-sub">Browse verified lawyers below, or skip straight to the enquiry form and we will route you to the best fit.</p>
+      <h2>Browse lawyers if you want to compare options</h2>
+      <p class="section-sub">If you already know what you need, use the enquiry form above or below.</p>
 
+      <div class="results-helper" id="results-helper">Showing featured firms first. Want the fastest route? <a href="#contact-form">Send one enquiry instead.</a></div>
       <div class="listings-grid" id="listings-grid">
 
         <!-- ===== 10 FEATURED LISTINGS ===== -->
@@ -467,12 +467,8 @@
           <p style="margin:4px 0 0; font-size:0.82rem; color:#666;">Your message will be sent to this firm via ExpatLawyerSpain. <a href="#" onclick="clearPrefill(); return false;" style="color:#C94F1A;">Send a general enquiry instead</a></p>
         </div>
         <h2 id="form-title">Send your enquiry</h2>
-        <p id="form-subtitle">Tell us what you need and we'll connect you with the right English-speaking lawyer, usually within 24 hours.</p>
-        <div class="contact-steps">
-          <div class="contact-step"><span>1</span><p>Tell us your legal issue</p></div>
-          <div class="contact-step"><span>2</span><p>We match or forward it to the chosen firm</p></div>
-          <div class="contact-step"><span>3</span><p>You hear back, usually within 24 hours</p></div>
-        </div>
+        <p id="form-subtitle">Tell us what you need and we'll connect you with the right English-speaking lawyer.</p>
+        <p class="form-intro">We only use your details to process your enquiry.</p>
         <form class="contact-form" action="https://formspree.io/f/xojywvzv" method="POST">
           <input type="hidden" id="hidden-lawyer" name="lawyer" value="" />
           <input type="hidden" id="hidden-city" name="city" value="" />
@@ -482,7 +478,6 @@
           <input type="hidden" name="_captcha" value="false" />
           <input type="text" name="name" placeholder="Your full name" required />
           <input type="email" name="email" placeholder="Your email address" required />
-          <input type="tel" name="phone" placeholder="Your phone number (optional)" />
           <select name="specialty" required>
             <option value="">What do you need help with?</option>
             <option>Immigration & Residency</option>
