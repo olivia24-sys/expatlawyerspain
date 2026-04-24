@@ -139,6 +139,7 @@ function prefill(lawyerName, city, specialty = '') {
 
   if (specialtySelect && specialtyMap[specialty]) {
     specialtySelect.value = specialtyMap[specialty];
+    specialtySelect.dispatchEvent(new Event('change', { bubbles: true }));
   }
 
   const banner = document.getElementById('form-lawyer-banner');
