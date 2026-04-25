@@ -196,6 +196,9 @@ nav a:hover { color: var(--primary); }
   font-size: 0.85rem;
   opacity: 0.8;
 }
+.hero-trust-break {
+  display: inline;
+}
 
 /* trust icons inline */
 .trust-icon {
@@ -582,7 +585,8 @@ footer p { font-size: 0.875rem; }
 @media (max-width: 480px) {
   .hero h1 { font-size: 1.45rem; }
   .mobile-break-badge,
-  .mobile-break-sub {
+  .mobile-break-sub,
+  .hero-trust-break {
     display: block;
   }
   .why-grid { grid-template-columns: 1fr; }
