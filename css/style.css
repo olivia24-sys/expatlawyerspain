@@ -419,12 +419,14 @@ nav a:hover { color: var(--primary); }
   padding-top: 36px;
 }
 .contact-section-priority .contact-box {
+  width: 100%;
   max-width: 720px;
 }
 .contact-box {
   background: white;
   border-radius: 16px;
   padding: 48px;
+  width: 100%;
   max-width: 600px;
   margin: 0 auto;
   box-shadow: var(--shadow);
