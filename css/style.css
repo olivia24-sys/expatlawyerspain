@@ -611,6 +611,10 @@ footer p { font-size: 0.875rem; }
 /* ===== SMALL MOBILE (max 480px) ===== */
 @media (max-width: 480px) {
   .hero h1 { font-size: 1.45rem; }
+  .mobile-break-badge,
+  .mobile-break-sub {
+    display: block;
+  }
   .why-grid { grid-template-columns: 1fr; }
   .lawyer-card { padding: 18px; }
   .card-top { gap: 12px; }
