@@ -418,10 +418,6 @@ nav a:hover { color: var(--primary); }
 .contact-section-priority {
   padding-top: 36px;
 }
-.contact-section-priority .contact-box {
-  width: 100%;
-  max-width: 720px;
-}
 .contact-box {
   background: white;
   border-radius: 16px;
@@ -430,6 +426,9 @@ nav a:hover { color: var(--primary); }
   max-width: 600px;
   margin: 0 auto;
   box-shadow: var(--shadow);
+}
+.contact-section-priority .contact-box {
+  max-width: 720px;
 }
 .contact-box h2 { font-size: 1.8rem; color: var(--secondary); margin-bottom: 10px; }
 .contact-box > p { color: var(--text-light); margin-bottom: 24px; }
