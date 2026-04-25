@@ -427,7 +427,7 @@ nav a:hover { color: var(--primary); }
   margin: 0 auto;
   box-shadow: var(--shadow);
 }
-.contact-section-priority .contact-box {
+.contact-box.contact-box-wide {
   max-width: 720px;
 }
 .contact-box h2 { font-size: 1.8rem; color: var(--secondary); margin-bottom: 10px; }
