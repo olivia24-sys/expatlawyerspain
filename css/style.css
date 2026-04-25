@@ -228,6 +228,9 @@ nav a:hover { color: var(--primary); }
   font-size: 0.85rem;
   opacity: 0.8;
 }
+.hero-trust-nowrap {
+  white-space: nowrap;
+}
 
 /* trust icons inline */
 .trust-icon {
