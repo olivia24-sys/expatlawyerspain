@@ -168,7 +168,7 @@ function prefill(lawyerName, city, specialty = '') {
     nameSpan.textContent = lawyerName;
     banner.style.display = 'block';
     title.textContent = 'Send your enquiry to ' + lawyerName;
-    subtitle.textContent = 'Fill in your details below and we will forward your message to this firm, usually within 24 hours.';
+    subtitle.textContent = 'Fill in your details below and we will forward your message to this firm.';
   }
 
   document.getElementById('contact-form').scrollIntoView({ behavior: 'smooth' });
@@ -179,7 +179,7 @@ function clearPrefill() {
   document.getElementById('hidden-city').value = '';
   document.getElementById('form-lawyer-banner').style.display = 'none';
   document.getElementById('form-title').textContent = 'Send your enquiry';
-  document.getElementById('form-subtitle').textContent = 'Tell us what you need and we\'ll connect you with the right English-speaking lawyer, usually within 24 hours.';
+  document.getElementById('form-subtitle').textContent = 'Tell us what you need and we\'ll connect you with the right English-speaking lawyer.';
 }
 
 function submitForm(e) {
