@@ -39,11 +39,7 @@
     <div class="container hero-centered">
       <div class="hero-badge">Serving English-speaking <span class="mobile-break-badge">expats across Spain</span></div>
       <h1>Find the right English-speaking lawyer in Spain</h1>
-      <p class="hero-sub">A simple route for expats <span class="mobile-break-sub">who need legal help.</span><br />Browse lawyers or send one enquiry and we'll route you to the best fit.</p>
-      <div class="hero-actions">
-        <a href="#contact-form" class="btn-hero-primary">Start your enquiry</a>
-        <a href="#find" class="btn-hero-secondary">Browse lawyers first</a>
-      </div>
+      <p class="hero-sub">Tell us where you are and what you need help with, and we’ll show you the best-fit lawyers.</p>
       <div class="search-box hero-search-box" id="find">
         <select id="city-select">
           <option value="">📍 Select a city</option>
@@ -73,12 +69,65 @@
       </div>
       <p class="hero-trust">
         <svg class="trust-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4h12a1 1 0 011 1v6a1 1 0 01-1 1H2a1 1 0 01-1-1V5a1 1 0 011-1z"/><path d="M1 5l7 4.5L15 5" stroke-linecap="round"/></svg>
-        English-speaking lawyers. One enquiry form. <span class="hero-trust-nowrap">No hidden fees.</span>
+        English-speaking lawyers. One enquiry form. No hidden fees.
       </p>
     </div>
   </section>
 
-
+  <!-- CONTACT FORM -->
+  <section class="contact-section contact-section-priority" id="contact-form">
+    <div class="container">
+      <div class="contact-box">
+        <div id="form-lawyer-banner" style="display:none; background:#EFF5FB; border:1.5px solid #1F4E7A; border-radius:8px; padding:14px 18px; margin-bottom:18px;">
+          <p style="margin:0; font-size:0.92rem; color:#1F4E7A;"><strong>Enquiring about:</strong> <span id="form-lawyer-name"></span></p>
+          <p style="margin:4px 0 0; font-size:0.82rem; color:#666;">Your message will be sent to this firm via ExpatLawyerSpain. <a href="#" onclick="clearPrefill(); return false;" style="color:#C94F1A;">Send a general enquiry instead</a></p>
+        </div>
+        <h2 id="form-title">Prefer not to browse multiple lawyers?</h2>
+        <p id="form-subtitle">Tell us what you need and we’ll connect you with the right English-speaking lawyer.</p>
+        <form class="contact-form" action="https://formspree.io/f/xojywvzv" method="POST">
+          <input type="hidden" id="hidden-lawyer" name="lawyer" value="" />
+          <input type="hidden" id="hidden-city" name="city" value="" />
+          <input type="hidden" name="source" value="expatlawyerspain.com" />
+          <input type="hidden" name="form_name" value="els_lead_capture" />
+          <input type="hidden" name="_subject" value="New enquiry via ExpatLawyerSpain.com" />
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="text" name="name" placeholder="Your full name" required />
+          <input type="email" name="email" placeholder="Your email address" required />
+          <select id="enquiry-specialty" name="specialty" required>
+            <option value="">What do you need help with?</option>
+            <option>Immigration & Residency</option>
+            <option>Property Law</option>
+            <option>Employment Law</option>
+            <option>Family Law</option>
+            <option>Tax & Fiscal</option>
+            <option>Business & Corporate</option>
+            <option>Wills & Inheritance</option>
+            <option>Criminal Law</option>
+            <option>Other</option>
+          </select>
+          <select id="enquiry-region" name="region" required>
+            <option value="">Which city/region?</option>
+            <option>Barcelona</option>
+            <option>Madrid</option>
+            <option>Málaga</option>
+            <option>Valencia</option>
+            <option>Alicante</option>
+            <option>Seville</option>
+            <option>Marbella</option>
+            <option>Costa del Sol</option>
+            <option>Palma de Mallorca</option>
+            <option>Other / Nationwide</option>
+          </select>
+          <textarea name="message" placeholder="Briefly describe your situation so we can route you to the right lawyer" rows="4"></textarea>
+          <button type="submit" class="btn-submit">Send my enquiry →</button>
+          <p class="form-reassurance">No hidden fees. No obligation. Just a faster route to the right English-speaking lawyer.</p>
+        </form>
+        <div class="form-success" id="form-success" style="display:none;">
+          <p>✅ Thanks! We’ll connect you with a suitable lawyer within 24 hours.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- SPECIALTIES -->
   <section class="specialties" id="specialties">
@@ -126,7 +175,7 @@
   <section class="listings" id="cities">
     <div class="container">
       <h2>Browse lawyers if you want to compare options</h2>
-      <p class="section-sub">If you already know what you need, use the enquiry form above or below.</p>
+      <p class="section-sub">If you already know what you need, use the enquiry form above.</p>
 
       <div class="results-helper" id="results-helper">Showing featured firms first. Want the fastest route? <a href="#contact-form">Send one enquiry instead.</a></div>
       <div class="listings-grid" id="listings-grid">
@@ -453,62 +502,6 @@
         <div class="why-card">
           <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
           <h3>Free to search</h3><p>Always free for expats to browse and submit enquiries. No hidden fees, ever.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT FORM -->
-  <section class="contact-section" id="contact-form">
-    <div class="container">
-      <div class="contact-box">
-        <div id="form-lawyer-banner" style="display:none; background:#EFF5FB; border:1.5px solid #1F4E7A; border-radius:8px; padding:14px 18px; margin-bottom:18px;">
-          <p style="margin:0; font-size:0.92rem; color:#1F4E7A;"><strong>Enquiring about:</strong> <span id="form-lawyer-name"></span></p>
-          <p style="margin:4px 0 0; font-size:0.82rem; color:#666;">Your message will be sent to this firm via ExpatLawyerSpain. <a href="#" onclick="clearPrefill(); return false;" style="color:#C94F1A;">Send a general enquiry instead</a></p>
-        </div>
-        <h2 id="form-title">Send your enquiry</h2>
-        <p id="form-subtitle">Tell us what you need and we'll connect you with the right English-speaking lawyer.</p>
-        <p class="form-intro">We only use your details to process your enquiry.</p>
-        <form class="contact-form" action="https://formspree.io/f/xojywvzv" method="POST">
-          <input type="hidden" id="hidden-lawyer" name="lawyer" value="" />
-          <input type="hidden" id="hidden-city" name="city" value="" />
-          <input type="hidden" name="source" value="expatlawyerspain.com" />
-          <input type="hidden" name="form_name" value="els_lead_capture" />
-          <input type="hidden" name="_subject" value="New enquiry via ExpatLawyerSpain.com" />
-          <input type="hidden" name="_captcha" value="false" />
-          <input type="text" name="name" placeholder="Your full name" required />
-          <input type="email" name="email" placeholder="Your email address" required />
-          <select id="enquiry-specialty" name="specialty" required>
-            <option value="">What do you need help with?</option>
-            <option>Immigration & Residency</option>
-            <option>Property Law</option>
-            <option>Employment Law</option>
-            <option>Family Law</option>
-            <option>Tax & Fiscal</option>
-            <option>Business & Corporate</option>
-            <option>Wills & Inheritance</option>
-            <option>Criminal Law</option>
-            <option>Other</option>
-          </select>
-          <select id="enquiry-region" name="region" required>
-            <option value="">Which city/region?</option>
-            <option>Barcelona</option>
-            <option>Madrid</option>
-            <option>Málaga</option>
-            <option>Valencia</option>
-            <option>Alicante</option>
-            <option>Seville</option>
-            <option>Marbella</option>
-            <option>Costa del Sol</option>
-            <option>Palma de Mallorca</option>
-            <option>Other / Nationwide</option>
-          </select>
-          <textarea name="message" placeholder="Briefly describe your situation so we can route you to the right lawyer" rows="4"></textarea>
-          <button type="submit" class="btn-submit">Send my enquiry →</button>
-          <p class="form-reassurance">No hidden fees. No obligation. Just a faster route to the right English-speaking lawyer.</p>
-        </form>
-        <div class="form-success" id="form-success" style="display:none;">
-          <p>✅ Thanks! We'll connect you with a suitable lawyer within 24 hours.</p>
         </div>
       </div>
     </div>
