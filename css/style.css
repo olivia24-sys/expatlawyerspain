@@ -469,6 +469,12 @@ nav a:hover { color: var(--primary); }
   cursor: pointer;
   transition: background 0.2s;
 }
+.form-area-note {
+  margin: -4px 0 4px;
+  color: var(--text-light);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
 .btn-submit:hover { background: var(--primary-dark); }
 .form-reassurance {
   font-size: 0.84rem;
@@ -558,7 +564,6 @@ footer p { font-size: 0.875rem; }
   .search-box { flex-direction: column; padding: 10px; }
   .search-box select { min-width: unset; width: 100%; }
   .btn-search { width: 100%; }
-
   /* Specialties */
   .specialty-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
   .specialty-card { padding: 18px 12px; }

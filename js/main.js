@@ -90,7 +90,7 @@ function filterListings(city, specialty) {
     if (city || specialty) {
       helper.innerHTML = visible > 0
         ? `Showing ${visible} matching ${visible === 1 ? 'firm' : 'firms'}. Want the fastest route? <a href="#contact-form">Send one enquiry instead.</a>`
-        : 'No exact lawyer match yet. <a href="#contact-form">Send a general enquiry</a> and we will route it for you.';
+        : 'No exact lawyer match yet. <a href="#contact-form">Send a general enquiry</a> anyway and mention your province — we will route it as best we can.';
     } else {
       helper.innerHTML = 'Showing featured firms first. Want the fastest route? <a href="#contact-form">Send one enquiry instead.</a>';
     }
