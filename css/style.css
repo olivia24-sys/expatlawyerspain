@@ -325,6 +325,10 @@ nav a:hover { color: var(--primary); }
 .lawyer-avatar img[src*="lexidy"] {
   padding: 8px;
 }
+.lawyer-avatar img.dark-logo {
+  background: #1f2933;
+  padding: 5px;
+}
 .lawyer-info {
   flex: 1;
   min-width: 0;
