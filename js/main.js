@@ -281,3 +281,35 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 setupFormStartTracking();
 setupIntentClickTracking();
 applyFiltersFromUrl();
+
+
+function setupMobileConversionEnhancements() {
+  const showMore = document.getElementById('mobile-show-more');
+  const grid = document.getElementById('listings-grid');
+  if (showMore && grid) {
+    showMore.addEventListener('click', () => {
+      grid.classList.remove('mobile-collapsed');
+      grid.classList.add('mobile-expanded');
+      showMore.style.display = 'none';
+      trackEvent('CTA Click', { cta: 'Show more firms' });
+    });
+  }
+
+  const sticky = document.getElementById('mobile-sticky-cta');
+  const formSection = document.getElementById('contact-form');
+  if (!sticky || !formSection || !window.matchMedia('(max-width: 768px)').matches) return;
+
+  document.body.classList.add('has-mobile-sticky-cta');
+  const updateSticky = () => {
+    const formRect = formSection.getBoundingClientRect();
+    const afterHero = window.scrollY > 520;
+    const formVisible = formRect.top < window.innerHeight * 0.75 && formRect.bottom > window.innerHeight * 0.2;
+    sticky.classList.toggle('is-visible', afterHero && !formVisible);
+  };
+
+  window.addEventListener('scroll', updateSticky, { passive: true });
+  window.addEventListener('resize', updateSticky);
+  updateSticky();
+}
+
+setupMobileConversionEnhancements();

@@ -638,3 +638,114 @@ footer p { font-size: 0.875rem; }
   .btn-nav { padding: 7px 11px; font-size: 0.8rem !important; white-space: nowrap; }
   nav { gap: 8px; }
 }
+
+
+/* MOBILE CONVERSION IMPROVEMENTS — phone-only changes, keeping hero to one search CTA */
+.mobile-show-more,
+.mobile-sticky-cta {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .contact-section-priority {
+    padding-top: 18px;
+    padding-bottom: 44px;
+  }
+
+  .contact-box h2 {
+    font-size: 1.45rem;
+    line-height: 1.2;
+  }
+
+  .contact-box > p {
+    margin-bottom: 16px;
+  }
+
+  .contact-form {
+    gap: 11px;
+  }
+
+  .listings-grid.mobile-collapsed .lawyer-card:nth-of-type(n+7) {
+    display: none;
+  }
+
+  .listings-grid.mobile-expanded .lawyer-card:nth-of-type(n+7) {
+    display: flex;
+  }
+
+  .mobile-show-more {
+    display: block;
+    width: 100%;
+    max-width: 342px;
+    margin: 22px auto 0;
+    padding: 13px 18px;
+    border: 1px solid var(--secondary);
+    border-radius: 9px;
+    background: #fff;
+    color: var(--secondary);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .mobile-sticky-cta {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 120;
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+    background: rgba(255,255,255,0.96);
+    border-top: 1px solid var(--border);
+    box-shadow: 0 -4px 18px rgba(0,0,0,0.12);
+    transform: translateY(110%);
+    transition: transform 0.2s ease;
+  }
+
+  .mobile-sticky-cta.is-visible {
+    display: block;
+    transform: translateY(0);
+  }
+
+  .mobile-sticky-cta a {
+    display: block;
+    width: 100%;
+    max-width: 390px;
+    margin: 0 auto;
+    padding: 13px 18px;
+    border-radius: 10px;
+    background: var(--primary);
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 800;
+  }
+
+  body.has-mobile-sticky-cta {
+    padding-bottom: 72px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 38px 0 30px;
+  }
+
+  .hero-badge {
+    margin-bottom: 18px;
+    max-width: 100%;
+    white-space: normal;
+  }
+
+  .hero h1 {
+    margin-bottom: 14px;
+  }
+
+  .hero-sub {
+    margin-bottom: 18px;
+  }
+
+  .search-box {
+    margin-bottom: 14px;
+  }
+}
