@@ -1,9 +1,37 @@
 // ExpatLawyerSpain - Main JS
 
+function trackEvent(name, props = {}) {
+  if (typeof window === 'undefined' || typeof window.plausible !== 'function') return;
+
+  const safeProps = {};
+  Object.entries(props).forEach(([key, value]) => {
+    if (value === undefined || value === null || value === '') return;
+    safeProps[key] = String(value).slice(0, 80);
+  });
+
+  window.plausible(name, Object.keys(safeProps).length ? { props: safeProps } : undefined);
+}
+
+function getSelectLabelByValue(selectId, fallbackValue) {
+  const select = document.getElementById(selectId);
+  if (!select) return fallbackValue || 'Any';
+  const option = Array.from(select.options || []).find(opt => opt.value === fallbackValue);
+  return option ? option.textContent.trim() : (fallbackValue || 'Any');
+}
+
+function getVisibleLawyerCount() {
+  return Array.from(document.querySelectorAll('.lawyer-card')).filter(card => card.style.display !== 'none').length;
+}
+
 function searchLawyers() {
   const city = document.getElementById('city-select').value;
   const specialty = document.getElementById('specialty-select').value;
   filterListings(city, specialty);
+  trackEvent('Search Used', {
+    city: getSelectLabelByValue('city-select', city),
+    specialty: getSelectLabelByValue('specialty-select', specialty),
+    results: getVisibleLawyerCount()
+  });
   document.getElementById('listings-grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
@@ -23,6 +51,7 @@ function startEnquiry(e) {
   if (email && emailTarget) emailTarget.value = email.value;
 
   clearPrefill();
+  trackEvent('CTA Click', { cta: 'Hero enquiry form' });
   document.getElementById('contact-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
 
   if (form) {
@@ -34,6 +63,10 @@ function startEnquiry(e) {
 function filterSpecialty(specialty) {
   document.getElementById('specialty-select').value = specialty;
   filterListings('', specialty);
+  trackEvent('Specialty Click', {
+    specialty: getSelectLabelByValue('specialty-select', specialty),
+    results: getVisibleLawyerCount()
+  });
   document.getElementById('listings-grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
@@ -120,6 +153,12 @@ function setSelectValue(selectEl, value) {
 }
 
 function prefill(lawyerName, city, specialty = '') {
+  trackEvent('Lawyer Enquiry Click', {
+    lawyer: lawyerName,
+    city: city,
+    specialty: getSelectLabelByValue('specialty-select', specialty)
+  });
+
   const hiddenLawyer = document.getElementById('hidden-lawyer');
   const hiddenCity = document.getElementById('hidden-city');
   const regionSelect = document.getElementById('enquiry-region');
@@ -189,6 +228,45 @@ function submitForm(e) {
   // TODO: wire up to Formspree or Netlify Forms on deployment
 }
 
+function setupFormStartTracking() {
+  const form = document.querySelector('.contact-form');
+  if (!form) return;
+
+  let started = false;
+  const markStarted = event => {
+    if (started) return;
+    const field = event.target;
+    if (!field || field.type === 'hidden' || field.type === 'submit') return;
+    started = true;
+    trackEvent('Form Started');
+  };
+
+  form.addEventListener('focusin', markStarted);
+  form.addEventListener('input', markStarted);
+  form.addEventListener('change', markStarted);
+}
+
+function setupIntentClickTracking() {
+  document.querySelectorAll('a[href="#contact-form"]').forEach(link => {
+    link.addEventListener('click', () => {
+      if (link.classList.contains('btn-contact')) return;
+      const section = link.closest('section');
+      trackEvent('CTA Click', {
+        cta: link.textContent.trim() || 'Contact form link',
+        section: section && section.id ? section.id : 'page'
+      });
+    });
+  });
+
+  document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
+    link.addEventListener('click', () => {
+      trackEvent('Email Link Click', {
+        link: link.classList.contains('btn-list') ? 'List firm' : 'General email'
+      });
+    });
+  });
+}
+
 // Smooth scroll for anchor links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', function(e) {
@@ -200,4 +278,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   });
 });
 
+setupFormStartTracking();
+setupIntentClickTracking();
 applyFiltersFromUrl();
