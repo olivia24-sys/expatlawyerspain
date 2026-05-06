@@ -325,6 +325,13 @@ nav a:hover { color: var(--primary); }
 .lawyer-avatar img[src*="lexidy"] {
   padding: 8px;
 }
+.lawyer-avatar img[src*="sun-lawyers"],
+.lawyer-avatar img[src*="mam-solicitors"],
+.lawyer-avatar img[src*="legal-iuris"],
+.lawyer-avatar img[src*="reuters-solicitors"],
+.lawyer-avatar img[src*="acc-legal"] {
+  padding: 6px;
+}
 .lawyer-avatar img.dark-logo {
   background: #1f2933;
   padding: 5px;

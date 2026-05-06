@@ -171,6 +171,8 @@ function prefill(lawyerName, city, specialty = '') {
     'barcelona': 'Barcelona',
     'madrid': 'Madrid',
     'malaga': 'Málaga',
+    'murcia': 'Murcia',
+    'la-zenia': 'La Zenia',
     'valencia': 'Valencia',
     'alicante': 'Alicante',
     'seville': 'Seville',
