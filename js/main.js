@@ -119,6 +119,8 @@ function filterListings(city, specialty) {
     }
   });
 
+  sortVisibleListings(city, specialty);
+
   if (helper) {
     if (city || specialty) {
       helper.innerHTML = visible > 0
@@ -131,6 +133,63 @@ function filterListings(city, specialty) {
 
   const noResults = document.getElementById('no-results');
   noResults.style.display = visible === 0 ? 'block' : 'none';
+}
+
+function getFirmName(card) {
+  const heading = card.querySelector('h3');
+  return heading ? heading.textContent.trim().toLowerCase() : '';
+}
+
+function getListingTier(card) {
+  if (card.classList.contains('featured')) return 0;
+  return 1;
+}
+
+function getLocationPriority(card, city, specialty) {
+  const name = getFirmName(card);
+  const cities = getDataList(card, 'city');
+  const isNationwideOnly = cities.length === 1 && cities.includes('nationwide');
+  const isInternational = name.includes('fragomen') || cities.includes('london');
+
+  if (!city && !specialty) return 0;
+
+  if (city === 'murcia' && name.includes('acc legal')) return -20;
+  if (city && cities.includes(city)) return 0;
+  if (city && (isNationwideOnly || isInternational)) return 30;
+  if (city && cities.includes('nationwide')) return 20;
+  return 10;
+}
+
+function sortVisibleListings(city, specialty) {
+  const grid = document.getElementById('listings-grid');
+  if (!grid) return;
+
+  const cards = Array.from(grid.querySelectorAll('.lawyer-card'));
+  const costaluz = cards.find(card => getFirmName(card).includes('costaluz lawyers'));
+  const costaluzOrder = costaluz ? Number(costaluz.dataset.originalOrder || 0) : -1;
+
+  cards
+    .sort((a, b) => {
+      const tierDiff = getListingTier(a) - getListingTier(b);
+      if (tierDiff !== 0) return tierDiff;
+
+      const aName = getFirmName(a);
+      const bName = getFirmName(b);
+      const aOrder = Number(a.dataset.originalOrder || 0);
+      const bOrder = Number(b.dataset.originalOrder || 0);
+
+      if (!city && !specialty && costaluzOrder >= 0) {
+        if (aName.includes('acc legal')) return bOrder <= costaluzOrder ? 1 : -1;
+        if (bName.includes('acc legal')) return aOrder <= costaluzOrder ? -1 : 1;
+        return aOrder - bOrder;
+      }
+
+      const priorityDiff = getLocationPriority(a, city, specialty) - getLocationPriority(b, city, specialty);
+      if (priorityDiff !== 0) return priorityDiff;
+
+      return aOrder - bOrder;
+    })
+    .forEach(card => grid.appendChild(card));
 }
 
 function setSelectValue(selectEl, value) {
@@ -279,6 +338,11 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     }
   });
 });
+
+document.querySelectorAll('.lawyer-card').forEach((card, index) => {
+  card.dataset.originalOrder = String(index);
+});
+sortVisibleListings('', '');
 
 setupFormStartTracking();
 setupIntentClickTracking();
