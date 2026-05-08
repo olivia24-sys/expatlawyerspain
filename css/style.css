@@ -449,6 +449,13 @@ nav a:hover { color: var(--primary); }
   margin-bottom: 20px;
 }
 .contact-form { display: flex; flex-direction: column; gap: 14px; }
+.form-honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
 .contact-form input,
 .contact-form select,
 .contact-form textarea {
@@ -476,11 +483,21 @@ nav a:hover { color: var(--primary); }
   cursor: pointer;
   transition: background 0.2s;
 }
-.form-area-note {
+.form-area-note,
+.form-security-note {
   margin: -4px 0 4px;
   color: var(--text-light);
   font-size: 0.88rem;
   line-height: 1.45;
+}
+.form-error {
+  margin: -4px 0 0;
+  padding: 10px 12px;
+  border-radius: 6px;
+  background: #FFF4EF;
+  color: #9B3412;
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 .btn-submit:hover { background: var(--primary-dark); }
 .form-reassurance {

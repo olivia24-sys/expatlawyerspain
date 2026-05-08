@@ -289,6 +289,49 @@ function submitForm(e) {
   // TODO: wire up to Formspree or Netlify Forms on deployment
 }
 
+function hasLinkLikeText(value) {
+  const text = String(value || '').toLowerCase();
+  return /(https?:\/\/|www\.|\b[a-z0-9.-]+\.(com|net|org|io|es|co|uk|info|biz|ru|cn|xyz)\b)/i.test(text);
+}
+
+function setupFormSpamGuard() {
+  const form = document.querySelector('.contact-form');
+  if (!form) return;
+
+  const error = document.getElementById('form-error');
+  const message = form.querySelector('textarea[name="message"]');
+  const honeypot = form.querySelector('input[name="_gotcha"]');
+  const loadedAt = Date.now();
+
+  form.addEventListener('submit', event => {
+    const showError = text => {
+      if (error) {
+        error.textContent = text;
+        error.style.display = 'block';
+      }
+      trackEvent('Form Blocked', { reason: text.slice(0, 60) });
+    };
+
+    if (honeypot && honeypot.value.trim()) {
+      event.preventDefault();
+      showError('Sorry, this enquiry could not be submitted. Please email us if the problem continues.');
+      return;
+    }
+
+    if (Date.now() - loadedAt < 3000) {
+      event.preventDefault();
+      showError('Please take a moment to check your enquiry before submitting.');
+      return;
+    }
+
+    if (message && hasLinkLikeText(message.value)) {
+      event.preventDefault();
+      showError('Please remove any links from your message before submitting. This helps protect you and the lawyers we contact.');
+      message.focus();
+    }
+  });
+}
+
 function setupFormStartTracking() {
   const form = document.querySelector('.contact-form');
   if (!form) return;
@@ -344,6 +387,7 @@ document.querySelectorAll('.lawyer-card').forEach((card, index) => {
 });
 sortVisibleListings('', '');
 
+setupFormSpamGuard();
 setupFormStartTracking();
 setupIntentClickTracking();
 applyFiltersFromUrl();

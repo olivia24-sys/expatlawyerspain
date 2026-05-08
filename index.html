@@ -23,6 +23,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   <!-- Privacy-friendly analytics by Plausible -->
   <script async src="https://plausible.io/js/pa-1lgv7qQUuUqWDwfrn5MDR.js"></script>
   <script>
@@ -105,7 +106,10 @@
           <input type="hidden" name="source" value="expatlawyerspain.com" />
           <input type="hidden" name="form_name" value="els_lead_capture" />
           <input type="hidden" name="_subject" value="New enquiry via ExpatLawyerSpain.com" />
-          <input type="hidden" name="_captcha" value="false" />
+          <div class="form-honeypot" aria-hidden="true">
+            <label for="company-website">Leave this field empty</label>
+            <input id="company-website" type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+          </div>
           <input type="text" name="name" placeholder="Your full name" required />
           <input type="email" name="email" placeholder="Your email address" required />
           <select id="enquiry-specialty" name="specialty" required>
@@ -137,6 +141,9 @@
           </select>
           <p class="form-area-note">Area not listed? Choose other and mention your province in the message.</p>
           <textarea name="message" placeholder="Briefly describe your situation so we can route you to the right lawyer" rows="4"></textarea>
+          <p class="form-security-note">For your safety, please do not include links in your enquiry. We review all submissions before forwarding them.</p>
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAADLfF294HYPuTs6F"></div>
+          <p class="form-error" id="form-error" role="alert" style="display:none;"></p>
           <select id="heard-about-us" name="heard_about_us">
             <option value="">How did you hear about us? (optional)</option>
             <option>Facebook</option>
