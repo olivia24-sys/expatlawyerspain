@@ -22,9 +22,12 @@
     .blog-body ul { margin: 0 0 16px 20px; }
     .blog-body ul li { font-size: 1rem; line-height: 1.75; color: #444; margin-bottom: 6px; }
     .blog-body a { color: #C94F1A; text-decoration: underline; }
-    .cta-box { background: #F2EDE5; border-left: 4px solid #C94F1A; border-radius: 8px; padding: 24px 28px; margin: 36px 0; }
-    .cta-box p { margin: 0 0 12px; font-weight: 500; color: #252220; }
-    .cta-box a { display: inline-block; background: #C94F1A; color: white; padding: 10px 22px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+    .cta-box { position: relative; overflow: hidden; background: linear-gradient(135deg, #133356 0%, #1F4E7A 72%, #2A6C9F 100%); color: #fff; border: 0; border-radius: 18px; padding: 32px 34px; margin: 42px 0; box-shadow: 0 18px 45px rgba(19,51,86,0.18); }
+    .cta-box::after { content: ''; position: absolute; right: -44px; bottom: -52px; width: 160px; height: 160px; border-radius: 50%; background: rgba(201,79,26,0.22); pointer-events: none; }
+    .cta-box p { position: relative; z-index: 1; margin: 0 0 18px !important; max-width: 590px; color: rgba(255,255,255,0.92) !important; font-size: 1.04rem; line-height: 1.65; font-weight: 500; }
+    .cta-box p strong { display: block; color: #fff; font-size: 1.24rem; line-height: 1.35; margin-bottom: 6px; }
+    .cta-box a, .cta-box a.cta-btn { position: relative; z-index: 1; display: inline-block; background: #C94F1A; color: #fff !important; padding: 11px 24px; border-radius: 999px; text-decoration: none !important; border: 0 !important; font-weight: 700; font-size: 0.95rem; box-shadow: 0 8px 20px rgba(0,0,0,0.16); }
+    .cta-box a:hover, .cta-box a.cta-btn:hover { background: #A84216; color: #fff !important; border: 0 !important; }
     @media (max-width: 768px) {
       .blog-hero h1 { font-size: 1.5rem; }
       .blog-body { padding: 32px 16px; }
@@ -125,7 +128,7 @@
     </ul>
 
     <div class="cta-box">
-      <p>Ready to find a trusted English-speaking lawyer in Spain?</p>
+      <p><strong>Ready to find an English-speaking lawyer in Spain?</strong>Search verified lawyers by city and specialty, then contact the right firm directly.</p>
       <a href="/#find">Search the Directory →</a>
     </div>
 

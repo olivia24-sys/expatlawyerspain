@@ -49,10 +49,12 @@
     .step-num { flex-shrink: 0; width: 34px; height: 34px; background: #C94F1A; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; margin-top: 2px; }
     .step-content strong { display: block; color: #252220; font-size: 1rem; margin-bottom: 3px; }
     .step-content p { margin: 0 !important; font-size: 0.97rem; }
-    .cta-box { background: #F2EDE5; border-left: 4px solid #C94F1A; color: #252220; border-radius: 8px; padding: 24px 28px; margin: 36px 0; text-align: left; }
-    .cta-box p { color: #252220 !important; margin-bottom: 16px !important; font-size: 1rem; font-weight: 500; }
-    .article-wrap .cta-box a.cta-btn, .cta-btn { display: inline-block; background: #C94F1A; color: #fff !important; padding: 10px 22px; border-radius: 8px; font-weight: 600; font-size: 0.95rem; text-decoration: none !important; border: 0 !important; box-shadow: none; }
-    .article-wrap .cta-box a.cta-btn:hover, .cta-btn:hover { background: #A84216; color: #fff !important; border: none; }
+    .cta-box { position: relative; overflow: hidden; background: linear-gradient(135deg, #133356 0%, #1F4E7A 72%, #2A6C9F 100%); color: #fff; border: 0; border-radius: 18px; padding: 32px 34px; margin: 42px 0; box-shadow: 0 18px 45px rgba(19,51,86,0.18); }
+    .cta-box::after { content: ''; position: absolute; right: -44px; bottom: -52px; width: 160px; height: 160px; border-radius: 50%; background: rgba(201,79,26,0.22); pointer-events: none; }
+    .cta-box p { position: relative; z-index: 1; margin: 0 0 18px !important; max-width: 590px; color: rgba(255,255,255,0.92) !important; font-size: 1.04rem; line-height: 1.65; font-weight: 500; }
+    .cta-box p strong { display: block; color: #fff; font-size: 1.24rem; line-height: 1.35; margin-bottom: 6px; }
+    .cta-box a, .cta-box a.cta-btn { position: relative; z-index: 1; display: inline-block; background: #C94F1A; color: #fff !important; padding: 11px 24px; border-radius: 999px; text-decoration: none !important; border: 0 !important; font-weight: 700; font-size: 0.95rem; box-shadow: 0 8px 20px rgba(0,0,0,0.16); }
+    .cta-box a:hover, .cta-box a.cta-btn:hover { background: #A84216; color: #fff !important; border: 0 !important; }
     .faq { margin: 0.5em 0 1.8em; }
     .faq-item { border: 1px solid #eee; border-radius: 8px; margin-bottom: 10px; overflow: hidden; }
     .faq-q { padding: 16px 20px; font-weight: 600; cursor: pointer; background: #fafafa; display: flex; justify-content: space-between; align-items: center; font-size: 0.97rem; color: #252220; user-select: none; }
@@ -73,7 +75,7 @@
       nav a:not(.btn-nav) { font-size: 0.85rem; }
       .btn-nav { padding: 7px 12px; font-size: 0.82rem !important; }
       .article-wrap { padding: 36px 18px 60px; }
-      .cta-box { padding: 24px 20px; }
+      .cta-box { padding: 26px 22px; border-radius: 14px; }
     }
   </style>
   <script async src="https://plausible.io/js/pa-1lgv7qQUuUqWDwfrn5MDR.js"></script>
@@ -216,8 +218,8 @@
   </div>
 
   <div class="cta-box">
-    <p>Ready to start your property search? Find a verified, English-speaking property lawyer in Spain before you sign anything.</p>
-    <a href="https://expatlawyerspain.com/?specialty=property" class="cta-btn">Find a Property Lawyer</a>
+    <p><strong>Ready to start your property search?</strong>Find a verified, English-speaking property lawyer in Spain before you sign anything or pay a deposit.</p>
+    <a href="https://expatlawyerspain.com/?specialty=property" class="cta-btn">Find a Property Lawyer →</a>
   </div>
 
   <h2>What Does Buying Property in Spain Actually Cost?</h2>
@@ -290,8 +292,8 @@
   <!-- Pexels fetch script query: "lawyer office desk documents professional" -->
   <!-- Alt text: "English-speaking property lawyer reviewing documents in Spain" -->
   <figure class="blog-img">
-  <img src="https://images.pexels.com/photos/7841445/pexels-photo-7841445.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="Property lawyer reviewing documents" loading="lazy" />
-  <figcaption>Photo by <a href="https://www.pexels.com/@rdne" target="_blank" rel="noopener">RDNE Stock project</a> on <a href="https://www.pexels.com/photo/a-female-lawyer-holding-documents-7841445/" target="_blank" rel="noopener">Pexels</a></figcaption>
+  <img src="https://images.pexels.com/photos/5668807/pexels-photo-5668807.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Property lawyer reviewing documents" loading="lazy" />
+  <figcaption>Photo by <a href="https://www.pexels.com/@sora-shimazaki" target="_blank" rel="noopener">Sora Shimazaki</a> on <a href="https://www.pexels.com/photo/ethnic-male-lawyer-showing-document-on-laptop-to-young-female-colleague-5668807/" target="_blank" rel="noopener">Pexels</a></figcaption>
 </figure>
 
   <div class="callout">
@@ -349,8 +351,8 @@
   </ul>
 
   <div class="cta-box">
-    <p>Need an English-speaking property lawyer in your area of Spain? Search our verified directory by city and specialty.</p>
-    <a href="https://expatlawyerspain.com/?specialty=property" class="cta-btn">Find a Property Lawyer</a>
+    <p><strong>Need a property lawyer in your area of Spain?</strong>Search our verified directory by city and specialty, from Barcelona and Madrid to the Costa del Sol.</p>
+    <a href="https://expatlawyerspain.com/?specialty=property" class="cta-btn">Find a Property Lawyer →</a>
   </div>
 
   <h2>Frequently Asked Questions</h2>
@@ -398,8 +400,8 @@
   <p>The cost, typically around 1% of the purchase price, is small relative to the value of the transaction and the risks of getting it wrong.</p>
 
   <div class="cta-box">
-    <p>Find a verified English-speaking property lawyer in Spain. Search by city and specialty. Free, with no hidden fees.</p>
-    <a href="https://expatlawyerspain.com/?specialty=property" class="cta-btn">Find a Property Lawyer</a>
+    <p><strong>Buying property in Spain as a foreigner?</strong>Find a verified English-speaking property lawyer by city and specialty. Free to search, with no hidden fees.</p>
+    <a href="https://expatlawyerspain.com/?specialty=property" class="cta-btn">Find a Property Lawyer →</a>
   </div>
 
 </article>
