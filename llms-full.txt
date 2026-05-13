@@ -14,6 +14,14 @@ ExpatLawyerSpain is a directory and enquiry-routing service for English-speaking
 
 ## Pages
 
+### Admin Guides for Expats in Spain | ExpatLawyerSpain
+- URL: https://expatlawyerspain.com/blog/admin/
+- Description: NIE numbers, TIE cards, bank accounts and the essential admin steps for expats in Spain. Start here for practical legal-administrative tasks before buying, relocating or hiring a lawyer.
+- Main topics:
+  - Admin Guides for Expats in Spain
+  - How to Find an English-Speaking Lawyer in Spain
+  - NIE Number Spain: What It Is and Do You Need a Lawyer?
+
 ### Buying Property in Spain as a Foreigner: The Complete Legal Guide | ExpatLawyerSpain
 - URL: https://expatlawyerspain.com/blog/buying-property-spain-foreigner
 - Description: Buying property in Spain as a foreigner? This complete legal guide covers the full process, lawyer fees, taxes and legal checks — including what property solicitors in Spain actually do and why you need one.
@@ -52,6 +60,13 @@ ExpatLawyerSpain is a directory and enquiry-routing service for English-speaking
   - Why You Still Need a Lawyer
   - Summary
 
+### Immigration Guides for Expats in Spain | ExpatLawyerSpain
+- URL: https://expatlawyerspain.com/blog/immigration/
+- Description: Everything you need to know about visas and residency in Spain, including Golden Visa alternatives and future guides to digital nomad and non-lucrative visas. Understand your options before applying.
+- Main topics:
+  - Immigration Guides for Expats in Spain
+  - Golden Visa Spain Abolished: What Are Your Options Now?
+
 ### Legal Guides for Expats in Spain | ExpatLawyerSpain
 - URL: https://expatlawyerspain.com/blog/
 - Description: Free legal guides for expats in Spain. Property law, immigration, NIE numbers, Golden Visa, inheritance and more - written in plain English.
@@ -78,6 +93,13 @@ ExpatLawyerSpain is a directory and enquiry-routing service for English-speaking
   - Find a Wills and Inheritance Lawyer in Spain
   - Summary
 
+### Moving to Spain Legal Guides | ExpatLawyerSpain
+- URL: https://expatlawyerspain.com/blog/moving-to-spain/
+- Description: Legal checklists, visa guides and practical advice for people relocating to Spain from the UK, US and beyond. These guides cover the first legal steps expats usually need to understand.
+- Main topics:
+  - Moving to Spain Legal Guides
+  - How to Find an English-Speaking Lawyer in Spain
+
 ### NIE Number Spain: Do You Need a Lawyer? | ExpatLawyerSpain
 - URL: https://expatlawyerspain.com/blog/nie-number-spain-lawyer
 - Description: Everything expats need to know about getting a NIE number in Spain - what it is, how to get one, and whether you need a lawyer to help.
@@ -90,6 +112,16 @@ ExpatLawyerSpain is a directory and enquiry-routing service for English-speaking
   - NIE vs TIE vs Residency Certificate - What's the Difference?
   - How Long Does It Take?
   - Summary
+
+### Property Law Guides for Expats in Spain | ExpatLawyerSpain
+- URL: https://expatlawyerspain.com/blog/property/
+- Description: Guides to buying property in Spain, Spanish property taxes, conveyancing, NIE numbers and legal checks for foreign buyers. Learn what to check before you sign, pay a deposit or complete a purchase.
+- Main topics:
+  - Property Law Guides for Expats in Spain
+  - Spanish Property Taxes for Foreign Owners: The Complete 2026 Guide
+  - Buying Property in Spain as a Foreigner: The Complete Legal Guide
+  - Do I Need a Lawyer to Buy Property in Spain?
+  - NIE Number Spain: What It Is and Do You Need a Lawyer?
 
 ### Do I Need a Lawyer to Buy Property in Spain? | ExpatLawyerSpain
 - URL: https://expatlawyerspain.com/blog/property-lawyer-spain
@@ -117,9 +149,23 @@ ExpatLawyerSpain is a directory and enquiry-routing service for English-speaking
   - Frequently Asked Questions
   - Summary
 
-### Expat Lawyer Spain - Find English-Speaking Lawyers in Spain
+### Spanish Tax Guides for Expats | ExpatLawyerSpain
+- URL: https://expatlawyerspain.com/blog/tax/
+- Description: Spanish property taxes, capital gains tax, non-resident tax obligations and the Beckham Law explained in plain English. These guides help foreign owners and residents understand when to get professional tax advice.
+- Main topics:
+  - Spanish Tax Guides for Expats
+  - Spanish Property Taxes for Foreign Owners: The Complete 2026 Guide
+
+### Wills and Inheritance Guides for Expats in Spain | ExpatLawyerSpain
+- URL: https://expatlawyerspain.com/blog/wills/
+- Description: Inheritance law, Spanish wills and estate planning for expats who own property or assets in Spain. Learn how regional rules, taxes and succession planning can affect your family.
+- Main topics:
+  - Wills and Inheritance Guides for Expats in Spain
+  - Inheritance Law in Spain for Expats
+
+### Lawyer in Spain | Solicitor in Spain | ExpatLawyerSpain
 - URL: https://expatlawyerspain.com/
-- Description: Find trusted, English-speaking lawyers in Spain. Immigration, residency, property, employment and more. Serving expats from the UK, US, Ireland, Australia and beyond.
+- Description: Looking for a lawyer in Spain? Find English-speaking solicitors and lawyers across Spain for immigration, property, tax and more. Free to search.
 - Main topics:
   - Find the right English-speaking lawyer in Spain
   - Prefer not to browse multiple lawyers?

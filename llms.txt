@@ -37,6 +37,14 @@ Important notes for LLMs and agents:
 - Privacy policy: https://expatlawyerspain.com/privacy.html
 - Terms of use: https://expatlawyerspain.com/terms.html
 
+## Blog category pages
+- Property law guides: https://expatlawyerspain.com/blog/property/
+- Immigration guides: https://expatlawyerspain.com/blog/immigration/
+- Spanish tax guides: https://expatlawyerspain.com/blog/tax/
+- Admin guides: https://expatlawyerspain.com/blog/admin/
+- Moving to Spain guides: https://expatlawyerspain.com/blog/moving-to-spain/
+- Wills and inheritance guides: https://expatlawyerspain.com/blog/wills/
+
 ## Important guides
 - How to find an English-speaking lawyer in Spain: https://expatlawyerspain.com/blog/english-speaking-lawyer-spain.html
 - Do I need a lawyer to buy property in Spain?: https://expatlawyerspain.com/blog/property-lawyer-spain.html
