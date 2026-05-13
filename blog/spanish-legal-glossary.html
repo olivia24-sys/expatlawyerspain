@@ -14,6 +14,9 @@
 <link rel="alternate" type="text/markdown" href="/llms.txt" title="ExpatLawyerSpain LLM summary">
 <link rel="alternate" type="text/markdown" href="/llms-full.txt" title="ExpatLawyerSpain full LLM context">
 <link rel="icon" href="/favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -43,57 +46,9 @@
     font-size: 16px;
   }
 
-  /* NAV */
-  nav {
-    background: var(--white);
-    border-bottom: 1px solid var(--border);
-    padding: 0 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 64px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
+  header, header *, footer, footer * {
+    font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
-
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-  }
-
-  .logo-icon {
-    width: 36px;
-    height: 36px;
-  }
-
-  .logo-text {
-    font-family: 'Georgia', serif;
-    font-size: 18px;
-    font-weight: bold;
-    color: var(--navy);
-  }
-
-  .logo-text span {
-    color: var(--terracotta);
-  }
-
-  .nav-links {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-  }
-
-  .nav-links a {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    font-size: 14px;
-    color: var(--text-muted);
-    text-decoration: none;
-  }
-
-  .nav-links a:hover { color: var(--navy); }
 
   .btn-cta {
     font-family: 'Helvetica Neue', Arial, sans-serif;
@@ -128,7 +83,7 @@
 
   /* HERO */
   .hero {
-    background: var(--navy);
+    background: linear-gradient(135deg, #1F4E7A 0%, #133356 100%);
     color: white;
     text-align: center;
     padding: 60px 24px 52px;
@@ -516,32 +471,6 @@
 
   .intro-block p:last-child { margin-bottom: 0; }
 
-  /* FOOTER */
-  footer {
-    background: #111827;
-    color: rgba(255,255,255,0.6);
-    text-align: center;
-    padding: 40px 24px;
-  }
-
-  .footer-logo {
-    font-family: 'Georgia', serif;
-    font-size: 20px;
-    color: white;
-    margin-bottom: 10px;
-  }
-
-  .footer-logo span { color: var(--terracotta); }
-
-  footer p {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    font-size: 13px;
-    margin-bottom: 8px;
-  }
-
-  footer a { color: rgba(255,255,255,0.5); text-decoration: none; }
-  footer a:hover { color: white; }
-
   /* HIDDEN */
   .glossary-section.hidden,
   .term-card.hidden { display: none; }
@@ -557,21 +486,20 @@
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <a href="/" class="logo">
-    <svg class="logo-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="18" cy="18" r="18" fill="#1a2e4a"/>
-      <text x="18" y="23" text-anchor="middle" fill="#c0451a" font-size="18" font-family="Georgia,serif" font-weight="bold">⚖</text>
-    </svg>
-    <span class="logo-text">ExpatLawyer<span>Spain</span></span>
-  </a>
-  <div class="nav-links">
-    <a href="/#find">Find a Lawyer</a>
-    <a href="/blog/">Guides</a>
-    <a href="/#list-your-firm" class="btn-cta">List Your Firm</a>
+<!-- HEADER -->
+<header>
+  <div class="container header-inner">
+    <a href="/" class="logo">
+      <img src="/images/logo-tree.png" alt="ExpatLawyerSpain" class="logo-icon">
+      <span>ExpatLawyer<strong>Spain</strong></span>
+    </a>
+    <nav>
+      <a href="/#find">Find a Lawyer</a>
+      <a href="/blog/">Guides</a>
+      <a href="/#list-your-firm" class="btn-nav">List Your Firm</a>
+    </nav>
   </div>
-</nav>
+</header>
 
 <!-- BREADCRUMB -->
 <div style="background:white;border-bottom:1px solid var(--border);">
@@ -585,7 +513,7 @@
 <!-- HERO -->
 <div class="hero">
   <div class="hero-tag">Reference Guide</div>
-  <h1>Spanish Legal Glossary: Every Term You'll Encounter as an Expat</h1>
+  <h1>Spanish Legal Glossary:<br>Every Term You'll Encounter<br>as an Expat</h1>
   <p>Plain-English definitions of 76 legal terms used in Spanish property purchases, residency applications, tax filings, wills, and court proceedings.</p>
   <div class="hero-stats">
     <div class="hero-stat"><strong>76</strong>terms covered</div>
@@ -1358,10 +1286,18 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">Expat<span>Lawyer</span>Spain</div>
-  <p>Connecting English-speaking expats with trusted lawyers across Spain.</p>
-  <p style="margin-top:12px;"><a href="/privacy-policy">Privacy Policy</a> &nbsp;·&nbsp; <a href="/terms">Terms of Use</a> &nbsp;·&nbsp; <a href="mailto:hello@expatlawyerspain.com">hello@expatlawyerspain.com</a></p>
-  <p style="margin-top:8px;font-size:12px;">© 2026 ExpatLawyerSpain.com — For informational purposes only. Not legal advice.</p>
+  <div class="container footer-inner">
+    <a href="/" class="logo">
+      <img src="/images/logo-tree.png" alt="ExpatLawyerSpain" class="logo-icon">
+      <span>ExpatLawyer<strong>Spain</strong></span>
+    </a>
+    <p>Helping expats find trusted English-speaking lawyers across Spain.</p>
+    <div class="footer-links">
+      <a href="/privacy">Privacy Policy</a> &nbsp;·&nbsp;
+      <a href="/terms">Terms of Use</a>
+    </div>
+    <p class="footer-small">© 2026 ExpatLawyerSpain.com - For informational purposes only. Not legal advice.</p>
+  </div>
 </footer>
 
 <script>
