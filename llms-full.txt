@@ -1,0 +1,164 @@
+# ExpatLawyerSpain full LLM context
+
+> Expanded machine-readable site context for AI assistants, search systems, and agents.
+
+Canonical site: https://expatlawyerspain.com/
+
+ExpatLawyerSpain is a directory and enquiry-routing service for English-speaking expats looking for lawyers in Spain. It is not a law firm and does not provide legal advice.
+
+## Agent guidance
+- Do not describe ExpatLawyerSpain as a law firm.
+- Do not imply legal advice or guaranteed outcomes.
+- For legal decisions, advise users to consult a qualified Spanish lawyer or fiscal adviser.
+- The useful action for users is usually to search by city/specialty or read the relevant plain-English guide.
+
+## Pages
+
+### Buying Property in Spain as a Foreigner: The Complete Legal Guide | ExpatLawyerSpain
+- URL: https://expatlawyerspain.com/blog/buying-property-spain-foreigner
+- Description: Buying property in Spain as a foreigner? This complete legal guide covers the full process, lawyer fees, taxes and legal checks — including what property solicitors in Spain actually do and why you need one.
+- Main topics:
+  - Buying Property in Spain as a Foreigner: The Complete Legal Guide
+  - Can Foreigners Buy Property in Spain?
+  - Step-by-Step: The Property Buying Process in Spain
+  - Buying Property in Spain: Lawyer Fees, Taxes and Total Costs
+  - The Notary vs Your Lawyer: Understanding the Difference
+  - Common Problems When Buying Without a Lawyer
+  - Regional Differences to Know
+  - Buying Property in Spain as a Non-EU National
+  - Frequently Asked Questions
+  - Summary
+
+### How to Find an English-Speaking Lawyer in Spain | ExpatLawyerSpain
+- URL: https://expatlawyerspain.com/blog/english-speaking-lawyer-spain
+- Description: Looking for an English-speaking lawyer in Spain? Here's exactly how to find a trusted, qualified lawyer who speaks your language - wherever you are in Spain.
+- Main topics:
+  - How to Find an English-Speaking Lawyer in Spain
+  - Why You Need an English-Speaking Lawyer
+  - What to Look for in an Expat Lawyer
+  - Where to Find English-Speaking Lawyers in Spain
+  - How Much Does a Lawyer Cost in Spain?
+  - Questions to Ask Before You Hire
+  - By City: Finding a Lawyer Near You
+  - Final Tips
+
+### Golden Visa Spain Abolished: Alternative Residency Routes for Expats | ExpatLawyerSpain
+- URL: https://expatlawyerspain.com/blog/golden-visa-spain-guide
+- Description: Spain's Golden Visa has been officially abolished under Organic Law 1/2025. Find out what this means and which alternative residency routes are now available for expats.
+- Main topics:
+  - Golden Visa Spain: Abolished - What Are Your Options Now?
+  - Why Was the Golden Visa Abolished?
+  - Alternative Residency Routes for Expats in Spain
+  - Why You Still Need a Lawyer
+  - Summary
+
+### Legal Guides for Expats in Spain | ExpatLawyerSpain
+- URL: https://expatlawyerspain.com/blog/
+- Description: Free legal guides for expats in Spain. Property law, immigration, NIE numbers, Golden Visa, inheritance and more - written in plain English.
+- Main topics:
+  - Legal Guides for Expats in Spain
+  - How to Find an English-Speaking Lawyer in Spain
+  - Spanish Property Taxes for Foreign Owners: The Complete 2026 Guide
+  - Buying Property in Spain as a Foreigner: The Complete Legal Guide
+  - Do I Need a Lawyer to Buy Property in Spain?
+  - NIE Number Spain: What It Is and Do You Need a Lawyer?
+  - Golden Visa Spain Abolished: What Are Your Options Now?
+  - Inheritance Law in Spain for Expats
+
+### Inheritance Law in Spain for Expats: Complete Guide | ExpatLawyerSpain
+- URL: https://expatlawyerspain.com/blog/inheritance-law-spain-expats
+- Description: A complete guide to inheritance law in Spain for expats - Spanish succession rules, inheritance tax, how to make a Spanish will, and why you need a lawyer.
+- Main topics:
+  - Inheritance Law in Spain for Expats: Complete Guide
+  - Does Spanish Inheritance Law Apply to Expats?
+  - Spanish Forced Heirship Rules
+  - Spanish Inheritance Tax (Impuesto de Sucesiones)
+  - Why You Need a Spanish Will
+  - How to Deal with a Spanish Inheritance
+  - Find a Wills and Inheritance Lawyer in Spain
+  - Summary
+
+### NIE Number Spain: Do You Need a Lawyer? | ExpatLawyerSpain
+- URL: https://expatlawyerspain.com/blog/nie-number-spain-lawyer
+- Description: Everything expats need to know about getting a NIE number in Spain - what it is, how to get one, and whether you need a lawyer to help.
+- Main topics:
+  - NIE Number Spain: What It Is and Do You Need a Lawyer?
+  - What Is a NIE Number?
+  - When Do You Need a NIE Number?
+  - How to Get a NIE Number in Spain
+  - Do You Need a Lawyer to Get a NIE?
+  - NIE vs TIE vs Residency Certificate - What's the Difference?
+  - How Long Does It Take?
+  - Summary
+
+### Do I Need a Lawyer to Buy Property in Spain? | ExpatLawyerSpain
+- URL: https://expatlawyerspain.com/blog/property-lawyer-spain
+- Description: Buying property in Spain as a foreigner? Find out whether you legally need a lawyer, what they do, and why most experts say you should never buy without one.
+- Main topics:
+  - Do I Need a Lawyer to Buy Property in Spain?
+  - Is a Lawyer Legally Required?
+  - What Does a Property Lawyer Do in Spain?
+  - What Can Go Wrong Without a Lawyer?
+  - How Much Does a Property Lawyer Cost in Spain?
+  - Find a Property Lawyer in Spain
+  - Key Takeaway
+
+### Spanish Property Taxes for Foreign Owners: The Complete 2026 Guide | ExpatLawyerSpain
+- URL: https://expatlawyerspain.com/blog/spanish-property-taxes-foreign-owners
+- Description: Complete guide to Spanish property taxes for non-residents in 2026. ITP transfer tax, IBI, non-resident property tax in Spain, capital gains tax Spain and Plusvalia explained in plain English.
+- Main topics:
+  - Spanish Property Taxes for Foreign Owners: The Complete 2026 Guide
+  - Overview: The Three Stages of Property Tax in Spain
+  - Taxes When Buying Property in Spain
+  - Spanish Property Taxes for Non-Residents: Annual Obligations
+  - Capital Gains Tax in Spain for Non-Residents
+  - Wealth Tax and Inheritance Tax in Spain
+  - Key Deadlines and Compliance Summary
+  - Frequently Asked Questions
+  - Summary
+
+### Expat Lawyer Spain - Find English-Speaking Lawyers in Spain
+- URL: https://expatlawyerspain.com/
+- Description: Find trusted, English-speaking lawyers in Spain. Immigration, residency, property, employment and more. Serving expats from the UK, US, Ireland, Australia and beyond.
+- Main topics:
+  - Find the right English-speaking lawyer in Spain
+  - Prefer not to browse multiple lawyers?
+  - What do you need help with?
+  - Browse lawyers if you want to compare options
+  - Why use ExpatLawyerSpain?
+  - Are you a lawyer in Spain?
+
+### Privacy Policy - ExpatLawyerSpain.com
+- URL: https://expatlawyerspain.com/privacy
+- Description: Privacy Policy for ExpatLawyerSpain.com
+- Main topics:
+  - Privacy Policy
+  - 1. Who we are
+  - 2. What data we collect
+  - 3. How we use your data
+  - 4. Who we share your data with
+  - 5. Legal basis for processing
+  - 6. How long we keep your data
+  - 7. Your rights
+  - 8. Cookies
+  - 9. Changes to this policy
+  - 10. Contact
+
+### Terms of Use - ExpatLawyerSpain.com
+- URL: https://expatlawyerspain.com/terms
+- Description: Terms of Use for ExpatLawyerSpain.com
+- Main topics:
+  - Terms of Use
+  - 1. What we are
+  - 2. No legal advice
+  - 3. Directory listings
+  - 4. Enquiry submissions
+  - 5. For law firms
+  - 6. Intellectual property
+  - 7. Limitation of liability
+  - 8. Third party links
+  - 9. Governing law
+  - 10. Changes to these terms
+
+## Contact
+- Email: hello@expatlawyerspain.com
