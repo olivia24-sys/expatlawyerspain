@@ -19,6 +19,7 @@ ExpatLawyerSpain is a directory and enquiry-routing service for English-speaking
 - Description: NIE numbers, TIE cards, bank accounts and the essential admin steps for expats in Spain. Start here for practical legal-administrative tasks before buying, relocating or hiring a lawyer.
 - Main topics:
   - Admin Guides for Expats in Spain
+  - Spanish Legal Glossary: 76 Key Terms Explained in English
   - How to Find an English-Speaking Lawyer in Spain
   - NIE Number Spain: What It Is and Do You Need a Lawyer?
 
@@ -72,6 +73,7 @@ ExpatLawyerSpain is a directory and enquiry-routing service for English-speaking
 - Description: Free legal guides for expats in Spain. Property law, immigration, NIE numbers, Golden Visa, inheritance and more - written in plain English.
 - Main topics:
   - Legal Guides for Expats in Spain
+  - Spanish Legal Glossary: 76 Key Terms Explained in English
   - How to Find an English-Speaking Lawyer in Spain
   - Spanish Property Taxes for Foreign Owners: The Complete 2026 Guide
   - Buying Property in Spain as a Foreigner: The Complete Legal Guide
@@ -134,6 +136,19 @@ ExpatLawyerSpain is a directory and enquiry-routing service for English-speaking
   - How Much Does a Property Lawyer Cost in Spain?
   - Find a Property Lawyer in Spain
   - Key Takeaway
+
+### Spanish Legal Glossary: 76 Key Terms Explained in English | ExpatLawyerSpain
+- URL: https://expatlawyerspain.com/blog/spanish-legal-glossary
+- Description: The complete Spanish legal glossary for expats. Plain-English definitions of 76 legal terms you'll encounter when buying property, getting residency, or dealing with wills in Spain.
+- Main topics:
+  - Spanish Legal Glossary: Every Term You'll Encounter as an Expat
+  - Property Law
+  - Residency & Visas
+  - Tax
+  - Wills & Inheritance
+  - General Legal Terms
+  - Courts & Legal Process
+  - Employment
 
 ### Spanish Property Taxes for Foreign Owners: The Complete 2026 Guide | ExpatLawyerSpain
 - URL: https://expatlawyerspain.com/blog/spanish-property-taxes-foreign-owners
