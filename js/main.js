@@ -1,15 +1,8 @@
 // ExpatLawyerSpain - Main JS
 
 function trackEvent(name, props = {}) {
-  if (typeof window === 'undefined' || typeof window.plausible !== 'function') return;
-
-  const safeProps = {};
-  Object.entries(props).forEach(([key, value]) => {
-    if (value === undefined || value === null || value === '') return;
-    safeProps[key] = String(value).slice(0, 80);
-  });
-
-  window.plausible(name, Object.keys(safeProps).length ? { props: safeProps } : undefined);
+  // Cloudflare Web Analytics is now the primary analytics layer.
+  // Keep this wrapper as a no-op so existing CTA/search hooks remain safe.
 }
 
 function getSelectLabelByValue(selectId, fallbackValue) {
