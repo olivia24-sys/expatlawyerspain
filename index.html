@@ -24,7 +24,7 @@
   <link rel="icon" href="favicon.png" type="image/png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/style.css?v=google-reviews-20260518" />
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
@@ -486,7 +486,7 @@
 
         <div class="lawyer-card featured" data-city="murcia,alicante" data-specialty="property,tax,wills">
           <div class="card-top">
-            <div class="lawyer-avatar"><img src="images/firm-logos/mam-solicitors.png" alt="MAM Solicitors logo" /></div>
+            <div class="lawyer-avatar"><img src="images/firm-logos/mam-solicitors.svg" alt="MAM Solicitors logo" /></div>
             <div class="lawyer-info">
               <h3>MAM Solicitors</h3>
               <p class="firm">Murcia · Alicante</p>
@@ -729,5 +729,39 @@
   </footer>
 
   <script src="js/main.js"></script>
+
+  <script>
+    // Google review row for featured listings with verified/screenshot-supplied review data.
+    (function () {
+      const googleRatings = {
+        'American & Legal Spain': ['5.0', '34'],
+        'CostaLuz Lawyers': ['4.6', '111'],
+        'Lawbird Legal Services': ['4.3', '86'],
+        'Pellicer & Heredia': ['4.6', '73'],
+        'Tejada Solicitors': ['4.8', '147'],
+        'Bufete Buades': ['4.6', '57'],
+        'Forcam Lawyers': ['4.4', '49'],
+        'Lexidy': ['4.9', '151'],
+        'MAM Solicitors': ['4.8', '94'],
+        'Fuster & Associates': ['4.7', '49'],
+        'Legal Iuris': ['4.8', '89'],
+        'Reuters Solicitors': ['5.0', '162'],
+        'ACC Legal': ['4.8', '88']
+      };
+      const googleWord = '<span class="google-word" aria-label="Google"><span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span></span>';
+      document.querySelectorAll('.lawyer-card.featured').forEach((card) => {
+        const name = card.querySelector('.lawyer-info h3')?.textContent?.trim();
+        const values = googleRatings[name];
+        card.querySelector('.google-rating-badge')?.remove();
+        if (!values) return;
+        const badge = document.createElement('div');
+        badge.className = 'google-rating-badge';
+        badge.innerHTML = `<span class="google-rating-label">${googleWord} reviews:</span><span class="google-rating-score">${values[0]} <span class="rating-star">★</span> <span class="review-count">· ${values[1]} reviews</span></span>`;
+        const cta = card.querySelector('.btn-contact');
+        if (cta) cta.insertAdjacentElement('beforebegin', badge);
+      });
+    }());
+  </script>
+
 </body>
 </html>

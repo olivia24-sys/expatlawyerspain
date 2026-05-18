@@ -773,3 +773,45 @@ footer p { font-size: 0.875rem; }
     margin-bottom: 14px;
   }
 }
+
+/* Google review row for featured listing cards */
+.google-rating-badge {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  align-self: flex-start;
+  margin-top: auto;
+  color: var(--text-light);
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.15;
+}
+.google-rating-badge .google-rating-label,
+.google-rating-badge .google-rating-score {
+  display: inline;
+}
+.google-rating-badge .google-rating-score {
+  color: var(--text);
+}
+.google-rating-badge .google-word {
+  display: inline-flex;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+.google-rating-badge .g-blue { color: #4285f4; }
+.google-rating-badge .g-red { color: #ea4335; }
+.google-rating-badge .g-yellow { color: #fbbc05; }
+.google-rating-badge .g-green { color: #34a853; }
+.google-rating-badge .rating-star { color: #fbbc05; font-size: 0.9rem; }
+.google-rating-badge .review-count { color: var(--text-light); font-weight: 500; }
+.google-rating-badge + .btn-contact { margin-top: 0; }
+
+@media (max-width: 520px) {
+  .google-rating-badge {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+    text-align: left;
+  }
+}
+
