@@ -259,3 +259,14 @@ ExpatLawyerSpain is a directory and enquiry-routing service for English-speaking
 
 ## Contact
 - Email: hello@expatlawyerspain.com
+
+### Cookie Policy | ExpatLawyerSpain
+- URL: https://expatlawyerspain.com/cookie-policy
+- Description: Cookie Policy for ExpatLawyerSpain, explaining how cookies and analytics technologies are used on the website.
+- Main topics:
+  - What cookies are
+  - Types of cookies used
+  - Google Analytics
+  - Cloudflare Web Analytics and security
+  - Managing cookies in browser settings
+

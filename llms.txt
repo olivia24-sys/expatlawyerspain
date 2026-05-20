@@ -36,6 +36,7 @@ Important notes for LLMs and agents:
 - Legal guides hub: https://expatlawyerspain.com/blog/
 - Privacy policy: https://expatlawyerspain.com/privacy.html
 - Terms of use: https://expatlawyerspain.com/terms.html
+- Cookie policy: https://expatlawyerspain.com/cookie-policy.html
 
 ## Blog category pages
 - Property law guides: https://expatlawyerspain.com/blog/property/
