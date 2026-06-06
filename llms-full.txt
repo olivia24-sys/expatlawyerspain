@@ -100,6 +100,7 @@ ExpatLawyerSpain is a directory and enquiry-routing service for English-speaking
   - Immigration Guides for Expats in Spain
   - Digital Nomad Visa Spain: Requirements, Tax and How to Apply (2026)
   - Non-Lucrative Visa Spain: Requirements, Income and How to Apply (2026)
+  - Moving to Spain from the UK: The Complete Legal Guide After Brexit (2026)
   - Golden Visa Spain: Abolished. What Now? (2026)
 
 ### Legal Guides for Expats in Spain | ExpatLawyerSpain
@@ -115,6 +116,7 @@ ExpatLawyerSpain is a directory and enquiry-routing service for English-speaking
   - NIE Number Spain: What It Is and Do You Need a Lawyer?
   - Digital Nomad Visa Spain: Requirements, Tax and How to Apply (2026)
   - Non-Lucrative Visa Spain: Requirements, Income and How to Apply (2026)
+  - Moving to Spain from the UK: The Complete Legal Guide After Brexit (2026)
   - Golden Visa Spain: Abolished. What Now? (2026)
   - Spanish Inheritance Law for Expats (2026)
 
@@ -131,11 +133,24 @@ ExpatLawyerSpain is a directory and enquiry-routing service for English-speaking
   - Find a Wills and Inheritance Lawyer in Spain
   - Summary
 
+### Moving to Spain from the UK: The Complete Legal Guide | ExpatLawyerSpain
+- URL: https://expatlawyerspain.com/blog/moving-to-spain-from-uk
+- Description: Complete legal guide for UK nationals moving to Spain after Brexit, covering the 90-day Schengen rule, visa routes, NIE and TIE, padrón, healthcare, tax residency, property, banking, Spanish wills and when to use a lawyer.
+- Main topics:
+  - Moving to Spain from the UK after Brexit
+  - The 90-day Schengen rule for UK nationals
+  - Non-Lucrative Visa and Digital Nomad Visa options
+  - NIE, TIE and empadronamiento
+  - Healthcare, tax residency and the 183-day rule
+  - Buying property, banking and Spanish wills
+  - When to use a lawyer versus a gestor
+
 ### Moving to Spain Legal Guides | ExpatLawyerSpain
 - URL: https://expatlawyerspain.com/blog/moving-to-spain/
 - Description: Legal checklists, visa guides and practical advice for people relocating to Spain from the UK, US and beyond. These guides cover the first legal steps expats usually need to understand.
 - Main topics:
   - Moving to Spain Legal Guides
+  - Moving to Spain from the UK: The Complete Legal Guide After Brexit (2026)
   - How to Find an English-Speaking Lawyer in Spain (2026)
 
 ### NIE Number Spain: Do You Need a Lawyer? | ExpatLawyerSpain
