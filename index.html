@@ -61,7 +61,7 @@
       <h1>Find the right English-speaking lawyer in Spain</h1>
       <p class="hero-sub">A simple route to an English-speaking solicitor in Spain for expats <span class="mobile-break-sub">who need legal help.</span></p>
       <div class="search-box hero-search-box" id="find">
-        <select id="city-select">
+        <select id="city-select" aria-label="Select a city">
           <option value="">📍 Select a city</option>
           <option value="a-coruna">A Coruña</option>
           <option value="alicante">Alicante</option>
@@ -82,7 +82,7 @@
           <option value="vigo">Vigo</option>
           <option value="zaragoza">Zaragoza</option>
         </select>
-        <select id="specialty-select">
+        <select id="specialty-select" aria-label="Select a legal specialty">
           <option value="">Select a specialty</option>
           <option value="immigration">Immigration & Residency</option>
           <option value="property">Property Law</option>
@@ -124,7 +124,7 @@
           </div>
           <input type="text" name="name" placeholder="Your full name" required />
           <input type="email" name="email" placeholder="Your email address" required />
-          <select id="enquiry-specialty" name="specialty" required>
+          <select id="enquiry-specialty" name="specialty" required aria-label="Legal specialty">
             <option value="">What do you need help with?</option>
             <option>Immigration & Residency</option>
             <option>Property Law</option>
@@ -136,7 +136,7 @@
             <option>Criminal Law</option>
             <option>Other</option>
           </select>
-          <select id="enquiry-region" name="region" required>
+          <select id="enquiry-region" name="region" required aria-label="Region">
             <option value="">Which city/region?</option>
             <option>A Coruña</option>
             <option>Alicante</option>
@@ -162,7 +162,7 @@
           <p class="form-security-note">For your safety, please do not include links in your enquiry. We review all submissions before forwarding them.</p>
           <div class="cf-turnstile" data-sitekey="0x4AAAAAADLfF294HYPuTs6F"></div>
           <p class="form-error" id="form-error" role="alert" style="display:none;"></p>
-          <select id="heard-about-us" name="heard_about_us">
+          <select id="heard-about-us" name="heard_about_us" aria-label="How did you hear about us?">
             <option value="">How did you hear about us? (optional)</option>
             <option>Facebook</option>
             <option>Google / search engine</option>

@@ -4,5 +4,5 @@ Allow: /
 Sitemap: https://expatlawyerspain.com/sitemap.xml
 
 # LLM discovery
-LLMs: https://expatlawyerspain.com/llms.txt
-LLMs-Full: https://expatlawyerspain.com/llms-full.txt
+# llms.txt: https://expatlawyerspain.com/llms.txt
+# llms-full.txt: https://expatlawyerspain.com/llms-full.txt
