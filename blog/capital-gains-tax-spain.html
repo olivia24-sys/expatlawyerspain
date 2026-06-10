@@ -47,6 +47,8 @@
     .tax-table { width: 100%; border-collapse: collapse; margin: 1em 0 1.8em; font-size: 0.95rem; }
     .tax-table th { background: #1a1a2e; color: #fff; padding: 11px 14px; text-align: left; font-weight: 600; }
     .tax-table td { padding: 11px 14px; border-bottom: 1px solid #eee; color: #2d2d2d; vertical-align: top; }
+ .tax-table tbody th, .region-table tbody th { padding: 11px 14px; border-bottom: 1px solid #eee; color: #2d2d2d; vertical-align: top; background: inherit; font-weight: 600; text-align: left; }
+    .tax-table tbody th, .region-table tbody th { padding: 11px 14px; border-bottom: 1px solid #eee; color: #2d2d2d; vertical-align: top; background: inherit; font-weight: 600; text-align: left; }
     .tax-table tr:nth-child(even) td { background: #fafafa; }
     .tax-table tr:last-child td { border-bottom: none; }
     .tax-card { background: #f8f9ff; border: 1px solid #e0e4f5; border-radius: 10px; padding: 22px 24px; margin: 0; }
@@ -253,32 +255,32 @@
     </thead>
     <tbody>
       <tr>
-        <td><strong>CGT rate</strong></td>
+        <th scope="row"><strong>CGT rate</strong></th>
         <td>Flat 19%</td>
         <td>Progressive 19-30%</td>
       </tr>
       <tr>
-        <td><strong>3% retention</strong></td>
+        <th scope="row"><strong>3% retention</strong></th>
         <td>Yes - buyer withholds 3% at completion</td>
         <td>No retention mechanism</td>
       </tr>
       <tr>
-        <td><strong>Primary residence exemption</strong></td>
+        <th scope="row"><strong>Primary residence exemption</strong></th>
         <td>Not available</td>
         <td>Full exemption if selling primary residence and reinvesting proceeds in new primary residence</td>
       </tr>
       <tr>
-        <td><strong>Over-65 exemption</strong></td>
+        <th scope="row"><strong>Over-65 exemption</strong></th>
         <td>Not available</td>
         <td>Full exemption if selling primary residence and aged over 65</td>
       </tr>
       <tr>
-        <td><strong>Filing form</strong></td>
+        <th scope="row"><strong>Filing form</strong></th>
         <td>Modelo 210 (within 4 months)</td>
         <td>Annual Renta declaration (IRPF)</td>
       </tr>
       <tr>
-        <td><strong>Allowable deductions</strong></td>
+        <th scope="row"><strong>Allowable deductions</strong></th>
         <td>Purchase costs, improvements, selling costs</td>
         <td>Same, plus inflation adjustment on purchase price for assets held before 1994</td>
       </tr>

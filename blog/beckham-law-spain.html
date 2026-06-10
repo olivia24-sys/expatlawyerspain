@@ -46,6 +46,8 @@
     .tax-table { width: 100%; border-collapse: collapse; margin: 1em 0 1.8em; font-size: 0.95rem; }
     .tax-table th { background: #1a1a2e; color: #fff; padding: 11px 14px; text-align: left; font-weight: 600; }
     .tax-table td { padding: 11px 14px; border-bottom: 1px solid #eee; color: #2d2d2d; vertical-align: top; }
+ .tax-table tbody th, .region-table tbody th { padding: 11px 14px; border-bottom: 1px solid #eee; color: #2d2d2d; vertical-align: top; background: inherit; font-weight: 600; text-align: left; }
+    .tax-table tbody th, .region-table tbody th { padding: 11px 14px; border-bottom: 1px solid #eee; color: #2d2d2d; vertical-align: top; background: inherit; font-weight: 600; text-align: left; }
     .tax-table tr:nth-child(even) td { background: #fafafa; }
     .tax-table tr:last-child td { border-bottom: none; }
     .tax-card { background: #f8f9ff; border: 1px solid #e0e4f5; border-radius: 10px; padding: 22px 24px; margin: 0; }
@@ -225,25 +227,25 @@
     </thead>
     <tbody>
       <tr>
-        <td>50,000 euros</td>
+        <th scope="row">50,000 euros</th>
         <td>~30% effective</td>
         <td>24%</td>
         <td>~3,000 euros/year</td>
       </tr>
       <tr>
-        <td>100,000 euros</td>
+        <th scope="row">100,000 euros</th>
         <td>~38% effective</td>
         <td>24%</td>
         <td>~14,000 euros/year</td>
       </tr>
       <tr>
-        <td>200,000 euros</td>
+        <th scope="row">200,000 euros</th>
         <td>~43% effective</td>
         <td>24%</td>
         <td>~38,000 euros/year</td>
       </tr>
       <tr>
-        <td>600,000 euros</td>
+        <th scope="row">600,000 euros</th>
         <td>~46% effective</td>
         <td>24%</td>
         <td>~132,000 euros/year</td>
@@ -322,32 +324,32 @@
     </thead>
     <tbody>
       <tr>
-        <td><strong>What it does</strong></td>
+        <th scope="row"><strong>What it does</strong></th>
         <td>Grants the right to live and work remotely in Spain</td>
         <td>Fixes income tax rate at 24% for qualifying new residents</td>
       </tr>
       <tr>
-        <td><strong>Applied through</strong></td>
+        <th scope="row"><strong>Applied through</strong></th>
         <td>Spanish consulate (from abroad) or immigration office (in Spain)</td>
         <td>Agencia Tributaria via Modelo 149</td>
       </tr>
       <tr>
-        <td><strong>Duration</strong></td>
+        <th scope="row"><strong>Duration</strong></th>
         <td>1 year initially, renewable for 2-year periods</td>
         <td>The year of relocation plus 5 subsequent tax years</td>
       </tr>
       <tr>
-        <td><strong>Income requirement</strong></td>
+        <th scope="row"><strong>Income requirement</strong></th>
         <td>Minimum ~2,646 euros/month (200% of minimum wage)</td>
         <td>No minimum income requirement</td>
       </tr>
       <tr>
-        <td><strong>Employer location</strong></td>
+        <th scope="row"><strong>Employer location</strong></th>
         <td>Foreign employer or own company (max 20% Spanish clients)</td>
         <td>Foreign employer or qualifying business activity</td>
       </tr>
       <tr>
-        <td><strong>Non-residency requirement</strong></td>
+        <th scope="row"><strong>Non-residency requirement</strong></th>
         <td>No prior Spanish residence requirement for the visa itself</td>
         <td>Must not have been Spanish tax resident in past 5 years</td>
       </tr>

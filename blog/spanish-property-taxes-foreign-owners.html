@@ -47,6 +47,8 @@
     .tax-table { width: 100%; border-collapse: collapse; margin: 1em 0 1.8em; font-size: 0.95rem; }
     .tax-table th { background: #1a1a2e; color: #fff; padding: 11px 14px; text-align: left; font-weight: 600; }
     .tax-table td { padding: 11px 14px; border-bottom: 1px solid #eee; color: #2d2d2d; vertical-align: top; }
+ .tax-table tbody th, .region-table tbody th { padding: 11px 14px; border-bottom: 1px solid #eee; color: #2d2d2d; vertical-align: top; background: inherit; font-weight: 600; text-align: left; }
+    .tax-table tbody th, .region-table tbody th { padding: 11px 14px; border-bottom: 1px solid #eee; color: #2d2d2d; vertical-align: top; background: inherit; font-weight: 600; text-align: left; }
     .tax-table tr:nth-child(even) td { background: #fafafa; }
     .tax-table tr:last-child td { border-bottom: none; }
     .tax-card { background: #f8f9ff; border: 1px solid #e0e4f5; border-radius: 10px; padding: 22px 24px; margin: 0; }
@@ -147,17 +149,17 @@
     </thead>
     <tbody>
       <tr>
-        <td><strong>Buying</strong></td>
+        <th scope="row"><strong>Buying</strong></th>
         <td>ITP (transfer tax) or IVA and AJD (new builds)</td>
         <td>Buyer, paid once at completion</td>
       </tr>
       <tr>
-        <td><strong>Owning</strong></td>
+        <th scope="row"><strong>Owning</strong></th>
         <td>IBI (annual municipal tax) and IRNR (non-resident property tax in Spain)</td>
         <td>Owner, paid every year</td>
       </tr>
       <tr>
-        <td><strong>Selling</strong></td>
+        <th scope="row"><strong>Selling</strong></th>
         <td>Capital gains tax in Spain and Plusvalia Municipal</td>
         <td>Seller, paid on completion</td>
       </tr>
@@ -187,37 +189,37 @@
     </thead>
     <tbody>
       <tr>
-        <td>Madrid</td>
+        <th scope="row">Madrid</th>
         <td>6%</td>
         <td>One of the lowest ITP rates in Spain</td>
       </tr>
       <tr>
-        <td>Andalusia</td>
+        <th scope="row">Andalusia</th>
         <td>7%</td>
         <td>Includes Costa del Sol, Marbella, Seville, Granada</td>
       </tr>
       <tr>
-        <td>Valencia (from June 2026)</td>
+        <th scope="row">Valencia (from June 2026)</th>
         <td>9% (reduced from 10%)</td>
         <td>Ley 5/2025 reduction. Includes Alicante, Costa Blanca, Denia</td>
       </tr>
       <tr>
-        <td>Catalonia</td>
+        <th scope="row">Catalonia</th>
         <td>Up to 10%</td>
         <td>Includes Barcelona and Costa Brava</td>
       </tr>
       <tr>
-        <td>Balearic Islands</td>
+        <th scope="row">Balearic Islands</th>
         <td>8 to 13%</td>
         <td>Higher rates for more expensive properties</td>
       </tr>
       <tr>
-        <td>Murcia</td>
+        <th scope="row">Murcia</th>
         <td>8%</td>
         <td></td>
       </tr>
       <tr>
-        <td>Canary Islands</td>
+        <th scope="row">Canary Islands</th>
         <td>6.5%</td>
         <td>Lower rate as an outermost region of the EU</td>
       </tr>
@@ -374,43 +376,43 @@
     </thead>
     <tbody>
       <tr>
-        <td><strong>ITP (purchase)</strong></td>
+        <th scope="row"><strong>ITP (purchase)</strong></th>
         <td>Once on purchase</td>
         <td>30 days from completion</td>
         <td>Modelo 600</td>
       </tr>
       <tr>
-        <td><strong>IBI</strong></td>
+        <th scope="row"><strong>IBI</strong></th>
         <td>Annual</td>
         <td>Varies by municipality (typically May to October)</td>
         <td>Issued by town hall</td>
       </tr>
       <tr>
-        <td><strong>IRNR (unrented)</strong></td>
+        <th scope="row"><strong>IRNR (unrented)</strong></th>
         <td>Annual</td>
         <td>31 December</td>
         <td>Modelo 210</td>
       </tr>
       <tr>
-        <td><strong>IRNR (rental income)</strong></td>
+        <th scope="row"><strong>IRNR (rental income)</strong></th>
         <td>Annual (from 2024)</td>
         <td>20 January following year</td>
         <td>Modelo 210</td>
       </tr>
       <tr>
-        <td><strong>Capital gains tax in Spain</strong></td>
+        <th scope="row"><strong>Capital gains tax in Spain</strong></th>
         <td>Once on sale</td>
         <td>3 months from completion</td>
         <td>Modelo 210</td>
       </tr>
       <tr>
-        <td><strong>Plusvalia</strong></td>
+        <th scope="row"><strong>Plusvalia</strong></th>
         <td>Once on sale</td>
         <td>30 days from completion</td>
         <td>Filed with town hall</td>
       </tr>
       <tr>
-        <td><strong>Wealth Tax</strong></td>
+        <th scope="row"><strong>Wealth Tax</strong></th>
         <td>Annual (if applicable)</td>
         <td>30 June</td>
         <td>Modelo 714</td>

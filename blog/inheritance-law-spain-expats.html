@@ -100,6 +100,8 @@
     .tax-table { width: 100%; border-collapse: collapse; margin: 1em 0 1.8em; font-size: 0.95rem; }
     .tax-table th { background: #1a1a2e; color: #fff; padding: 11px 14px; text-align: left; font-weight: 600; }
     .tax-table td { padding: 11px 14px; border-bottom: 1px solid #eee; color: #2d2d2d; vertical-align: top; }
+ .tax-table tbody th, .region-table tbody th { padding: 11px 14px; border-bottom: 1px solid #eee; color: #2d2d2d; vertical-align: top; background: inherit; font-weight: 600; text-align: left; }
+    .tax-table tbody th, .region-table tbody th { padding: 11px 14px; border-bottom: 1px solid #eee; color: #2d2d2d; vertical-align: top; background: inherit; font-weight: 600; text-align: left; }
     .tax-table tr:nth-child(even) td { background: #fafafa; }
     .tax-table tr:last-child td { border-bottom: none; }
     .region-table { width: 100%; border-collapse: collapse; margin: 1em 0 1.8em; font-size: 0.93rem; }
@@ -213,14 +215,14 @@
       </tr>
     </thead>
     <tbody>
-      <tr><td>Madrid</td><td>99% reduction</td><td>Near zero</td></tr>
-      <tr><td>Andalusia</td><td>99% reduction</td><td>Near zero</td></tr>
-      <tr><td>Murcia</td><td>99% reduction</td><td>Near zero</td></tr>
-      <tr><td>Galicia</td><td>99% reduction (up to 1M euros)</td><td>Near zero for most estates</td></tr>
-      <tr><td>Valencia</td><td>75% reduction</td><td>Low to moderate</td></tr>
-      <tr><td>Balearic Islands</td><td>Partial reductions</td><td>Moderate</td></tr>
-      <tr><td>Catalonia</td><td>Partial reductions</td><td>Moderate to significant</td></tr>
-      <tr><td>Basque Country</td><td>400,000 euro exemption per heir</td><td>Low for most estates</td></tr>
+      <tr><th scope="row">Madrid</th><td>99% reduction</td><td>Near zero</td></tr>
+      <tr><th scope="row">Andalusia</th><td>99% reduction</td><td>Near zero</td></tr>
+      <tr><th scope="row">Murcia</th><td>99% reduction</td><td>Near zero</td></tr>
+      <tr><th scope="row">Galicia</th><td>99% reduction (up to 1M euros)</td><td>Near zero for most estates</td></tr>
+      <tr><th scope="row">Valencia</th><td>75% reduction</td><td>Low to moderate</td></tr>
+      <tr><th scope="row">Balearic Islands</th><td>Partial reductions</td><td>Moderate</td></tr>
+      <tr><th scope="row">Catalonia</th><td>Partial reductions</td><td>Moderate to significant</td></tr>
+      <tr><th scope="row">Basque Country</th><td>400,000 euro exemption per heir</td><td>Low for most estates</td></tr>
     </tbody>
   </table>
 

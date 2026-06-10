@@ -105,6 +105,8 @@
     .tax-table { width: 100%; border-collapse: collapse; margin: 1em 0 1.8em; font-size: 0.95rem; }
     .tax-table th { background: #1a1a2e; color: #fff; padding: 11px 14px; text-align: left; font-weight: 600; }
     .tax-table td { padding: 11px 14px; border-bottom: 1px solid #eee; color: #2d2d2d; vertical-align: top; }
+ .tax-table tbody th, .region-table tbody th { padding: 11px 14px; border-bottom: 1px solid #eee; color: #2d2d2d; vertical-align: top; background: inherit; font-weight: 600; text-align: left; }
+    .tax-table tbody th, .region-table tbody th { padding: 11px 14px; border-bottom: 1px solid #eee; color: #2d2d2d; vertical-align: top; background: inherit; font-weight: 600; text-align: left; }
     .tax-table tr:nth-child(even) td { background: #fafafa; }
     .tax-table tr:last-child td { border-bottom: none; }
     .tax-card { background: #f8f9ff; border: 1px solid #e0e4f5; border-radius: 10px; padding: 22px 24px; margin: 0; }
@@ -243,17 +245,17 @@
     </thead>
     <tbody>
       <tr>
-        <td><strong>NIE</strong></td>
+        <th scope="row"><strong>NIE</strong></th>
         <td>A number printed on a white A4 certificate</td>
         <td>Any foreigner with official dealings in Spain - residents and non-residents</td>
       </tr>
       <tr>
-        <td><strong>TIE</strong></td>
+        <th scope="row"><strong>TIE</strong></th>
         <td>A physical plastic residence card (Tarjeta de Identidad de Extranjero) that contains your NIE</td>
         <td>Non-EU nationals who have been granted a residency permit in Spain</td>
       </tr>
       <tr>
-        <td><strong>EU residency certificate</strong></td>
+        <th scope="row"><strong>EU residency certificate</strong></th>
         <td>A green A4 certificate confirming EU registration - also contains the NIE</td>
         <td>EU nationals who register as residents in Spain</td>
       </tr>
@@ -276,42 +278,42 @@
     </thead>
     <tbody>
       <tr>
-        <td><strong>Buying property</strong></td>
+        <th scope="row"><strong>Buying property</strong></th>
         <td>Yes - legally required</td>
         <td>Cannot sign the title deed without it</td>
       </tr>
       <tr>
-        <td><strong>Opening a Spanish bank account</strong></td>
+        <th scope="row"><strong>Opening a Spanish bank account</strong></th>
         <td>Yes</td>
         <td>Required by all major Spanish banks</td>
       </tr>
       <tr>
-        <td><strong>Signing an employment contract</strong></td>
+        <th scope="row"><strong>Signing an employment contract</strong></th>
         <td>Yes</td>
         <td>Required for Spanish payroll and Social Security</td>
       </tr>
       <tr>
-        <td><strong>Filing Spanish taxes</strong></td>
+        <th scope="row"><strong>Filing Spanish taxes</strong></th>
         <td>Yes</td>
         <td>Used as your Spanish tax identifier (equivalent to a UK UTR)</td>
       </tr>
       <tr>
-        <td><strong>Registering a Spanish company</strong></td>
+        <th scope="row"><strong>Registering a Spanish company</strong></th>
         <td>Yes</td>
         <td>Required at the time of incorporation</td>
       </tr>
       <tr>
-        <td><strong>Getting a Spanish mortgage</strong></td>
+        <th scope="row"><strong>Getting a Spanish mortgage</strong></th>
         <td>Yes</td>
         <td>Required before a bank will make a mortgage offer</td>
       </tr>
       <tr>
-        <td><strong>Registering a vehicle (DGT)</strong></td>
+        <th scope="row"><strong>Registering a vehicle (DGT)</strong></th>
         <td>Yes</td>
         <td>Required to register a car or motorbike in Spain</td>
       </tr>
       <tr>
-        <td><strong>Phone contracts</strong></td>
+        <th scope="row"><strong>Phone contracts</strong></th>
         <td>Often</td>
         <td>Most Spanish operators require it for contract plans</td>
       </tr>
@@ -411,32 +413,32 @@
     </thead>
     <tbody>
       <tr>
-        <td><strong>Barcelona</strong></td>
+        <th scope="row"><strong>Barcelona</strong></th>
         <td>3 to 8 weeks</td>
         <td>High demand year-round. Check the booking system at different times - slots release irregularly. Some third-party services legally book and hold slots.</td>
       </tr>
       <tr>
-        <td><strong>Madrid</strong></td>
+        <th scope="row"><strong>Madrid</strong></th>
         <td>1 to 4 weeks</td>
         <td>Multiple Comisarias across the city. More total availability than Barcelona but still competitive.</td>
       </tr>
       <tr>
-        <td><strong>Malaga</strong></td>
+        <th scope="row"><strong>Malaga</strong></th>
         <td>2 to 5 weeks</td>
         <td>Very high demand in summer due to Costa del Sol property buyers. The Oficina de Extranjeria on Avenida de la Rosaleda handles most cases.</td>
       </tr>
       <tr>
-        <td><strong>Alicante</strong></td>
+        <th scope="row"><strong>Alicante</strong></th>
         <td>2 to 6 weeks</td>
         <td>Heavy demand from Costa Blanca buyers. Summer wait times are longer. Some buyers use a gestor who can navigate the booking system more efficiently.</td>
       </tr>
       <tr>
-        <td><strong>Valencia</strong></td>
+        <th scope="row"><strong>Valencia</strong></th>
         <td>1 to 4 weeks</td>
         <td>Oficina de Extranjeria handles applications. Demand has increased since the Valencia ITP tax reduction in 2026 attracted more property buyers.</td>
       </tr>
       <tr>
-        <td><strong>Seville</strong></td>
+        <th scope="row"><strong>Seville</strong></th>
         <td>1 to 3 weeks</td>
         <td>Shorter wait times than coastal cities. Good option for buyers in western Andalusia.</td>
       </tr>
