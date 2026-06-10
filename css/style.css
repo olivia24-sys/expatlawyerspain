@@ -280,7 +280,7 @@ nav a:hover { color: var(--primary); }
   font-size: 0.92rem;
 }
 .results-helper a {
-  color: var(--primary);
+  color: #b8430f;
   font-weight: 600;
 }
 .listings-grid {
@@ -551,11 +551,12 @@ footer {
 }
 .footer-inner { display: flex; flex-direction: column; gap: 12px; align-items: center; }
 footer .logo { color: rgba(255,255,255,0.85); }
+footer .logo strong { color: #f07040; }
 footer p { font-size: 0.875rem; }
 .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 12px; align-items: center; }
 .footer-links a { color: rgba(255,255,255,0.9); text-decoration: none; font-weight: 600; }
 .footer-links a:hover { color: white; text-decoration: underline; }
-.footer-small { font-size: 0.75rem; opacity: 0.5; }
+.footer-small { font-size: 0.75rem; color: #9a9795; }
 
 /* RESPONSIVE */
 /* ===== TABLET (max 900px) ===== */
