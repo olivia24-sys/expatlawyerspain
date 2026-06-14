@@ -1,0 +1,15 @@
+.DS_Store
+._*
+.vscode/
+.idea/
+*.swp
+__pycache__/
+*.py[cod]
+.env
+.env.*
+*.pem
+*.key
+secrets/
+*-email.env
+dist/
+.cache/
