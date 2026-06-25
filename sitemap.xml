@@ -169,4 +169,23 @@
     <priority>0.3</priority>
   </url>
 
+  <url>
+    <loc>https://expatlawyerspain.com/blog/retire-in-spain</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://expatlawyerspain.com/blog/getting-married-in-spain</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://expatlawyerspain.com/blog/family/</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
 </urlset>

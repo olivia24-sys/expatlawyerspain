@@ -124,6 +124,7 @@ ExpatLawyerSpain is a directory and enquiry-routing service for English-speaking
 - Description: Everything you need to know about visas and residency in Spain, including Golden Visa alternatives and future guides to digital nomad and non-lucrative visas. Understand your options before applying.
 - Main topics:
   - Immigration Guides for Expats in Spain
+  - Retire in Spain: Visas, Tax and Healthcare Explained (2026)
   - Digital Nomad Visa Spain: Requirements, Tax and How to Apply (2026)
   - Beckham Law Spain 2026: Tax Benefits for New Residents
   - Capital Gains Tax Spain for Non-Residents: Complete Guide (2026)
@@ -136,6 +137,8 @@ ExpatLawyerSpain is a directory and enquiry-routing service for English-speaking
 - Description: Free legal guides for expats in Spain. Property law, immigration, NIE numbers, Golden Visa, inheritance and more - written in plain English.
 - Main topics:
   - Legal Guides for Expats in Spain
+  - Retire in Spain: Visas, Tax and Healthcare Explained (2026)
+  - Getting Married in Spain as a Foreigner: The Legal Guide (2026)
   - Spanish Legal Glossary: 76 Key Terms Explained in English
   - How to Find an English-Speaking Lawyer in Spain (2026)
   - Spanish Property Taxes for Foreign Owners: The Complete 2026 Guide
@@ -315,6 +318,41 @@ ExpatLawyerSpain is a directory and enquiry-routing service for English-speaking
   - 8. Third party links
   - 9. Governing law
   - 10. Changes to these terms
+
+### Retire in Spain: Visas, Tax and Healthcare Explained (2026) | ExpatLawyerSpain
+- URL: https://expatlawyerspain.com/blog/retire-in-spain
+- Description: Practical guide to retiring in Spain in 2026, covering the Non-Lucrative Visa, how UK and US pensions are taxed, healthcare options including the S1 form, the 90-day rule, property and Spanish wills for retirees.
+- Main topics:
+  - Retire in Spain: Visas, Tax and Healthcare Explained (2026)
+  - Which Visa Do Retirees Use to Move to Spain?
+  - The 90-Day Rule: What It Means for UK Retirees
+  - Tax: How Your Pension and Income Are Taxed in Spain
+  - Healthcare: Your Options as a Retiree in Spain
+  - Property and Inheritance: What Retirees Need to Know
+  - When Do You Actually Need a Lawyer?
+  - Frequently Asked Questions
+
+### Getting Married in Spain as a Foreigner | ExpatLawyerSpain
+- URL: https://expatlawyerspain.com/blog/getting-married-in-spain
+- Description: Legal guide to getting married in Spain as a foreigner, covering civil versus religious ceremonies, the documents required, the expediente matrimonial, registering a foreign marriage, marital property regimes, prenuptial agreements and name changes.
+- Main topics:
+  - Getting Married in Spain as a Foreigner: The Legal Guide (2026)
+  - Civil vs Religious: Which Type of Ceremony is Legally Valid?
+  - Documents Required for Foreigners Marrying in Spain
+  - The Civil Marriage Process: Step by Step
+  - Registering a Foreign Marriage in Spain
+  - Marital Property Regimes: What Governs Your Assets
+  - Prenuptial Agreements Under Spanish Law
+  - Name Changes After Marriage in Spain
+  - When Do You Actually Need a Family Lawyer?
+  - Frequently Asked Questions
+
+### Family Law Guides for Expats in Spain | ExpatLawyerSpain
+- URL: https://expatlawyerspain.com/blog/family/
+- Description: Family law guides for expats in Spain, including getting married as a foreigner, marital property regimes, prenuptial agreements and name changes.
+- Main topics:
+  - Family Law Guides for Expats in Spain
+  - Getting Married in Spain as a Foreigner: The Legal Guide (2026)
 
 ## Contact
 - Email: hello@expatlawyerspain.com
