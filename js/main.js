@@ -1,5 +1,16 @@
 // ExpatLawyerSpain - Main JS
 
+// Town-name search aliases. La Zenia and Torrevieja sit inside the Alicante /
+// Costa Blanca market, so searches for those towns resolve to the Alicante option.
+const CITY_ALIASES = {
+  'la-zenia': 'alicante',
+  'torrevieja': 'alicante'
+};
+
+function resolveCity(city) {
+  return CITY_ALIASES[city] || city;
+}
+
 function trackEvent(name, props = {}) {
   // Cloudflare Web Analytics is now the primary analytics layer.
   // Keep this wrapper as a no-op so existing CTA/search hooks remain safe.
@@ -65,7 +76,7 @@ function filterSpecialty(specialty) {
 
 function applyFiltersFromUrl() {
   const params = new URLSearchParams(window.location.search);
-  const city = params.get('city') || '';
+  const city = resolveCity(params.get('city') || '');
   const specialty = params.get('specialty') || '';
 
   if (!city && !specialty) return;
@@ -93,6 +104,7 @@ function getDataList(card, key) {
 }
 
 function filterListings(city, specialty) {
+  city = resolveCity(city);
   const cards = document.querySelectorAll('.lawyer-card');
   const helper = document.getElementById('results-helper');
   let visible = 0;
@@ -224,9 +236,10 @@ function prefill(lawyerName, city, specialty = '') {
     'madrid': 'Madrid',
     'malaga': 'Málaga',
     'murcia': 'Murcia',
-    'la-zenia': 'La Zenia',
+    'la-zenia': 'Alicante (Costa Blanca)',
+    'torrevieja': 'Alicante (Costa Blanca)',
     'valencia': 'Valencia',
-    'alicante': 'Alicante',
+    'alicante': 'Alicante (Costa Blanca)',
     'seville': 'Seville',
     'marbella': 'Marbella',
     'costa-del-sol': 'Costa del Sol',

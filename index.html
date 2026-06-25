@@ -66,11 +66,10 @@
         <select id="city-select" aria-label="Select a city">
           <option value="">📍 Select a city</option>
           <option value="a-coruna">A Coruña</option>
-          <option value="alicante">Alicante</option>
+          <option value="alicante">Alicante (Costa Blanca)</option>
           <option value="barcelona">Barcelona</option>
           <option value="costa-del-sol">Costa del Sol</option>
           <option value="galicia">Galicia</option>
-          <option value="la-zenia">La Zenia</option>
           <option value="lugo">Lugo</option>
           <option value="madrid">Madrid</option>
           <option value="malaga">Málaga</option>
@@ -90,7 +89,6 @@
           <option value="property">Property Law</option>
           <option value="employment">Employment Law</option>
           <option value="family">Family Law</option>
-          <option value="criminal">Criminal Law</option>
           <option value="tax">Tax & Fiscal</option>
           <option value="business">Business & Corporate</option>
           <option value="wills">Wills & Inheritance</option>
@@ -135,17 +133,15 @@
             <option>Tax & Fiscal</option>
             <option>Business & Corporate</option>
             <option>Wills & Inheritance</option>
-            <option>Criminal Law</option>
             <option>Other</option>
           </select>
           <select id="enquiry-region" name="region" required aria-label="Region">
             <option value="">Which city/region?</option>
             <option>A Coruña</option>
-            <option>Alicante</option>
+            <option>Alicante (Costa Blanca)</option>
             <option>Barcelona</option>
             <option>Costa del Sol</option>
             <option>Galicia</option>
-            <option>La Zenia</option>
             <option>Lugo</option>
             <option>Madrid</option>
             <option>Málaga</option>
@@ -217,10 +213,6 @@
         <div class="specialty-card" onclick="filterSpecialty('wills')">
           <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
           <span>Wills & Inheritance</span>
-        </div>
-        <div class="specialty-card" onclick="filterSpecialty('criminal')">
-          <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L4 6v6c0 5.25 3.5 10.15 8 11.5C16.5 22.15 20 17.25 20 12V6z"/><polyline points="9 12 11 14 15 10"/></svg>
-          <span>Criminal Law</span>
         </div>
       </div>
     </div>
@@ -486,34 +478,34 @@
           <a href="#contact-form" class="btn-contact" onclick="prefill('Lexidy','barcelona', document.getElementById('specialty-select').value)">Send enquiry →</a>
         </div>
 
-        <div class="lawyer-card featured" data-city="murcia,la-zenia,alicante" data-specialty="property,wills,immigration,tax">
+        <div class="lawyer-card featured" data-city="murcia,alicante" data-specialty="property,wills,immigration,tax">
           <div class="card-top">
             <div class="lawyer-avatar"><img src="images/firm-logos/abad-abogados.svg" alt="Abad Abogados logo" decoding="async" width="52" height="52" loading="lazy"></div>
             <div class="lawyer-info">
               <h3>Abad Abogados</h3>
-              <p class="firm">Murcia · La Zenia · Alicante</p>
+              <p class="firm">Murcia · Alicante</p>
             </div>
             <span class="badge featured-badge">⭐ Featured</span>
           </div>
           <p class="specialty-tag">Property · Residency · Probate · Tax</p>
           <p class="lawyer-bio">English-speaking lawyers and accountants in the Region of Murcia, with expat-facing property law, taxes, probate and residency services.</p>
-          <div class="card-tags"><span>English</span><span>Spanish</span><span class="location-tag">📍 Murcia</span><span class="location-tag">📍 La Zenia</span><span class="location-tag">📍 Alicante</span></div>
+          <div class="card-tags"><span>English</span><span>Spanish</span><span class="location-tag">📍 Murcia</span><span class="location-tag">📍 Alicante</span></div>
           <a href="#contact-form" class="btn-contact" onclick="prefill('Abad Abogados','murcia', document.getElementById('specialty-select').value)">Send enquiry →</a>
         </div>
 
-        <div class="lawyer-card featured" data-city="murcia,la-zenia,alicante" data-specialty="property,immigration,tax,wills,family">
+        <div class="lawyer-card featured" data-city="murcia,alicante" data-specialty="property,immigration,tax,wills,family">
           <div class="card-top">
             <div class="lawyer-avatar"><img src="images/firm-logos/sun-lawyers.png" alt="Sun Lawyers logo" decoding="async" width="52" height="52" loading="lazy"></div>
             <div class="lawyer-info">
               <h3>Sun Lawyers</h3>
-              <p class="firm">La Zenia · Alicante · Murcia</p>
+              <p class="firm">Alicante · Murcia</p>
             </div>
             <span class="badge featured-badge">⭐ Featured</span>
           </div>
           <p class="specialty-tag">Property · Relocation · Tax · Wills</p>
-          <p class="lawyer-bio">English-speaking Spanish property lawyers serving expats across La Zenia, Alicante, Costa Cálida and Murcia on property, relocation, tax and wills matters.</p>
-          <div class="card-tags"><span>English</span><span>Spanish</span><span class="location-tag">📍 La Zenia</span><span class="location-tag">📍 Alicante</span><span class="location-tag">📍 Murcia</span></div>
-          <a href="#contact-form" class="btn-contact" onclick="prefill('Sun Lawyers','la-zenia', document.getElementById('specialty-select').value)">Send enquiry →</a>
+          <p class="lawyer-bio">English-speaking Spanish property lawyers serving expats across Alicante, Costa Cálida and Murcia on property, relocation, tax and wills matters.</p>
+          <div class="card-tags"><span>English</span><span>Spanish</span><span class="location-tag">📍 Alicante</span><span class="location-tag">📍 Murcia</span></div>
+          <a href="#contact-form" class="btn-contact" onclick="prefill('Sun Lawyers','alicante', document.getElementById('specialty-select').value)">Send enquiry →</a>
         </div>
 
         <div class="lawyer-card featured" data-city="murcia,alicante" data-specialty="property,tax,wills">
@@ -547,36 +539,36 @@
           <a href="#contact-form" class="btn-contact" onclick="prefill('Consuelo Hernández','murcia', document.getElementById('specialty-select').value)">Send enquiry →</a>
         </div>
 
-        <div class="lawyer-card featured" data-city="valencia,la-zenia,murcia,alicante" data-specialty="property,immigration,tax,wills">
+        <div class="lawyer-card featured" data-city="valencia,murcia,alicante" data-specialty="property,immigration,tax,wills">
           <div class="card-top">
             <div class="lawyer-avatar"><img src="images/firm-logos/fuster-associates.jpeg" alt="Fuster & Associates logo" decoding="async" width="52" height="52" loading="lazy"></div>
             <div class="lawyer-info">
               <h3>Fuster & Associates</h3>
-              <p class="firm">Valencia · La Zenia · Murcia · Alicante</p>
+              <p class="firm">Valencia · Murcia · Alicante</p>
             </div>
             <span class="badge featured-badge">⭐ Featured</span>
           </div>
           <p class="specialty-tag">Property · Immigration · Tax · Wills</p>
           <p class="lawyer-bio">English-speaking legal and tax team with coverage for property, immigration, Spanish tax and wills/inheritance matters.</p>
-          <div class="card-tags"><span>English</span><span>Spanish</span><span class="location-tag">📍 Valencia</span><span class="location-tag">📍 La Zenia</span><span class="location-tag">📍 Murcia</span><span class="location-tag">📍 Alicante</span></div>
+          <div class="card-tags"><span>English</span><span>Spanish</span><span class="location-tag">📍 Valencia</span><span class="location-tag">📍 Murcia</span><span class="location-tag">📍 Alicante</span></div>
           <div class="google-rating-badge"><span class="google-rating-label"><span class="google-word" aria-label="Google"><span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span></span> reviews:</span><span class="google-rating-score">4.7 <span class="rating-star">★</span> <span class="review-count">· 49 reviews</span></span></div>
           <a href="#contact-form" class="btn-contact" onclick="prefill('Fuster & Associates','valencia', document.getElementById('specialty-select').value)">Send enquiry →</a>
         </div>
 
-        <div class="lawyer-card featured" data-city="la-zenia,alicante,marbella,murcia" data-specialty="property,immigration,tax,wills,family,criminal,employment">
+        <div class="lawyer-card featured" data-city="alicante,marbella,murcia" data-specialty="property,immigration,tax,wills,family,employment">
           <div class="card-top">
             <div class="lawyer-avatar"><img src="images/firm-logos/legal-iuris.png" alt="Legal Iuris logo" decoding="async" width="52" height="52" loading="lazy"></div>
             <div class="lawyer-info">
               <h3>Legal Iuris</h3>
-              <p class="firm">La Zenia · Alicante · Marbella</p>
+              <p class="firm">Alicante · Marbella</p>
             </div>
             <span class="badge featured-badge">⭐ Featured</span>
           </div>
-          <p class="specialty-tag">Property · Immigration · Tax · Employment · Criminal</p>
+          <p class="specialty-tag">Property · Immigration · Tax · Employment</p>
           <p class="lawyer-bio">English-speaking law and tax firm covering property, immigration, tax, inheritance, family, employment, criminal and administrative matters.</p>
-          <div class="card-tags"><span>English</span><span>Spanish</span><span class="location-tag">📍 La Zenia</span><span class="location-tag">📍 Alicante</span><span class="location-tag">📍 Marbella</span></div>
+          <div class="card-tags"><span>English</span><span>Spanish</span><span class="location-tag">📍 Alicante</span><span class="location-tag">📍 Marbella</span></div>
           <div class="google-rating-badge"><span class="google-rating-label"><span class="google-word" aria-label="Google"><span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span></span> reviews:</span><span class="google-rating-score">4.8 <span class="rating-star">★</span> <span class="review-count">· 89 reviews</span></span></div>
-          <a href="#contact-form" class="btn-contact" onclick="prefill('Legal Iuris','la-zenia', document.getElementById('specialty-select').value)">Send enquiry →</a>
+          <a href="#contact-form" class="btn-contact" onclick="prefill('Legal Iuris','alicante', document.getElementById('specialty-select').value)">Send enquiry →</a>
         </div>
 
         <div class="lawyer-card featured" data-city="murcia,alicante" data-specialty="tax,business">
@@ -643,7 +635,7 @@
           <a href="#contact-form" class="btn-contact" onclick="prefill('Galicia Property Lawyers','pontevedra', document.getElementById('specialty-select').value)">Send enquiry →</a>
         </div>
 
-        <div class="lawyer-card featured" data-city="galicia,lugo,vigo" data-specialty="property,tax,business,family,criminal">
+        <div class="lawyer-card featured" data-city="galicia,lugo,vigo" data-specialty="property,tax,business,family">
           <div class="card-top">
             <div class="lawyer-avatar"><img src="images/firm-logos/goni-abogados.gif" alt="Goñi Abogados logo" class="dark-logo" decoding="async" width="52" height="52" loading="lazy"></div>
             <div class="lawyer-info">
@@ -658,7 +650,7 @@
           <a href="#contact-form" class="btn-contact" onclick="prefill('Goñi Abogados','lugo', document.getElementById('specialty-select').value)">Send enquiry →</a>
         </div>
 
-        <div class="lawyer-card featured" data-city="galicia,a-coruna" data-specialty="property,wills,business,criminal">
+        <div class="lawyer-card featured" data-city="galicia,a-coruna" data-specialty="property,wills,business">
           <div class="card-top">
             <div class="lawyer-avatar"><img src="images/firm-logos/acyl-lawyers.png" alt="ACYL Lawyers logo" decoding="async" width="52" height="52" loading="lazy"></div>
             <div class="lawyer-info">
@@ -673,7 +665,7 @@
           <a href="#contact-form" class="btn-contact" onclick="prefill('ACYL Lawyers','a-coruna', document.getElementById('specialty-select').value)">Send enquiry →</a>
         </div>
 
-        <div class="lawyer-card featured" data-city="galicia,pontevedra,vigo" data-specialty="immigration,family,criminal">
+        <div class="lawyer-card featured" data-city="galicia,pontevedra,vigo" data-specialty="immigration,family">
           <div class="card-top">
             <div class="lawyer-avatar"><img src="images/firm-logos/maria-isabel-alvarez-rodriguez.jpg" alt="María Isabel Álvarez Rodríguez logo" decoding="async" width="52" height="52" loading="lazy"></div>
             <div class="lawyer-info">
@@ -684,11 +676,11 @@
           </div>
           <p class="specialty-tag">Immigration · Residency · Nationality · Family Reunification</p>
           <p class="lawyer-bio">Pontevedra immigration lawyer with more than 15 years’ experience in visas, residence permits, work permits, nationality, family reunification and related civil or criminal matters.</p>
-          <div class="card-tags"><span>Spanish</span><span class="location-tag">📍 Pontevedra</span><span class="location-tag">Vigo</span><span class="location-tag">Galicia</span></div>
+          <div class="card-tags"><span>English</span><span>Spanish</span><span>Portuguese</span><span>Galician</span><span class="location-tag">📍 Pontevedra</span><span class="location-tag">Vigo</span><span class="location-tag">Galicia</span></div>
           <a href="#contact-form" class="btn-contact" onclick="prefill('María Isabel Álvarez Rodríguez','pontevedra', document.getElementById('specialty-select').value)">Send enquiry →</a>
         </div>
 
-        <div class="lawyer-card featured" data-city="galicia,lugo" data-specialty="property,employment,business,criminal,family,wills">
+        <div class="lawyer-card featured" data-city="galicia,lugo" data-specialty="property,employment,business,family,wills">
           <div class="card-top">
             <div class="lawyer-avatar"><img src="images/firm-logos/foro-avogados.png" alt="Foro Avogados logo" decoding="async" width="52" height="52" loading="lazy"></div>
             <div class="lawyer-info">
@@ -697,90 +689,10 @@
             </div>
             <span class="badge featured-badge">⭐ Featured</span>
           </div>
-          <p class="specialty-tag">Civil &amp; Commercial · Employment · Administrative · Criminal · Inheritance</p>
+          <p class="specialty-tag">Civil &amp; Commercial · Employment · Administrative · Inheritance</p>
           <p class="lawyer-bio">Lugo-based Galician law firm with English-speaking partners and broad coverage for civil, commercial, labour, administrative, criminal, family and inheritance matters across Galicia.</p>
           <div class="card-tags"><span>English</span><span>Spanish</span><span>Galician</span><span>Portuguese</span><span class="location-tag">📍 Lugo</span><span class="location-tag">Galicia</span></div>
           <a href="#contact-form" class="btn-contact" onclick="prefill('Foro Avogados','lugo', document.getElementById('specialty-select').value)">Send enquiry →</a>
-        </div>
-
-                <!-- ===== 10 BASIC LISTINGS ===== -->
-
-        <div class="lawyer-card basic" data-city="barcelona,madrid" data-specialty="business,tax">
-          <div class="card-top">
-            <div class="lawyer-avatar basic-avatar">LW</div>
-            <div class="lawyer-info">
-              <h3>Lawants</h3>
-              <p class="firm">Barcelona · Madrid</p>
-              <p class="specialty-tag">Business · Tax · Litigation</p>
-            </div>
-          </div>
-          <div class="card-tags"><span>English</span><span class="location-tag">📍 Barcelona</span><span class="location-tag">📍 Madrid</span></div>
-          <div class="basic-cta"><p>International business law and tax practice with Barcelona and Madrid relevance, added to strengthen cross-border company, tax and commercial demand.</p></div>
-        </div>
-
-        <div class="lawyer-card basic" data-city="costa-del-sol,alicante" data-specialty="property,tax">
-          <div class="card-top">
-            <div class="lawyer-avatar basic-avatar">BL</div>
-            <div class="lawyer-info">
-              <h3>BLG Abogados</h3>
-              <p class="firm">Costa Brava · Torrevieja · Orihuela Costa</p>
-              <p class="specialty-tag">Property · Tax · Business</p>
-            </div>
-          </div>
-          <div class="card-tags"><span>English</span><span class="location-tag">Costa Brava</span></div>
-          <div class="basic-cta"><p>English-speaking expat-focused law firm added to the research list. Submit an enquiry below and we'll connect you with a suitable lawyer in this area.</p></div>
-        </div>
-
-        <div class="lawyer-card basic" data-city="nationwide" data-specialty="immigration">
-          <div class="card-top">
-            <div class="lawyer-avatar basic-avatar">IL</div>
-            <div class="lawyer-info">
-              <h3>Immigration Lawyers Spain</h3>
-              <p class="firm">Spain</p>
-              <p class="specialty-tag">Immigration · Residency · Work Permits</p>
-            </div>
-          </div>
-          <div class="card-tags"><span>English</span><span class="location-tag">Spain</span></div>
-          <div class="basic-cta"><p>English-speaking immigration specialist added to the research list. Submit an enquiry below and we'll connect you with a suitable lawyer in this area.</p></div>
-        </div>
-
-        <div class="lawyer-card basic" data-city="alicante,costa-blanca" data-specialty="property,immigration,tax">
-          <div class="card-top">
-            <div class="lawyer-avatar basic-avatar">ÁA</div>
-            <div class="lawyer-info">
-              <h3>Ábaco Advisers</h3>
-              <p class="firm">Alicante · Costa Blanca</p>
-              <p class="specialty-tag">Property · Immigration · Tax</p>
-            </div>
-          </div>
-          <div class="card-tags"><span>English</span><span class="location-tag">📍 Alicante</span></div>
-          <div class="basic-cta"><p>On our call list. Submit an enquiry below and we'll connect you with a suitable lawyer in this area.</p></div>
-        </div>
-
-        <div class="lawyer-card basic" data-city="marbella,costa-del-sol" data-specialty="wills,property,immigration">
-          <div class="card-top">
-            <div class="lawyer-avatar basic-avatar">BC</div>
-            <div class="lawyer-info">
-              <h3>Bennett & Co Solicitors</h3>
-              <p class="firm">Marbella · Costa del Sol</p>
-              <p class="specialty-tag">Wills & Inheritance · Property · Immigration</p>
-            </div>
-          </div>
-          <div class="card-tags"><span>English</span><span class="location-tag">📍 Marbella</span></div>
-          <div class="basic-cta"><p>On our call list. Submit an enquiry below and we'll connect you with a suitable lawyer in this area.</p></div>
-        </div>
-
-        <div class="lawyer-card basic" data-city="valencia" data-specialty="property,immigration,family">
-          <div class="card-top">
-            <div class="lawyer-avatar basic-avatar">VL</div>
-            <div class="lawyer-info">
-              <h3>Valencia Lawyers</h3>
-              <p class="firm">Valencia</p>
-              <p class="specialty-tag">Property · Immigration · Family</p>
-            </div>
-          </div>
-          <div class="card-tags"><span>English</span><span class="location-tag">📍 Valencia</span></div>
-          <div class="basic-cta"><p>On our call list. Submit an enquiry below and we'll connect you with a suitable lawyer in this area.</p></div>
         </div>
 
         <div class="lawyer-card featured" data-city="zaragoza" data-specialty="tax,business,employment">
@@ -828,7 +740,7 @@
           <a href="#contact-form" class="btn-contact" onclick="prefill('EX24 Legal','zaragoza', document.getElementById('specialty-select').value)">Send enquiry →</a>
         </div>
 
-        <div class="lawyer-card featured" data-city="zaragoza" data-specialty="business,tax,employment,criminal">
+        <div class="lawyer-card featured" data-city="zaragoza" data-specialty="business,tax,employment">
           <div class="card-top">
             <div class="lawyer-avatar"><img src="images/firm-logos/lacasa-abogados.png" alt="Lacasa Abogados logo" decoding="async" width="52" height="52" loading="lazy"></div>
             <div class="lawyer-info">
@@ -858,7 +770,7 @@
           <a href="#contact-form" class="btn-contact" onclick="prefill('Waterwhale','zaragoza', document.getElementById('specialty-select').value)">Send enquiry →</a>
         </div>
 
-        <div class="lawyer-card featured" data-city="zaragoza" data-specialty="business,tax,property,wills,criminal">
+        <div class="lawyer-card featured" data-city="zaragoza" data-specialty="business,tax,property,wills">
           <div class="card-top">
             <div class="lawyer-avatar"><img src="images/firm-logos/navarro-llima-abogados.png" alt="Navarro Llima Abogados logo" decoding="async" width="52" height="52" loading="lazy"></div>
             <div class="lawyer-info">
@@ -888,7 +800,7 @@
           <a href="#contact-form" class="btn-contact" onclick="prefill('BGdB Abogados','zaragoza', document.getElementById('specialty-select').value)">Send enquiry →</a>
         </div>
 
-        <div class="lawyer-card featured" data-city="zaragoza,madrid" data-specialty="business,criminal,employment">
+        <div class="lawyer-card featured" data-city="zaragoza,madrid" data-specialty="business,employment">
           <div class="card-top">
             <div class="lawyer-avatar"><img src="images/firm-logos/gracia-carabantes.png" alt="Gracia Carabantes logo" decoding="async" width="52" height="52" loading="lazy"></div>
             <div class="lawyer-info">
