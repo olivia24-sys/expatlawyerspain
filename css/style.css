@@ -830,9 +830,12 @@ footer p { font-size: 0.875rem; }
 @font-face{ font-family:'Libre Franklin'; font-style:normal; font-weight:400 600; font-display:swap; src:url('../fonts/libre-franklin-var.woff2') format('woff2'); }
 h1,h2,h3,h4,h5,h6{ font-family:'Fraunces', Georgia, serif; font-optical-sizing:auto; letter-spacing:-0.01em; font-weight:500; }
 
+/* Content width + gutters: match Lovable (max-w-6xl 1152px / px-4 16px) — roomier, less cramped */
+.container{ max-width:1152px; padding-left:16px; padding-right:16px; }
+
 /* Header: navy, logo-left / nav-centre / button-right (matches Lovable) */
 header{ background:var(--navy); border-bottom:1px solid rgba(255,255,255,0.10); box-shadow:0 1px 14px rgba(19,51,86,0.20); }
-.header-inner{ padding:0 24px; min-height:64px; gap:24px; }
+.header-inner{ padding:0 16px; min-height:64px; gap:24px; }
 .logo{ font-size:1.15rem; }
 .logo, .logo strong, header .logo span{ color:#fff; }
 header .logo span{ font-family:'Fraunces',Georgia,serif; font-weight:600; }
@@ -840,7 +843,7 @@ header .logo-icon{ background:#fff; border-radius:8px; padding:3px; width:30px; 
 nav{ gap:30px; }
 nav a{ color:rgba(255,255,255,0.78); font-size:0.875rem; font-weight:400; }
 nav a:hover{ color:#fff; }
-.btn-nav{ background:var(--primary); color:#fff !important; border-radius:999px; padding:9px 20px; font-size:0.875rem !important; font-weight:600; white-space:nowrap; }
+.btn-nav{ background:var(--primary); color:#fff !important; text-decoration:none; border-radius:999px; padding:9px 20px; font-size:0.875rem !important; font-weight:600; white-space:nowrap; }
 .btn-nav:hover{ background:var(--primary-dark) !important; }
 
 /* Hero */
