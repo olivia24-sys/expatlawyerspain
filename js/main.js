@@ -46,41 +46,6 @@ function searchLawyers() {
   window.location.href = '/lawyers' + (qs ? '?' + qs : '');
 }
 
-function startEnquiry(e) {
-  e.preventDefault();
-  const specialty = document.getElementById('hero-specialty');
-  const region = document.getElementById('hero-region');
-  const email = document.getElementById('hero-email');
-  const form = document.querySelector('.contact-form');
-
-  const specialtyTarget = document.getElementById('enquiry-specialty');
-  const regionTarget = document.getElementById('enquiry-region');
-  const emailTarget = document.querySelector('.contact-form input[name="email"]');
-
-  if (specialty && specialtyTarget) setSelectValue(specialtyTarget, specialty.value);
-  if (region && regionTarget) setSelectValue(regionTarget, region.value);
-  if (email && emailTarget) emailTarget.value = email.value;
-
-  clearPrefill();
-  trackEvent('CTA Click', { cta: 'Hero enquiry form' });
-  document.getElementById('contact-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-  if (form) {
-    const nameField = form.querySelector('input[name="name"]');
-    if (nameField) nameField.focus();
-  }
-}
-
-function filterSpecialty(specialty) {
-  document.getElementById('specialty-select').value = specialty;
-  filterListings('', specialty);
-  trackEvent('Specialty Click', {
-    specialty: getSelectLabelByValue('specialty-select', specialty),
-    results: getVisibleLawyerCount()
-  });
-  document.getElementById('listings-grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
 function applyLawyersFilters() {
   const city = document.getElementById('city-select').value;
   const specialty = document.getElementById('specialty-select').value;
@@ -336,13 +301,6 @@ function clearPrefill() {
   document.getElementById('form-subtitle').textContent = 'Tell us what you need and we\'ll connect you with the right English-speaking lawyer.';
 }
 
-function submitForm(e) {
-  e.preventDefault();
-  document.querySelector('.contact-form').style.display = 'none';
-  document.getElementById('form-success').style.display = 'block';
-  // TODO: wire up to Formspree or Netlify Forms on deployment
-}
-
 function hasLinkLikeText(value) {
   const text = String(value || '').toLowerCase();
   return /(https?:\/\/|www\.|\b[a-z0-9.-]+\.(com|net|org|io|es|co|uk|info|biz|ru|cn|xyz)\b)/i.test(text);
@@ -382,6 +340,15 @@ function setupFormSpamGuard() {
       event.preventDefault();
       showError('Please remove any links from your message before submitting. This helps protect you and the lawyers we contact.');
       message.focus();
+      return;
+    }
+
+    // All spam checks passed — the native POST will proceed. Record the GA4 conversion
+    // (the 'form_submit' key event) for both the enquiry and the list-your-firm forms.
+    const formNameField = form.querySelector('input[name="form_name"]');
+    const formName = formNameField ? formNameField.value : 'enquiry';
+    if (typeof gtag === 'function') {
+      gtag('event', 'form_submit', { form_name: formName });
     }
   });
 }

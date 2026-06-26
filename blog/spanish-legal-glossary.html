@@ -1450,14 +1450,8 @@ function applyFilters() {
   document.getElementById('no-results').style.display = visibleCount === 0 ? 'block' : 'none';
 }
 
-function copyLink() {
-  navigator.clipboard.writeText(window.location.href).then(() => {
-    const btn = document.getElementById('copy-btn');
-    btn.textContent = 'Copied!';
-    setTimeout(() => btn.textContent = 'Copy link', 2000);
-  });
-}
 </script>
 <script src="/js/blog.js?v=20260626-b2"></script>
+  <!-- Cloudflare Pages Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "8c13e389e64f4afe8b1d9bf2e3868dd3"}'></script><!-- Cloudflare Pages Analytics -->
 </body>
 </html>
