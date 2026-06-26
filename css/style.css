@@ -1150,3 +1150,19 @@ header nav a:not(.btn-nav):hover{ color:#FBF7EF; }
 .lyf-lead{ margin-top:14px; }
 .lyf-points{ gap:12px; }
 @media (max-width:560px){ .lyf-form{ padding:24px; } }
+
+/* ===== Polish pass 3 ===== */
+/* /lawyers: keep the sub-line, drop the link underline (the "red line") */
+.lawyers-sub a{ text-decoration:none; }
+
+/* /list-your-firm form: match Lovable field look + spacing */
+.lyf-form{ padding:28px; }
+.lyf-form h2{ font-size:1.4rem; }
+.lyf-form .lyf-form-sub{ margin:4px 0 0; }
+.lyf-form .field{ gap:6px; margin-top:16px; }
+.lyf-form label{ line-height:1.3; }
+.lyf-form input, .lyf-form textarea{ padding:8px 12px; font-size:0.9rem; line-height:1.45; border-radius:8px; }
+.lyf-form input:focus, .lyf-form textarea:focus{ border-color:var(--primary); outline:none; }
+.lyf-form textarea{ min-height:92px; }
+.lyf-form .cf-turnstile{ margin-top:16px; }
+.lyf-form .btn-submit{ margin-top:18px; }
