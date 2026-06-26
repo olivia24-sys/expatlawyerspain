@@ -1105,3 +1105,6 @@ header nav a:not(.btn-nav):hover{ color:#FBF7EF; }
 .lyf-form .btn-submit{ margin-top:18px; width:100%; border-radius:999px; padding:11px; font-size:0.9rem; font-weight:500; background:var(--primary); color:#fff; border:none; cursor:pointer; }
 .lyf-form .btn-submit:hover{ background:var(--primary-dark); }
 @media (max-width:860px){ .lyf-grid{ grid-template-columns:1fr; gap:32px; } }
+
+/* New footer is left-aligned (overrides base footer{text-align:center}) */
+.site-footer{ text-align:left; }
