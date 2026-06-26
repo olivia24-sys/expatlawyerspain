@@ -33,7 +33,7 @@
   <link rel="icon" href="favicon.png" type="image/png" />
   <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="/fonts/libre-franklin-var.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="css/style.css?v=redesign-20260626-2" />
+  <link rel="stylesheet" href="css/style.css?v=redesign-20260626-3" />
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   <script src="https://analytics.ahrefs.com/analytics.js" data-key="adZBUpq5UY0H+mnRahKIBA" async></script>
 </head>
@@ -203,64 +203,28 @@
               <label for="enq-message">How can a lawyer help?</label>
               <textarea id="enq-message" name="message" placeholder="A few lines about your situation…" rows="4"></textarea>
             </div>
-            <div class="field field-full">
-              <label for="heard-about-us">How did you hear about us? <span class="opt">(optional)</span></label>
-              <select id="heard-about-us" name="heard_about_us" aria-label="How did you hear about us?">
-                <option value="">Select…</option>
-                <option>Facebook</option>
-                <option>Google / search engine</option>
-                <option>AI assistant (ChatGPT, Claude, etc.)</option>
-                <option>Friend or recommendation</option>
-                <option>Blog or article</option>
-                <option>Lawyer or professional referral</option>
-                <option>Other</option>
-              </select>
+            <div class="enquiry-row-2">
+              <div class="field">
+                <label for="heard-about-us">How did you hear about us?</label>
+                <select id="heard-about-us" name="heard_about_us" aria-label="How did you hear about us?">
+                  <option value="">Select…</option>
+                  <option>Facebook</option>
+                  <option>Google / search engine</option>
+                  <option>AI assistant (ChatGPT, Claude, etc.)</option>
+                  <option>Friend or recommendation</option>
+                  <option>Blog or article</option>
+                  <option>Lawyer or professional referral</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div class="cf-turnstile" data-sitekey="0x4AAAAAADLfF294HYPuTs6F"></div>
             </div>
-            <div class="cf-turnstile" data-sitekey="0x4AAAAAADLfF294HYPuTs6F"></div>
             <p class="form-error" id="form-error" role="alert" style="display:none;"></p>
             <button type="submit" class="btn-submit">Send my enquiry →</button>
           </form>
           <div class="form-success" id="form-success" style="display:none;">
             <p>✅ Thanks! We’ll connect you with a suitable lawyer.</p>
           </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SPECIALTIES -->
-  <section class="specialties" id="specialties">
-    <div class="container">
-      <h2>What do you need help with?</h2>
-      <p class="section-sub">Click a specialty to find the right lawyer</p>
-      <div class="specialty-grid">
-        <div class="specialty-card" onclick="filterSpecialty('immigration')">
-          <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/><circle cx="12" cy="15" r="2"/></svg>
-          <span>Immigration & Residency</span>
-        </div>
-        <div class="specialty-card" onclick="filterSpecialty('property')">
-          <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12L12 3l9 9"/><path d="M9 21V12h6v9"/></svg>
-          <span>Property Law</span>
-        </div>
-        <div class="specialty-card" onclick="filterSpecialty('employment')">
-          <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="17"/><line x1="9.5" y1="14.5" x2="14.5" y2="14.5"/></svg>
-          <span>Employment Law</span>
-        </div>
-        <div class="specialty-card" onclick="filterSpecialty('family')">
-          <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3"/><circle cx="17" cy="9" r="2"/><path d="M3 21v-2a5 5 0 0110 0v2"/><path d="M17 21v-1a4 4 0 00-3-3.87"/></svg>
-          <span>Family Law</span>
-        </div>
-        <div class="specialty-card" onclick="filterSpecialty('tax')">
-          <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-          <span>Tax & Fiscal</span>
-        </div>
-        <div class="specialty-card" onclick="filterSpecialty('business')">
-          <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-4h6v4"/></svg>
-          <span>Business & Corporate</span>
-        </div>
-        <div class="specialty-card" onclick="filterSpecialty('wills')">
-          <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-          <span>Wills & Inheritance</span>
         </div>
       </div>
     </div>
@@ -876,7 +840,7 @@
   <!-- WHY US -->
   <section class="why-us">
     <div class="container">
-      <h2>Why use ExpatLawyerSpain?</h2>
+      <h2>Why ExpatLawyerSpain?</h2>
       <div class="why-grid">
         <div class="why-card">
           <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>

@@ -865,7 +865,7 @@ nav a:hover{ color:#fff; }
 .hero-map{ display:flex; justify-content:center; align-items:center; }
 .spain-wrap{ width:100%; max-width:700px; margin:0 auto; transform:perspective(1700px) rotateX(13deg); transform-origin:center 42%; }
 .spain-svg{ width:100%; height:auto; overflow:visible; display:block; }
-.spain-svg .map-label{ font-family:'Libre Franklin',sans-serif; font-size:30px; font-weight:500; fill:var(--navy); }
+.spain-svg .map-label{ font-family:'Libre Franklin',sans-serif; font-size:20px; font-weight:500; fill:var(--navy); }
 .spain-svg .map-pin{ cursor:pointer; }
 .spain-svg .map-pin circle{ transition:r .15s ease; }
 .spain-svg .map-pin:hover circle{ r:12; }
@@ -919,7 +919,7 @@ footer .logo-icon{ background:#fff; border-radius:7px; padding:3px; }
 /* ===== Enquiry section — Lovable two-column layout ===== */
 .contact-section{ background:#fff; }
 .contact-section-priority{ padding:60px 0 80px; }
-.enquiry-grid{ display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:start; }
+.enquiry-grid{ display:grid; grid-template-columns:0.9fr 1.1fr; gap:64px; align-items:start; }
 
 /* Left: intro + trust points */
 .enquiry-intro h2{ font-size:clamp(2rem,3.6vw,3rem); line-height:1.08; font-weight:500; letter-spacing:-0.01em; color:var(--text); margin:0; }
@@ -944,7 +944,9 @@ footer .logo-icon{ background:#fff; border-radius:7px; padding:3px; }
 .enquiry-form-card select,
 .enquiry-form-card textarea{ background:#fff; border:1px solid var(--border); border-radius:10px; padding:11px 13px; font-size:0.95rem; width:100%; box-sizing:border-box; }
 .enquiry-form-card textarea{ resize:vertical; min-height:104px; }
-.enquiry-form-card .cf-turnstile{ margin-top:18px; }
+.enquiry-row-2{ display:flex; gap:18px; align-items:flex-end; margin-top:18px; flex-wrap:wrap; }
+.enquiry-row-2 .field{ flex:1 1 180px; }
+.enquiry-row-2 .cf-turnstile{ flex:0 0 auto; }
 .enquiry-form-card .form-error{ margin:14px 0 0; }
 .enquiry-form-card .btn-submit{ margin-top:18px; width:100%; border-radius:999px; padding:14px; display:inline-flex; align-items:center; justify-content:center; gap:8px; }
 .enquiry-form-col .form-success{ background:var(--bg); border:1px solid var(--border); border-radius:24px; margin-top:0; }
