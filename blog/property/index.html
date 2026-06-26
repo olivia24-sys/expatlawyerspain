@@ -20,23 +20,27 @@
   <link rel="icon" href="/favicon.png" type="image/png"/>
   <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="/fonts/libre-franklin-var.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="/css/style.css?v=redesign-20260626-13"/>
+  <link rel="stylesheet" href="/css/style.css?v=redesign-20260626-14"/>
 </head>
 <body>
 
     <!-- HEADER -->
   <header>
-    <div class="container header-inner">
+    <div class="container header-inner navb">
       <a href="/" class="logo">
         <img src="/images/logo-tree-44.png" alt="ExpatLawyerSpain" class="logo-icon" decoding="async" width="36" height="36">
         <span>ExpatLawyer<strong>Spain</strong></span>
       </a>
-      <nav>
+      <input type="checkbox" id="nav-toggle" class="navb-cb" aria-label="Toggle navigation menu">
+      <label for="nav-toggle" class="navb-burger" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg></label>
+      <div class="navb-menu">
+        <nav>
         <a href="/lawyers">Find a Lawyer</a>
         <a href="/blog/">Guides</a>
         <a href="/list-your-firm">List Your Firm</a>
       </nav>
-      <a href="/#contact-form" class="btn-nav nav-cta">Send enquiry</a>
+        <a href="/#contact-form" class="btn-nav nav-cta">Send enquiry</a>
+      </div>
     </div>
   </header>
 

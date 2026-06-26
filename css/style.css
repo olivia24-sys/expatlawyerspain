@@ -1422,3 +1422,28 @@ html{ scroll-behavior:smooth; }
 /* WCAG 2.4.7 focus visible: the hero search selects set outline:none with no replacement.
    Restore a visible ring for keyboard users only (mouse focus unaffected via :focus-visible). */
 .search-box select:focus-visible{ outline:2px solid var(--primary); outline-offset:2px; }
+
+
+/* Mobile header — APPROACH B (hamburger menu), CSS-only (no JS).
+   Fixes the site-wide mobile overflow (header was flex/nowrap, so nav + CTA ran off-screen
+   at 375px). Desktop is UNCHANGED: .navb-menu is display:contents, so the nav links + the
+   Send-enquiry CTA still lay out as direct children of .header-inner (logo | nav | CTA,
+   space-between). On phones the header collapses to logo + a hamburger; the menu becomes a
+   navy dropdown toggled by a visually-hidden, keyboard-focusable checkbox. */
+.navb-menu{ display:contents; }
+.navb-cb{ position:absolute; width:1px; height:1px; opacity:0; pointer-events:none; }
+.navb-burger{ display:none; }
+@media (max-width:600px){
+  .header-inner{ position:relative; }
+  .navb-burger{ display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px;
+    border:0; background:transparent; color:#FBF7EF; cursor:pointer; border-radius:8px; }
+  .navb-cb:focus-visible + .navb-burger{ outline:2px solid #FBF7EF; outline-offset:2px; }
+  .header-inner > .navb-menu{ display:none; position:absolute; top:100%; left:0; right:0;
+    background:var(--navy); border-top:1px solid rgba(255,255,255,0.12); flex-direction:column;
+    align-items:stretch; gap:2px; padding:8px 16px 16px; box-shadow:0 14px 26px rgba(19,51,86,0.34); z-index:200; }
+  .navb-cb:checked ~ .navb-menu{ display:flex; }
+  .navb-menu nav{ flex-direction:column; align-items:stretch; gap:0; width:100%; }
+  .navb-menu nav a{ color:rgba(251,247,239,0.92); padding:13px 4px; font-size:1rem; border-bottom:1px solid rgba(255,255,255,0.08); }
+  .navb-menu .btn-nav{ margin-top:10px; text-align:center; justify-content:center; }
+  .logo{ font-size:1.05rem; }
+}
