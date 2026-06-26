@@ -149,6 +149,42 @@
     margin-bottom: 2px;
   }
 
+  /* Hero share button (matches the other blog pages) */
+  .hero-actions { margin-top: 26px; }
+  .hero-share {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: none; border: 0; padding: 0;
+    font-family: 'Libre Franklin', system-ui, -apple-system, sans-serif;
+    font-size: 13px; color: var(--text-muted); cursor: pointer;
+  }
+  .hero-share:hover { color: var(--terracotta); }
+  .hero-share svg { width: 15px; height: 15px; }
+
+  /* Bottom share row — icon buttons, in line with the new design */
+  .glossary-share {
+    background: var(--cream-dark); border: 1px solid var(--border);
+    border-radius: 14px; padding: 26px 24px; text-align: center; margin-top: 24px;
+  }
+  .glossary-share p {
+    font-family: 'Libre Franklin', system-ui, -apple-system, sans-serif;
+    font-size: 14px; color: var(--text-muted); margin-bottom: 16px;
+  }
+  .glossary-share-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .share-ico {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 42px; height: 42px; border-radius: 999px;
+    background: var(--white); border: 1px solid var(--border); color: var(--text-muted);
+    cursor: pointer; text-decoration: none; position: relative;
+    transition: border-color .15s, color .15s, background .15s;
+  }
+  .share-ico:hover { border-color: var(--terracotta); color: var(--terracotta); background: var(--highlight); }
+  .share-ico svg { width: 18px; height: 18px; }
+  .share-ico.copied::after {
+    content: 'Copied'; position: absolute; bottom: calc(100% + 8px); left: 50%;
+    transform: translateX(-50%); background: var(--navy); color: #fff;
+    font-size: 11px; padding: 3px 9px; border-radius: 6px; white-space: nowrap;
+  }
+
   /* LAYOUT */
   .page-wrap {
     max-width: 960px;
@@ -517,6 +553,9 @@
     <div class="hero-stat"><strong>78</strong>terms covered</div>
     <div class="hero-stat"><strong>8</strong>legal categories</div>
     <div class="hero-stat"><strong>Free</strong>to search &amp; use</div>
+  </div>
+  <div class="hero-actions">
+    <button type="button" class="hero-share" data-share><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg><span class="share-label">Share</span></button>
   </div>
   </div>
 </div>
@@ -1283,12 +1322,12 @@
       </div>
 
       <!-- SHARE PROMPT -->
-      <div style="background:var(--cream-dark);border:1px solid var(--border);border-radius:10px;padding:24px;text-align:center;margin-top:24px;">
-        <p style="font-family:'Libre Franklin',system-ui,sans-serif;font-size:14px;color:var(--text-muted);margin-bottom:12px;">Found this glossary useful? Share it with others navigating Spanish legalities.</p>
-        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
-          <a href="https://www.facebook.com/sharer/sharer.php?u=https://expatlawyerspain.com/blog/spanish-legal-glossary" target="_blank" rel="noopener" style="font-family:'Libre Franklin',system-ui,sans-serif;font-size:13px;font-weight:600;background:#1877f2;color:white;padding:8px 18px;border-radius:6px;text-decoration:none;">Share on Facebook</a>
-          <a href="https://twitter.com/intent/tweet?text=Useful+Spanish+legal+glossary+for+expats+-+plain+English+definitions&url=https://expatlawyerspain.com/blog/spanish-legal-glossary" target="_blank" rel="noopener" style="font-family:'Libre Franklin',system-ui,sans-serif;font-size:13px;font-weight:600;background:#000;color:white;padding:8px 18px;border-radius:6px;text-decoration:none;">Share on X</a>
-          <button onclick="copyLink()" style="font-family:'Libre Franklin',system-ui,sans-serif;font-size:13px;font-weight:600;background:white;color:var(--navy);padding:8px 18px;border-radius:6px;border:1.5px solid var(--border);cursor:pointer;" id="copy-btn">Copy link</button>
+      <div class="glossary-share">
+        <p>Found this glossary useful? Share it with others navigating Spanish legalities.</p>
+        <div class="glossary-share-btns">
+          <a class="share-ico" href="https://www.facebook.com/sharer/sharer.php?u=https://expatlawyerspain.com/blog/spanish-legal-glossary" target="_blank" rel="noopener" aria-label="Share on Facebook"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07c0 6.02 4.39 11.02 10.13 11.93v-8.44H7.08v-3.49h3.05V9.41c0-3.01 1.79-4.68 4.53-4.68 1.31 0 2.68.24 2.68.24v2.96h-1.51c-1.49 0-1.95.93-1.95 1.88v2.25h3.32l-.53 3.49h-2.79V24C19.61 23.09 24 18.1 24 12.07z"/></svg></a>
+          <a class="share-ico" href="https://twitter.com/intent/tweet?text=Useful+Spanish+legal+glossary+for+expats+-+plain+English+definitions&url=https://expatlawyerspain.com/blog/spanish-legal-glossary" target="_blank" rel="noopener" aria-label="Share on X"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.9 1.15h3.68l-8.04 9.19L24 22.85h-7.41l-5.8-7.58-6.64 7.58H.46l8.6-9.83L0 1.15h7.59l5.24 6.93 6.07-6.93zm-1.29 19.5h2.04L6.49 3.24H4.3l13.31 17.41z"/></svg></a>
+          <button type="button" class="share-ico" data-share aria-label="Share or copy link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></button>
         </div>
       </div>
 
@@ -1406,5 +1445,6 @@ function copyLink() {
   });
 }
 </script>
+<script src="/js/blog.js?v=20260626-b2"></script>
 </body>
 </html>
