@@ -33,7 +33,7 @@
   <link rel="icon" href="favicon.png" type="image/png" />
   <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="/fonts/libre-franklin-var.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="css/style.css?v=redesign-20260626" />
+  <link rel="stylesheet" href="css/style.css?v=redesign-20260626-2" />
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   <script src="https://analytics.ahrefs.com/analytics.js" data-key="adZBUpq5UY0H+mnRahKIBA" async></script>
 </head>
@@ -127,76 +127,102 @@
   <!-- CONTACT FORM -->
   <section class="contact-section contact-section-priority" id="contact-form">
     <div class="container">
-      <div class="contact-box contact-box-wide">
-        <div id="form-lawyer-banner" style="display:none; background:#EFF5FB; border:1.5px solid #1F4E7A; border-radius:8px; padding:14px 18px; margin-bottom:18px;">
-          <p style="margin:0; font-size:0.92rem; color:#1F4E7A;"><strong>Enquiring about:</strong> <span id="form-lawyer-name"></span></p>
-          <p style="margin:4px 0 0; font-size:0.82rem; color:#666;">Your message will be sent to this firm via ExpatLawyerSpain. <a href="#" onclick="clearPrefill(); return false;" style="color:#C94F1A;">Send a general enquiry instead</a></p>
-        </div>
-        <h2 id="form-title">Prefer not to browse multiple lawyers?</h2>
-        <p id="form-subtitle">Tell us what you need and we’ll connect you with the right English-speaking lawyer.</p>
-        <form class="contact-form" action="https://formspree.io/f/xojywvzv" method="POST">
-          <input type="hidden" id="hidden-lawyer" name="lawyer" value="" />
-          <input type="hidden" id="hidden-city" name="city" value="" />
-          <input type="hidden" name="source" value="expatlawyerspain.com" />
-          <input type="hidden" name="form_name" value="els_lead_capture" />
-          <input type="hidden" name="_subject" value="New enquiry via ExpatLawyerSpain.com" />
-          <div class="form-honeypot" aria-hidden="true">
-            <label for="company-website">Leave this field empty</label>
-            <input id="company-website" type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+      <div class="enquiry-grid">
+        <div class="enquiry-intro">
+          <div id="form-lawyer-banner" class="enquiry-banner" style="display:none;">
+            <p class="enquiry-banner-main"><strong>Enquiring about:</strong> <span id="form-lawyer-name"></span></p>
+            <p class="enquiry-banner-sub">Your message will be sent to this firm via ExpatLawyerSpain. <a href="#" onclick="clearPrefill(); return false;">Send a general enquiry instead</a></p>
           </div>
-          <input type="text" name="name" placeholder="Your full name" required />
-          <input type="email" name="email" placeholder="Your email address" required />
-          <select id="enquiry-specialty" name="specialty" required aria-label="Legal specialty">
-            <option value="">What do you need help with?</option>
-            <option>Immigration & Residency</option>
-            <option>Property Law</option>
-            <option>Employment Law</option>
-            <option>Family Law</option>
-            <option>Tax & Fiscal</option>
-            <option>Business & Corporate</option>
-            <option>Wills & Inheritance</option>
-            <option>Other</option>
-          </select>
-          <select id="enquiry-region" name="region" required aria-label="Region">
-            <option value="">Which city/region?</option>
-            <option>A Coruña</option>
-            <option>Alicante (Costa Blanca)</option>
-            <option>Barcelona</option>
-            <option>Costa del Sol</option>
-            <option>Galicia</option>
-            <option>Lugo</option>
-            <option>Madrid</option>
-            <option>Málaga</option>
-            <option>Marbella</option>
-            <option>Murcia</option>
-            <option>Palma de Mallorca</option>
-            <option>Pontevedra</option>
-            <option>Seville</option>
-            <option>Valencia</option>
-            <option>Vigo</option>
-            <option>Zaragoza</option>
-            <option>Other / Nationwide</option>
-          </select>
-          <p class="form-area-note">Area not listed? Choose other and mention your province in the message.</p>
-          <textarea name="message" placeholder="Briefly describe your situation so we can route you to the right lawyer" rows="4"></textarea>
-          <p class="form-security-note">For your safety, please do not include links in your enquiry. We review all submissions before forwarding them.</p>
-          <div class="cf-turnstile" data-sitekey="0x4AAAAAADLfF294HYPuTs6F"></div>
-          <p class="form-error" id="form-error" role="alert" style="display:none;"></p>
-          <select id="heard-about-us" name="heard_about_us" aria-label="How did you hear about us?">
-            <option value="">How did you hear about us? (optional)</option>
-            <option>Facebook</option>
-            <option>Google / search engine</option>
-            <option>AI assistant (ChatGPT, Claude, etc.)</option>
-            <option>Friend or recommendation</option>
-            <option>Blog or article</option>
-            <option>Lawyer or professional referral</option>
-            <option>Other</option>
-          </select>
-          <button type="submit" class="btn-submit">Send my enquiry →</button>
-          <p class="form-reassurance">No hidden fees. No obligation.<br />Just a faster route to the right English-speaking lawyer.</p>
-        </form>
-        <div class="form-success" id="form-success" style="display:none;">
-          <p>✅ Thanks! We’ll connect you with a suitable lawyer.</p>
+          <h2 id="form-title">Not sure who to ask? <em>We’ll match you.</em></h2>
+          <p id="form-subtitle">Describe your situation and we’ll connect you with up to three lawyers who handle it.</p>
+          <ul class="enquiry-points">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>Free, confidential, no obligation</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>English-speaking, vetted firms only</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>Usually matched within 2-5 working days</li>
+          </ul>
+        </div>
+        <div class="enquiry-form-col">
+          <form class="contact-form enquiry-form-card" action="https://formspree.io/f/xojywvzv" method="POST">
+            <input type="hidden" id="hidden-lawyer" name="lawyer" value="" />
+            <input type="hidden" id="hidden-city" name="city" value="" />
+            <input type="hidden" name="source" value="expatlawyerspain.com" />
+            <input type="hidden" name="form_name" value="els_lead_capture" />
+            <input type="hidden" name="_subject" value="New enquiry via ExpatLawyerSpain.com" />
+            <div class="form-honeypot" aria-hidden="true">
+              <label for="company-website">Leave this field empty</label>
+              <input id="company-website" type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+            </div>
+            <div class="enquiry-fields">
+              <div class="field">
+                <label for="enq-name">Full name</label>
+                <input id="enq-name" type="text" name="name" placeholder="Jane Doe" required />
+              </div>
+              <div class="field">
+                <label for="enq-email">Email</label>
+                <input id="enq-email" type="email" name="email" placeholder="you@email.com" required />
+              </div>
+              <div class="field">
+                <label for="enquiry-specialty">Legal area</label>
+                <select id="enquiry-specialty" name="specialty" required aria-label="Legal specialty">
+                  <option value="">Select…</option>
+                  <option>Immigration & Residency</option>
+                  <option>Property Law</option>
+                  <option>Employment Law</option>
+                  <option>Family Law</option>
+                  <option>Tax & Fiscal</option>
+                  <option>Business & Corporate</option>
+                  <option>Wills & Inheritance</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="enquiry-region">City / region</label>
+                <select id="enquiry-region" name="region" required aria-label="Region">
+                  <option value="">Select…</option>
+                  <option>A Coruña</option>
+                  <option>Alicante (Costa Blanca)</option>
+                  <option>Barcelona</option>
+                  <option>Costa del Sol</option>
+                  <option>Galicia</option>
+                  <option>Lugo</option>
+                  <option>Madrid</option>
+                  <option>Málaga</option>
+                  <option>Marbella</option>
+                  <option>Murcia</option>
+                  <option>Palma de Mallorca</option>
+                  <option>Pontevedra</option>
+                  <option>Seville</option>
+                  <option>Valencia</option>
+                  <option>Vigo</option>
+                  <option>Zaragoza</option>
+                  <option>Other / Nationwide</option>
+                </select>
+              </div>
+            </div>
+            <div class="field field-full">
+              <label for="enq-message">How can a lawyer help?</label>
+              <textarea id="enq-message" name="message" placeholder="A few lines about your situation…" rows="4"></textarea>
+            </div>
+            <div class="field field-full">
+              <label for="heard-about-us">How did you hear about us? <span class="opt">(optional)</span></label>
+              <select id="heard-about-us" name="heard_about_us" aria-label="How did you hear about us?">
+                <option value="">Select…</option>
+                <option>Facebook</option>
+                <option>Google / search engine</option>
+                <option>AI assistant (ChatGPT, Claude, etc.)</option>
+                <option>Friend or recommendation</option>
+                <option>Blog or article</option>
+                <option>Lawyer or professional referral</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="cf-turnstile" data-sitekey="0x4AAAAAADLfF294HYPuTs6F"></div>
+            <p class="form-error" id="form-error" role="alert" style="display:none;"></p>
+            <button type="submit" class="btn-submit">Send my enquiry →</button>
+          </form>
+          <div class="form-success" id="form-success" style="display:none;">
+            <p>✅ Thanks! We’ll connect you with a suitable lawyer.</p>
+          </div>
         </div>
       </div>
     </div>
