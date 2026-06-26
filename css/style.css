@@ -1070,7 +1070,7 @@ header nav a:not(.btn-nav):hover{ color:#FBF7EF; }
 .footer-brand .logo span{ font-family:'Fraunces',Georgia,serif; font-size:1.125rem; font-weight:600; color:var(--text); }
 .footer-brand .logo strong{ color:var(--primary); }
 .footer-tagline{ margin-top:16px; font-size:0.875rem; line-height:1.6; color:var(--text-light); max-width:24rem; }
-.footer-col h4{ font-size:0.875rem; font-weight:600; margin-bottom:16px; color:var(--text); }
+.footer-col h3{ font-size:0.875rem; font-weight:600; margin-bottom:16px; color:var(--text); }
 .footer-col ul{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:12px; }
 .footer-col a{ font-size:0.875rem; color:var(--text-light); text-decoration:none; }
 .footer-col a:hover{ color:var(--text); }
@@ -1447,3 +1447,6 @@ html{ scroll-behavior:smooth; }
   .navb-menu .btn-nav{ margin-top:10px; text-align:center; justify-content:center; }
   .logo{ font-size:1.05rem; }
 }
+
+/* QA: explicit accessible placeholder colour (clay on white = 6.06:1, opacity:1 stops Firefox lightening it). */
+::placeholder{ color:#705F57; opacity:1; }

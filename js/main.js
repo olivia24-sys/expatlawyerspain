@@ -257,6 +257,12 @@ function prefill(lawyerName, city, specialty = '') {
     'marbella': 'Marbella',
     'costa-del-sol': 'Costa del Sol',
     'palma': 'Palma de Mallorca',
+    'zaragoza': 'Zaragoza',
+    'galicia': 'Galicia',
+    'lugo': 'Lugo',
+    'pontevedra': 'Pontevedra',
+    'a-coruna': 'A Coruña',
+    'vigo': 'Vigo',
     'nationwide': 'Other / Nationwide'
   };
 
