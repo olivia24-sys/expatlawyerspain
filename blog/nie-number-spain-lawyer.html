@@ -14,9 +14,9 @@
   <link rel="alternate" type="text/markdown" href="/llms.txt" title="ExpatLawyerSpain LLM summary" />
   <link rel="alternate" type="text/markdown" href="/llms-full.txt" title="ExpatLawyerSpain full LLM context" />
   <link rel="icon" href="/favicon.png" type="image/png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="../css/style.css?v=1130271"/>
+  <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/libre-franklin-var.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="../css/style.css?v=redesign-20260626-10"/>
 
   <script type="application/ld+json">
   {
@@ -75,102 +75,25 @@
   }
   </script>
 
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Inter', sans-serif; color: #1a1a2e; background: #fff; line-height: 1.7; }
-    .hero { background: linear-gradient(135deg, #1F4E7A 0%, #133356 100%); color: #fff; padding: 60px 40px 50px; text-align: center; }
-    .hero-breadcrumb { font-size: 0.82rem; color: rgba(255,255,255,0.6); margin-bottom: 18px; }
-    .hero-breadcrumb a { color: rgba(255,255,255,0.6); text-decoration: none; }
-    .hero h1 { font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 800; max-width: 760px; margin: 0 auto 16px; line-height: 1.25; }
-    .hero-meta { font-size: 0.82rem; color: rgba(255,255,255,0.55); }
-    .blog-img { margin: 2em 0; border-radius: 10px; overflow: hidden; }
-    .blog-img img { width: 100%; max-height: 420px; object-fit: cover; display: block; }
-    .blog-img figcaption { font-size: 0.78rem; color: #6f6f6f; padding: 6px 10px; background: #fafafa; border-top: 1px solid #eee; }
-    .blog-img figcaption a { color: #6f6f6f; border: none; }
-    .article-wrap { max-width: 760px; margin: 0 auto; padding: 52px 24px 80px; }
-    .article-wrap p { margin-bottom: 1.3em; font-size: 1.02rem; color: #2d2d2d; }
-    .article-wrap h2 { font-size: 1.45rem; font-weight: 700; color: #1a1a2e; margin: 2.4em 0 0.7em; padding-bottom: 6px; border-bottom: 2px solid #f0f0f0; }
-    .article-wrap h3 { font-size: 1.1rem; font-weight: 700; color: #2c3e6e; margin: 1.8em 0 0.5em; }
-    .article-wrap ul, .article-wrap ol { margin: 0.5em 0 1.3em 1.4em; }
-    .article-wrap li { margin-bottom: 0.5em; font-size: 1rem; color: #2d2d2d; }
-    .article-wrap li strong { color: #1a1a2e; }
-    .article-wrap a { color: #9B3412; text-decoration: none; border-bottom: 1px solid rgba(192,57,43,0.25); }
-    .article-wrap a:hover { border-bottom-color: #9B3412; }
-    .callout { background: #fff8f7; border-left: 4px solid #9B3412; padding: 18px 22px; border-radius: 0 8px 8px 0; margin: 1.8em 0; }
-    .callout strong { color: #b8430f; display: block; margin-bottom: 4px; font-size: 0.92rem; text-transform: uppercase; letter-spacing: 0.04em; }
-    .callout p { margin: 0 !important; font-size: 0.97rem; }
-    .info-box { background: #f0f4ff; border: 1px solid #d0daf5; border-radius: 10px; padding: 20px 24px; margin: 1.8em 0; }
-    .info-box a { color: #b8430f; }
-    .info-box p { margin: 0 !important; font-size: 0.97rem; }
-    .tax-table { width: 100%; border-collapse: collapse; margin: 1em 0 1.8em; font-size: 0.95rem; }
-    .tax-table th { background: #1a1a2e; color: #fff; padding: 11px 14px; text-align: left; font-weight: 600; }
-    .tax-table td { padding: 11px 14px; border-bottom: 1px solid #eee; color: #2d2d2d; vertical-align: top; }
- .tax-table tbody th, .region-table tbody th { padding: 11px 14px; border-bottom: 1px solid #eee; color: #2d2d2d; vertical-align: top; background: inherit; font-weight: 600; text-align: left; }
-    .tax-table tbody th, .region-table tbody th { padding: 11px 14px; border-bottom: 1px solid #eee; color: #2d2d2d; vertical-align: top; background: inherit; font-weight: 600; text-align: left; }
-    .tax-table tr:nth-child(even) td { background: #fafafa; }
-    .tax-table tr:last-child td { border-bottom: none; }
-    .tax-card { background: #f8f9ff; border: 1px solid #e0e4f5; border-radius: 10px; padding: 22px 24px; margin: 0; }
-    .tax-card h3 { margin: 0 0 8px; font-size: 1.05rem; color: #1a1a2e; border: none; padding: 0; }
-    .tax-card .tax-label { display: inline-block; background: #1a1a2e; color: #fff; font-size: 0.75rem; font-weight: 700; padding: 3px 10px; border-radius: 4px; margin-bottom: 10px; letter-spacing: 0.04em; }
-    .tax-card .tax-rate { font-size: 1.5rem; font-weight: 800; color: #9B3412; margin-bottom: 8px; }
-    .tax-card p { margin: 0 !important; font-size: 0.95rem; color: #444; }
-    .tax-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin: 1em 0 2em; }
-    .region-table { width: 100%; border-collapse: collapse; margin: 1em 0 1.8em; font-size: 0.93rem; }
-    .region-table th { background: #2c3e6e; color: #fff; padding: 10px 14px; text-align: left; font-weight: 600; }
-    .region-table td { padding: 10px 14px; border-bottom: 1px solid #eee; color: #2d2d2d; }
-    .region-table tr:nth-child(even) td { background: #fafafa; }
-    .region-table tr:last-child td { border-bottom: none; }
-    .cta-box { position: relative; overflow: hidden; background: linear-gradient(135deg, #133356 0%, #1F4E7A 72%, #2A6C9F 100%); color: #fff; border: 0; border-radius: 18px; padding: 32px 34px; margin: 42px 0; box-shadow: 0 18px 45px rgba(19,51,86,0.18); }
-    .cta-box::after { content: ''; position: absolute; right: -44px; bottom: -52px; width: 160px; height: 160px; border-radius: 50%; background: rgba(201,79,26,0.22); pointer-events: none; }
-    .cta-box p { position: relative; z-index: 1; margin: 0 0 18px !important; max-width: 590px; color: rgba(255,255,255,0.92) !important; font-size: 1.04rem; line-height: 1.65; font-weight: 500; }
-    .cta-box p strong { display: block; color: #fff; font-size: 1.24rem; line-height: 1.35; margin-bottom: 6px; }
-    .cta-box a, .cta-box a.cta-btn { position: relative; z-index: 1; display: inline-block; background: #9B3412; color: #fff !important; padding: 11px 24px; border-radius: 999px; text-decoration: none !important; border: 0 !important; font-weight: 700; font-size: 0.95rem; box-shadow: 0 8px 20px rgba(0,0,0,0.16); }
-    .cta-box a:hover, .cta-box a.cta-btn:hover { background: #7A260D; color: #fff !important; border: 0 !important; }
-    .faq { margin: 0.5em 0 1.8em; }
-    .faq-item { border: 1px solid #eee; border-radius: 8px; margin-bottom: 10px; overflow: hidden; }
-    .faq-q { padding: 16px 20px; font-weight: 600; cursor: pointer; background: #fafafa; display: flex; justify-content: space-between; align-items: center; font-size: 0.97rem; color: #1a1a2e; user-select: none; }
-    .faq-q::after { content: '+'; font-size: 1.2rem; color: #9B3412; flex-shrink: 0; }
-    .faq-q.open::after { content: '-'; }
-    .faq-a { display: none; padding: 14px 20px 16px; font-size: 0.97rem; color: #2d2d2d; border-top: 1px solid #eee; }
-    .faq-a.open { display: block; }
-    .steps { margin: 1.5em 0 2em; }
-    .step { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 22px; }
-    .step-num { flex-shrink: 0; width: 36px; height: 36px; background: #9B3412; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.95rem; margin-top: 2px; }
-    .step-content { flex: 1; }
-    .step-content strong { display: block; font-size: 1rem; color: #1a1a2e; margin-bottom: 4px; }
-    .step-content p { margin: 0 !important; font-size: 0.97rem; }
-    footer { background: #111; color: rgba(255,255,255,0.6); text-align: center; padding: 40px 24px; font-size: 0.85rem; }
-    footer .footer-logo { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; }
-    footer .footer-logo img { width: 28px; height: 28px; }
-    footer .footer-logo span { color: #f07040; font-weight: 700; font-size: 1rem; }
-    footer .footer-logo strong { color: #fff; font-size: 1rem; }
-    footer p { margin-bottom: 8px; }
-    footer a { color: rgba(255,255,255,0.5); text-decoration: none; border: none; }
-    @media (max-width: 640px) {
-      nav { padding: 14px 18px; }
-      .hero { padding: 40px 18px 36px; }
-      .article-wrap { padding: 36px 18px 60px; }
-      .cta-box { padding: 26px 22px; border-radius: 14px; }
-      .tax-grid { grid-template-columns: 1fr; }
-    }
-  </style>
   <link rel="preload" as="image" href="https://expatlawyerspain.com/images/blog/nie-number-mallorca-calo-des-moro.jpg" />
 </head>
-<body>
+<body class="post">
 
-<header>
-  <div class="container header-inner">
-    <a href="/" class="logo">
-      <img src="../images/logo-tree-44.png" alt="ExpatLawyerSpain" class="logo-icon" decoding="async" width="36" height="36">
-      <span>ExpatLawyer<strong>Spain</strong></span>
-    </a>
-    <nav>
-      <a href="/#find">Find a Lawyer</a>
-      <a href="/blog/">Guides</a>
-      <a href="/#list-your-firm" class="btn-nav">List Your Firm</a>
-    </nav>
-  </div>
-</header>
+  <!-- HEADER -->
+  <header>
+    <div class="container header-inner">
+      <a href="/" class="logo">
+        <img src="/images/logo-tree-44.png" alt="ExpatLawyerSpain" class="logo-icon" decoding="async" width="36" height="36">
+        <span>ExpatLawyer<strong>Spain</strong></span>
+      </a>
+      <nav>
+        <a href="/lawyers">Find a Lawyer</a>
+        <a href="/blog/">Guides</a>
+        <a href="/list-your-firm">List Your Firm</a>
+      </nav>
+      <a href="/#contact-form" class="btn-nav nav-cta">Send enquiry</a>
+    </div>
+  </header>
 
   <main>
 
@@ -561,19 +484,44 @@
 
 </main>
 
-  <footer>
-  <div class="footer-logo">
-    <img src="https://expatlawyerspain.com/images/logo-tree-44.png" alt="ExpatLawyerSpain" decoding="async" width="28" height="28" loading="lazy">
-    <strong>ExpatLawyer</strong><span>Spain</span>
-  </div>
-  <p>Helping expats find trusted English-speaking lawyers across Spain.</p>
-  <p>
-    <a href="https://expatlawyerspain.com/privacy">Privacy Policy</a> &nbsp;·&nbsp;
-    <a href="https://expatlawyerspain.com/terms">Terms of Use</a> &nbsp;·&nbsp;
-    <a href="https://expatlawyerspain.com/cookie-policy">Cookie Policy</a>
-  </p>
-  <p style="margin-top:12px;">© 2026 ExpatLawyerSpain.com - For informational purposes only. Not legal advice.</p>
-</footer>
+    <footer class="site-footer">
+    <div class="container footer-top">
+      <div class="footer-brand">
+        <div class="logo">
+          <img src="/images/logo-tree-44.png" alt="ExpatLawyerSpain" class="logo-icon" decoding="async" width="36" height="36">
+          <span>ExpatLawyer<strong>Spain</strong></span>
+        </div>
+        <p class="footer-tagline">The directory connecting English-speaking expats with vetted, bilingual lawyers across Spain.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Directory</h4>
+        <ul>
+          <li><a href="/lawyers">Browse by city</a></li>
+          <li><a href="/lawyers">Browse by legal area</a></li>
+          <li><a href="/lawyers">Featured lawyers</a></li>
+          <li><a href="/#contact-form">Get matched</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>For lawyers</h4>
+        <ul>
+          <li><a href="/list-your-firm">List your firm</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="/privacy">Privacy Policy</a></li>
+          <li><a href="/terms">Terms</a></li>
+          <li><a href="/cookie-policy">Cookie Policy</a></li>
+          <li><a href="mailto:hello@expatlawyerspain.com">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bar">
+      <div class="container">© 2026 ExpatLawyerSpain.com - Not a law firm. Directory service only.</div>
+    </div>
+  </footer>
 
 <script>
   document.querySelectorAll('.faq-q').forEach(q => {
