@@ -1027,3 +1027,81 @@ footer .logo-icon{ background:#fff; border-radius:7px; padding:3px; }
   .featured-firms{ padding:48px 0; }
   .lawyers-aside{ flex-direction:column; }
 }
+
+/* ===== Lovable-parity pass: header, buttons, captcha, why, lawyer panel, footer ===== */
+/* Header: cream serif logo + lighter, smaller Send-enquiry pill */
+header .logo span{ font-size:1.125rem; font-weight:600; letter-spacing:-0.02em; color:#FBF7EF; }
+header .logo strong{ color:#FBF7EF; }
+header nav a:not(.btn-nav){ color:rgba(251,247,239,0.80); }
+header nav a:not(.btn-nav):hover{ color:#FBF7EF; }
+.btn-nav{ padding:7px 18px; font-size:0.8rem !important; font-weight:500; }
+
+/* Form submit button: softer weight, slimmer */
+.enquiry-form-card .btn-submit{ font-weight:500; padding:11px; font-size:0.9rem; }
+/* Turnstile a touch smaller */
+.enquiry-row-2 .cf-turnstile{ transform:scale(0.86); transform-origin:left center; }
+
+/* Why section: white bg + Lovable boxes with circular icon */
+.why-us{ background:#fff; padding:80px 0; }
+.why-head{ text-align:center; max-width:42rem; margin:0 auto 48px; }
+.why-us h2{ font-family:'Fraunces',Georgia,serif; font-size:clamp(1.7rem,3vw,2.25rem); font-weight:500; color:var(--navy); margin:0; }
+.why-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:24px; }
+.why-card{ background:#fff; border:1px solid var(--border); border-radius:20px; padding:24px; text-align:left; box-shadow:none; }
+.why-card:hover{ transform:none; box-shadow:none; }
+.why-ic{ display:flex; width:40px; height:40px; align-items:center; justify-content:center; border-radius:999px; background:rgba(201,79,26,0.10); color:var(--primary); margin-bottom:16px; }
+.why-ic svg{ width:20px; height:20px; }
+.why-card h3{ font-family:'Fraunces',Georgia,serif; font-size:1.125rem; font-weight:500; margin-bottom:8px; color:var(--text); }
+.why-card p{ font-size:0.875rem; line-height:1.55; color:var(--text-light); }
+
+/* Lawyer CTA: navy rounded panel on the cream page */
+.lawyer-cta{ background:var(--bg); padding:24px 0 80px; }
+.lawyer-panel{ background:var(--navy); border-radius:24px; padding:56px; display:grid; grid-template-columns:1.4fr 1fr; gap:32px; align-items:center; overflow:hidden; }
+.lawyer-panel .eyebrow{ color:var(--primary); font-weight:600; letter-spacing:0.16em; margin:0; }
+.lawyer-panel h2{ font-family:'Fraunces',Georgia,serif; font-size:clamp(1.6rem,3vw,2.1rem); font-weight:500; color:#fff; margin:12px 0 0; line-height:1.15; }
+.lawyer-panel .lawyer-panel-lead{ margin-top:16px; color:rgba(255,255,255,0.75); max-width:34rem; }
+.lawyer-panel-cta{ display:flex; justify-content:flex-end; }
+.btn-get-listed{ display:inline-block; background:var(--primary); color:#fff; border-radius:10px; padding:13px 26px; font-weight:600; text-decoration:none; box-shadow:0 0 0 4px rgba(201,79,26,0.18); }
+.btn-get-listed:hover{ background:var(--primary-dark); }
+
+/* Footer: sand-deep 4-column + navy bottom bar (Lovable) */
+.site-footer{ background:var(--bg-section); color:var(--text); }
+.footer-top{ display:grid; grid-template-columns:1.3fr 1fr 1fr 1fr; gap:48px; padding:64px 24px; }
+.footer-brand .logo{ display:flex; align-items:center; gap:8px; }
+.footer-brand .logo span{ font-family:'Fraunces',Georgia,serif; font-size:1.125rem; font-weight:600; color:var(--text); }
+.footer-brand .logo strong{ color:var(--primary); }
+.footer-tagline{ margin-top:16px; font-size:0.875rem; line-height:1.6; color:var(--text-light); max-width:24rem; }
+.footer-col h4{ font-size:0.875rem; font-weight:600; margin-bottom:16px; color:var(--text); }
+.footer-col ul{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:12px; }
+.footer-col a{ font-size:0.875rem; color:var(--text-light); text-decoration:none; }
+.footer-col a:hover{ color:var(--text); }
+.footer-bar{ background:var(--navy); color:rgba(255,255,255,0.70); }
+.footer-bar .container{ padding:18px 24px; font-size:0.78rem; }
+
+@media (max-width:900px){ .why-grid{ grid-template-columns:1fr 1fr; } }
+@media (max-width:860px){
+  .lawyer-panel{ grid-template-columns:1fr; padding:36px; }
+  .lawyer-panel-cta{ justify-content:flex-start; }
+  .footer-top{ grid-template-columns:1fr 1fr; gap:32px; padding:48px 24px; }
+}
+@media (max-width:540px){ .why-grid{ grid-template-columns:1fr; } .footer-top{ grid-template-columns:1fr; } }
+
+/* /list-your-firm page */
+.lyf-page{ background:var(--bg); padding:56px 0 72px; }
+.lyf-grid{ display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:start; }
+.lyf-intro h1{ font-family:'Fraunces',Georgia,serif; font-size:clamp(2rem,3.6vw,3rem); font-weight:500; line-height:1.1; letter-spacing:-0.01em; color:var(--text); margin:8px 0 0; }
+.lyf-intro .eyebrow{ margin:0; }
+.lyf-lead{ margin:18px 0 0; color:var(--text-light); max-width:32rem; line-height:1.6; }
+.lyf-points{ list-style:none; margin:28px 0 0; padding:0; display:flex; flex-direction:column; gap:14px; }
+.lyf-points li{ display:flex; align-items:flex-start; gap:12px; font-size:0.9rem; color:var(--text); line-height:1.4; }
+.lyf-points svg{ width:20px; height:20px; color:var(--primary); flex-shrink:0; margin-top:1px; }
+.lyf-form .field{ display:flex; flex-direction:column; gap:7px; margin-top:16px; }
+.lyf-form .field:first-of-type{ margin-top:0; }
+.lyf-form label{ font-size:0.875rem; font-weight:500; color:var(--text); }
+.lyf-form input, .lyf-form select, .lyf-form textarea{ background:#fff; border:1px solid var(--border); border-radius:10px; padding:11px 13px; font-size:0.95rem; width:100%; box-sizing:border-box; font-family:inherit; color:var(--text); }
+.lyf-form textarea{ resize:vertical; min-height:104px; }
+.lyf-form h2{ font-family:'Fraunces',Georgia,serif; font-size:1.5rem; font-weight:500; margin:0; color:var(--text); }
+.lyf-form .lyf-form-sub{ font-size:0.875rem; color:var(--text-light); margin:6px 0 0; }
+.lyf-form .cf-turnstile{ margin-top:16px; }
+.lyf-form .btn-submit{ margin-top:18px; width:100%; border-radius:999px; padding:11px; font-size:0.9rem; font-weight:500; background:var(--primary); color:#fff; border:none; cursor:pointer; }
+.lyf-form .btn-submit:hover{ background:var(--primary-dark); }
+@media (max-width:860px){ .lyf-grid{ grid-template-columns:1fr; gap:32px; } }
