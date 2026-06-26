@@ -16,7 +16,7 @@
 <link rel="icon" href="/favicon.png" type="image/png">
 <link rel="preload" href="/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="/fonts/libre-franklin-var.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="stylesheet" href="/css/style.css?v=redesign-20260626-10">
+<link rel="stylesheet" href="/css/style.css?v=redesign-20260626-13">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -83,11 +83,14 @@
 
   /* HERO */
   .hero {
-    background: linear-gradient(135deg, #1F4E7A 0%, #133356 100%);
-    color: white;
-    text-align: center;
-    padding: 60px 24px 52px;
+    background: var(--cream-dark);
+    color: var(--text-main);
+    text-align: left;
+    padding: 60px 0 52px;
+    border-bottom: 1px solid var(--border);
   }
+
+  .hero-inner { max-width: 960px; margin: 0 auto; padding: 0 24px; }
 
   .hero-tag {
     display: inline-block;
@@ -96,9 +99,9 @@
     font-weight: 700;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    color: #f0c090;
-    background: rgba(240,192,144,0.15);
-    border: 1px solid rgba(240,192,144,0.3);
+    color: var(--terracotta);
+    background: var(--highlight);
+    border: 1px solid var(--highlight-border);
     padding: 5px 14px;
     border-radius: 20px;
     margin-bottom: 20px;
@@ -107,26 +110,26 @@
   .hero h1 {
     font-family: 'Fraunces', Georgia, serif;
     font-size: clamp(26px, 4vw, 40px);
-    font-weight: bold;
-    line-height: 1.25;
-    margin-bottom: 16px;
-    max-width: 700px;
-    margin-left: auto;
-    margin-right: auto;
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin: 0 0 16px;
+    max-width: 760px;
+    color: var(--navy);
   }
 
   .hero p {
     font-family: 'Libre Franklin', system-ui, -apple-system, sans-serif;
     font-size: 16px;
-    color: rgba(255,255,255,0.78);
-    max-width: 580px;
-    margin: 0 auto 28px;
+    color: var(--text-muted);
+    max-width: 600px;
+    margin: 0 0 28px;
     line-height: 1.6;
   }
 
   .hero-stats {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 32px;
     flex-wrap: wrap;
     margin-top: 8px;
@@ -135,14 +138,14 @@
   .hero-stat {
     font-family: 'Libre Franklin', system-ui, -apple-system, sans-serif;
     font-size: 13px;
-    color: rgba(255,255,255,0.6);
+    color: var(--text-muted);
   }
 
   .hero-stat strong {
     display: block;
     font-size: 22px;
     font-weight: 700;
-    color: white;
+    color: var(--navy);
     margin-bottom: 2px;
   }
 
@@ -506,6 +509,7 @@
 
 <!-- HERO -->
 <div class="hero">
+  <div class="hero-inner">
   <div class="hero-tag">Reference Guide</div>
   <h1>Spanish Legal Glossary:<br>78 Key Terms Explained<br>in English</h1>
   <p>Plain-English definitions of 78 legal terms used in Spanish property purchases, residency applications, tax filings, wills, and court proceedings.</p>
@@ -513,6 +517,7 @@
     <div class="hero-stat"><strong>78</strong>terms covered</div>
     <div class="hero-stat"><strong>8</strong>legal categories</div>
     <div class="hero-stat"><strong>Free</strong>to search &amp; use</div>
+  </div>
   </div>
 </div>
 
@@ -533,9 +538,10 @@
         <button class="cat-filter-btn" data-cat="courts" onclick="filterCat(this,'courts')">Courts &amp; process <span class="count-badge" id="cnt-courts">4</span></button>
         <button class="cat-filter-btn" data-cat="employment" onclick="filterCat(this,'employment')">Employment <span class="count-badge" id="cnt-employment">4</span></button>
       </div>
-      <div class="sidebar-cta">
-        <p>Need help with a specific legal matter? We'll connect you with the right English-speaking lawyer.</p>
-        <a href="/?specialty=property" class="btn-cta">Find a Lawyer →</a>
+      <div class="filter-help">
+        <h3>Not sure where to start?</h3>
+        <p>Send one enquiry and we'll route you to the right firm.</p>
+        <a href="/#contact-form" class="btn-help">Send enquiry</a>
       </div>
     </aside>
 
