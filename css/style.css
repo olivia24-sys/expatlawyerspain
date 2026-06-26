@@ -1112,8 +1112,12 @@ header nav a:not(.btn-nav):hover{ color:#FBF7EF; }
 /* ===== Polish pass 2 ===== */
 /* Hero: staggered fade-up on load (matches Lovable's entrance) */
 @keyframes elsFadeUp{ from{ opacity:0; transform:translateY(18px); } to{ opacity:1; transform:translateY(0); } }
+@keyframes elsRiseOnly{ from{ transform:translateY(18px); } to{ transform:translateY(0); } }
 .hero-content > *{ opacity:0; animation:elsFadeUp .65s cubic-bezier(.21,.6,.35,1) both; }
-.hero-content > h1{ animation-delay:.05s; }
+/* QA perf (2026-06-26): the hero <h1> is the LCP element. Keep it painted from the first
+   frame (opacity:1) and slide it in WITHOUT a fade, so LCP is not gated by the entrance
+   animation. Pre-fix mobile LCP was ~6.9s because the H1 started at opacity:0. */
+.hero-content > h1{ opacity:1; animation-name:elsRiseOnly; animation-delay:.05s; }
 .hero-content > .hero-sub{ animation-delay:.16s; }
 .hero-content > .search-box{ animation-delay:.28s; }
 .hero-content > .hero-trust{ animation-delay:.40s; }
