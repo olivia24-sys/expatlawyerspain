@@ -1166,3 +1166,7 @@ header nav a:not(.btn-nav):hover{ color:#FBF7EF; }
 .lyf-form textarea{ min-height:92px; }
 .lyf-form .cf-turnstile{ margin-top:16px; }
 .lyf-form .btn-submit{ margin-top:18px; }
+
+/* list-your-firm form: cancel the .contact-form flex gap so field margins control spacing (was doubling to ~30px) */
+.lyf-form{ gap:0; }
+.lyf-form input, .lyf-form textarea{ padding:7px 12px; }
