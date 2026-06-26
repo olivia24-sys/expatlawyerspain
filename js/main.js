@@ -30,13 +30,20 @@ function getVisibleLawyerCount() {
 function searchLawyers() {
   const city = document.getElementById('city-select').value;
   const specialty = document.getElementById('specialty-select').value;
-  filterListings(city, specialty);
-  trackEvent('Search Used', {
-    city: getSelectLabelByValue('city-select', city),
-    specialty: getSelectLabelByValue('specialty-select', specialty),
-    results: getVisibleLawyerCount()
-  });
-  document.getElementById('listings-grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const grid = document.getElementById('listings-grid');
+  if (grid) {
+    // On the /lawyers directory page: filter in place.
+    const langEl = document.getElementById('language-select');
+    filterListings(city, specialty, langEl ? langEl.value : '');
+    grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    return;
+  }
+  // On the homepage: send the search to the /lawyers directory.
+  const params = new URLSearchParams();
+  if (city) params.set('city', city);
+  if (specialty) params.set('specialty', specialty);
+  const qs = params.toString();
+  window.location.href = '/lawyers' + (qs ? '?' + qs : '');
 }
 
 function startEnquiry(e) {
@@ -74,24 +81,59 @@ function filterSpecialty(specialty) {
   document.getElementById('listings-grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-function applyFiltersFromUrl() {
+function applyLawyersFilters() {
+  const city = document.getElementById('city-select').value;
+  const specialty = document.getElementById('specialty-select').value;
+  const langEl = document.getElementById('language-select');
+  const language = langEl ? langEl.value : '';
+  filterListings(city, specialty, language);
+  const params = new URLSearchParams();
+  if (city) params.set('city', city);
+  if (specialty) params.set('specialty', specialty);
+  if (language) params.set('language', language);
+  const qs = params.toString();
+  history.replaceState(null, '', '/lawyers' + (qs ? '?' + qs : ''));
+}
+
+function initListingsPage() {
   const params = new URLSearchParams(window.location.search);
   const city = resolveCity(params.get('city') || '');
   const specialty = params.get('specialty') || '';
+  const language = params.get('language') || '';
 
-  if (!city && !specialty) return;
+  const cs = document.getElementById('city-select');
+  const ss = document.getElementById('specialty-select');
+  const ls = document.getElementById('language-select');
+  if (cs && city) cs.value = city;
+  if (ss && specialty) ss.value = specialty;
+  if (ls && language) ls.value = language;
 
-  const citySelect = document.getElementById('city-select');
-  const specialtySelect = document.getElementById('specialty-select');
+  filterListings(city, specialty, language);
 
-  if (citySelect && city) citySelect.value = city;
-  if (specialtySelect && specialty) specialtySelect.value = specialty;
+  [cs, ss, ls].forEach(sel => { if (sel) sel.addEventListener('change', applyLawyersFilters); });
+  const reset = document.getElementById('filter-reset');
+  if (reset) reset.addEventListener('click', () => {
+    if (cs) cs.value = '';
+    if (ss) ss.value = '';
+    if (ls) ls.value = '';
+    applyLawyersFilters();
+  });
+}
 
-  filterListings(city, specialty);
-
-  const listingsGrid = document.getElementById('listings-grid');
-  if (listingsGrid) {
-    listingsGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+// Page router: /lawyers filters in place; the homepage handles ?firm= prefill
+// and forwards legacy ?city=/?specialty= deep links to the directory.
+function initPage() {
+  if (document.getElementById('listings-grid')) { initListingsPage(); return; }
+  const params = new URLSearchParams(window.location.search);
+  const firm = params.get('firm');
+  if (firm) {
+    prefill(firm, resolveCity(params.get('city') || ''), params.get('specialty') || '');
+    return;
+  }
+  const city = params.get('city');
+  const specialty = params.get('specialty');
+  if (city || specialty) {
+    window.location.replace('/lawyers' + window.location.search);
   }
 }
 
@@ -103,8 +145,9 @@ function getDataList(card, key) {
     .filter(Boolean);
 }
 
-function filterListings(city, specialty) {
+function filterListings(city, specialty, language) {
   city = resolveCity(city);
+  language = (language || '').toLowerCase();
   const cards = document.querySelectorAll('.lawyer-card');
   const helper = document.getElementById('results-helper');
   let visible = 0;
@@ -112,11 +155,13 @@ function filterListings(city, specialty) {
   cards.forEach(card => {
     const cardCities = getDataList(card, 'city');
     const cardSpecialties = getDataList(card, 'specialty');
+    const cardLangs = getDataList(card, 'lang');
 
     const cityMatch = !city || cardCities.includes(city) || cardCities.includes('nationwide');
     const specialtyMatch = !specialty || cardSpecialties.includes(specialty);
+    const langMatch = !language || cardLangs.includes(language);
 
-    if (cityMatch && specialtyMatch) {
+    if (cityMatch && specialtyMatch && langMatch) {
       card.style.display = 'flex';
       visible++;
     } else {
@@ -137,7 +182,10 @@ function filterListings(city, specialty) {
   }
 
   const noResults = document.getElementById('no-results');
-  noResults.style.display = visible === 0 ? 'block' : 'none';
+  if (noResults) noResults.style.display = visible === 0 ? 'block' : 'none';
+
+  const count = document.getElementById('firm-count');
+  if (count) count.textContent = visible + (visible === 1 ? ' firm' : ' firms');
 }
 
 function getFirmName(card) {
@@ -396,7 +444,7 @@ sortVisibleListings('', '');
 setupFormSpamGuard();
 setupFormStartTracking();
 setupIntentClickTracking();
-applyFiltersFromUrl();
+initPage();
 
 
 function setupMobileConversionEnhancements() {

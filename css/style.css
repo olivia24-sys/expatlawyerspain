@@ -957,3 +957,73 @@ footer .logo-icon{ background:#fff; border-radius:7px; padding:3px; }
   .enquiry-form-card{ padding:24px; }
   .contact-section-priority{ padding:40px 0 56px; }
 }
+
+/* ===== Firm cards (Lovable FirmCard) ===== */
+.firm-grid{ display:grid; gap:20px; grid-template-columns:repeat(3,1fr); }
+.lawyers-grid{ grid-template-columns:repeat(2,1fr); }
+.firm-card{ display:flex; flex-direction:column; height:100%; background:#fff; border:1px solid var(--border); border-radius:20px; padding:24px; transition:border-color .15s, box-shadow .15s; }
+.firm-card:hover{ border-color:rgba(201,79,26,0.40); box-shadow:0 8px 30px -12px rgba(201,79,26,0.18); }
+.firm-name{ font-family:'Fraunces',Georgia,serif; font-size:1.25rem; font-weight:500; line-height:1.2; color:var(--text); margin:0; }
+.firm-loc{ display:flex; align-items:center; gap:6px; margin-top:6px; font-size:0.78rem; color:var(--text-light); }
+.firm-loc .ic-pin{ width:14px; height:14px; flex-shrink:0; }
+.firm-chips{ display:flex; flex-wrap:wrap; gap:6px; margin-top:16px; }
+.firm-chip{ background:var(--sand); color:var(--text); border-radius:999px; padding:2px 10px; font-size:0.6875rem; }
+.firm-desc{ margin-top:16px; font-size:0.875rem; line-height:1.55; color:var(--text-light); display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+.firm-meta{ display:flex; align-items:flex-end; justify-content:space-between; gap:12px; margin-top:20px; font-size:0.78rem; color:var(--text-light); }
+.firm-langs{ min-width:0; overflow:hidden; text-overflow:ellipsis; }
+.firm-rating{ display:flex; flex-direction:column; align-items:flex-end; gap:1px; flex-shrink:0; white-space:nowrap; }
+.firm-rating .rating-row{ display:inline-flex; align-items:center; gap:4px; color:var(--text); }
+.firm-rating .ic-star{ width:14px; height:14px; color:var(--primary); }
+.firm-rating b{ font-weight:600; }
+.firm-rating .rating-count{ color:var(--text-light); font-weight:400; }
+.firm-rating .rating-src{ font-size:0.68rem; color:var(--text-light); letter-spacing:0.02em; }
+.firm-foot{ margin-top:24px; border-top:1px solid var(--border); padding-top:16px; }
+.firm-enquiry{ display:inline-flex; align-items:center; gap:6px; font-size:0.875rem; font-weight:500; color:var(--primary); text-decoration:none; transition:gap .15s; }
+.firm-enquiry:hover{ gap:10px; }
+.firm-enquiry .ic-arrow{ width:16px; height:16px; }
+
+/* Featured firms section (homepage) */
+.featured-firms{ background:var(--bg); padding:72px 0; }
+.featured-head{ display:flex; align-items:flex-end; justify-content:space-between; gap:16px; margin-bottom:36px; }
+.eyebrow{ font-size:0.72rem; text-transform:uppercase; letter-spacing:0.16em; color:var(--text-light); margin:0 0 8px; }
+.featured-head h2{ font-family:'Fraunces',Georgia,serif; font-size:clamp(1.7rem,3vw,2.25rem); font-weight:500; color:var(--navy); margin:0; }
+.browse-all{ font-size:0.9rem; color:var(--primary); text-decoration:none; white-space:nowrap; font-weight:500; }
+.browse-all:hover{ text-decoration:underline; }
+
+/* /lawyers directory page */
+.lawyers-page{ background:var(--bg); padding:48px 0 72px; min-height:60vh; }
+.lawyers-intro{ margin-bottom:32px; }
+.lawyers-intro h1{ font-family:'Fraunces',Georgia,serif; font-size:clamp(2rem,4vw,3rem); font-weight:500; color:var(--text); margin:8px 0 0; letter-spacing:-0.01em; }
+.lawyers-sub{ margin:12px 0 0; max-width:42rem; color:var(--text-light); }
+.lawyers-sub a{ color:var(--primary); }
+.lawyers-layout{ display:grid; grid-template-columns:260px 1fr; gap:32px; align-items:start; }
+.lawyers-aside{ display:flex; flex-direction:column; gap:20px; position:sticky; top:88px; }
+.filter-card{ background:#fff; border:1px solid var(--border); border-radius:18px; padding:20px; }
+.filter-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+.filter-head h2{ font-family:'Fraunces',Georgia,serif; font-size:1rem; font-weight:500; margin:0; color:var(--text); }
+.filter-reset{ background:none; border:none; font-size:0.78rem; color:var(--text-light); cursor:pointer; padding:0; }
+.filter-reset:hover{ color:var(--text); }
+.filter-field{ margin-top:14px; }
+.filter-field label{ display:block; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.06em; font-weight:500; color:var(--text-light); margin-bottom:6px; }
+.filter-field select{ width:100%; background:#fff; border:1px solid var(--border); border-radius:10px; padding:9px 11px; font-size:0.9rem; font-family:inherit; color:var(--text); }
+.filter-help{ background:var(--sand); border:1px solid var(--border); border-radius:18px; padding:20px; }
+.filter-help h3{ font-family:'Fraunces',Georgia,serif; font-size:1rem; font-weight:500; margin:0; color:var(--text); }
+.filter-help p{ font-size:0.85rem; color:var(--text-light); margin:8px 0 0; line-height:1.5; }
+.btn-help{ display:inline-block; margin-top:14px; background:var(--primary); color:#fff; border-radius:999px; padding:8px 18px; font-size:0.85rem; font-weight:600; text-decoration:none; }
+.btn-help:hover{ background:var(--primary-dark); }
+.firm-count{ font-size:0.85rem; color:var(--text-light); margin:0 0 16px; }
+.no-results{ border:1px dashed var(--border); border-radius:18px; padding:48px 24px; text-align:center; color:var(--text-light); }
+.no-results a{ color:var(--primary); }
+
+@media (max-width:980px){ .firm-grid{ grid-template-columns:repeat(2,1fr); } }
+@media (max-width:860px){
+  .lawyers-layout{ grid-template-columns:1fr; }
+  .lawyers-aside{ position:static; flex-direction:row; flex-wrap:wrap; }
+  .lawyers-aside > *{ flex:1 1 240px; }
+  .featured-head{ flex-wrap:wrap; }
+}
+@media (max-width:680px){
+  .firm-grid, .lawyers-grid{ grid-template-columns:1fr; }
+  .featured-firms{ padding:48px 0; }
+  .lawyers-aside{ flex-direction:column; }
+}
