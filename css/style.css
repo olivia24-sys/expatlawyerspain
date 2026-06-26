@@ -1395,3 +1395,26 @@ html{ scroll-behavior:smooth; }
 .related-card .read-more{ margin-top:auto; align-self:flex-start; display:inline-flex; align-items:center; gap:6px; font-size:0.875rem; font-weight:500; color:var(--primary); text-decoration:none; transition:gap .15s; }
 .related-card .read-more:hover{ gap:10px; }
 @media (max-width:860px){ .related-grid{ grid-template-columns:1fr; } }
+
+/* ===== QA fixes (2026-06-26) ===== */
+/* WCAG AA contrast: darken accent TEXT on warm (cream/sand) backgrounds.
+   #C94F1A on cream = 4.19:1 (fail) -> --primary-dark #A83C10 = 5.9:1 (pass).
+   Large hero/H2 italic ems are large text (3:1 threshold) and are intentionally left on --primary. */
+.post .article-wrap a,
+.post .info-box a,
+.lawyers-sub a,
+.enquiry-banner-sub a,
+.no-results a,
+.specialty-tag,
+.firm-enquiry,
+.browse-all,
+.blog-card a.read-more,
+.blog-card .tag,
+.blog-featured .read-more,
+.related-card .read-more,
+.related-card .tag{ color:var(--primary-dark); }
+.post .article-wrap a{ border-bottom-color:rgba(168,60,16,0.32); }
+
+/* WCAG 2.4.7 focus visible: the hero search selects set outline:none with no replacement.
+   Restore a visible ring for keyboard users only (mouse focus unaffected via :focus-visible). */
+.search-box select:focus-visible{ outline:2px solid var(--primary); outline-offset:2px; }
