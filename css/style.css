@@ -626,8 +626,7 @@ footer p { font-size: 0.875rem; }
 @media (max-width: 480px) {
   .hero h1 { font-size: 1.45rem; }
   .mobile-break-badge,
-  .mobile-break-sub,
-  .hero-trust-break {
+  .mobile-break-sub {
     display: block;
   }
   .why-grid { grid-template-columns: 1fr; }
