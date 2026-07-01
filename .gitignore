@@ -13,3 +13,4 @@ secrets/
 *-email.env
 dist/
 .cache/
+.claude/
