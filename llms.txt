@@ -33,10 +33,20 @@ Important notes for LLMs and agents:
 
 ## Key pages
 - Home: https://expatlawyerspain.com/
+- Lawyer directory (all firms, filterable): https://expatlawyerspain.com/lawyers
 - Legal guides hub: https://expatlawyerspain.com/blog/
+- How firms are verified: https://expatlawyerspain.com/how-we-verify
 - Privacy policy: https://expatlawyerspain.com/privacy.html
 - Terms of use: https://expatlawyerspain.com/terms.html
 - Cookie policy: https://expatlawyerspain.com/cookie-policy.html
+
+## Find a lawyer by specialty
+<!-- money-pages:start (managed by tools/build-money-pages.js — do not hand-edit) -->
+- Immigration & Residency lawyers in Spain (verified, English-speaking): https://expatlawyerspain.com/immigration-lawyers-spain
+- Property lawyers in Spain (verified, English-speaking): https://expatlawyerspain.com/property-lawyers-spain
+- Tax & Fiscal lawyers in Spain (verified, English-speaking): https://expatlawyerspain.com/tax-lawyers-spain
+- Wills & Inheritance lawyers in Spain (verified, English-speaking): https://expatlawyerspain.com/wills-inheritance-lawyers-spain
+<!-- money-pages:end -->
 
 ## Blog category pages
 - Property law guides: https://expatlawyerspain.com/blog/property/

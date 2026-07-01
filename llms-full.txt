@@ -14,6 +14,28 @@ ExpatLawyerSpain is a directory and enquiry-routing service for English-speaking
 
 ## Pages
 
+<!-- money-pages:start (managed by tools/build-money-pages.js — do not hand-edit) -->
+### Immigration & Residency Lawyers in Spain | ExpatLawyerSpain
+- URL: https://expatlawyerspain.com/immigration-lawyers-spain
+- Description: Compare verified English-speaking immigration lawyers in Spain. Visas, residency, the NLV and DNV, appeals and nationality — one free enquiry, no hidden fees.
+- Contains: a live table of every verified English-speaking firm listed for immigration & residency work (coverage, languages, Google rating), specific legal facts, a "when do you actually need a lawyer" section, and links to the related guides.
+
+### Property Lawyers in Spain for Expats | ExpatLawyerSpain
+- URL: https://expatlawyerspain.com/property-lawyers-spain
+- Description: Compare verified English-speaking property lawyers in Spain. Independent legal checks, contracts and completion for foreign buyers — one free enquiry.
+- Contains: a live table of every verified English-speaking firm listed for property work (coverage, languages, Google rating), specific legal facts, a "when do you actually need a lawyer" section, and links to the related guides.
+
+### Tax & Fiscal Lawyers in Spain for Expats | ExpatLawyerSpain
+- URL: https://expatlawyerspain.com/tax-lawyers-spain
+- Description: Compare verified English-speaking tax lawyers in Spain. Beckham Law, non-resident tax, Modelo 210, capital gains and wealth tax — one free enquiry.
+- Contains: a live table of every verified English-speaking firm listed for tax & fiscal work (coverage, languages, Google rating), specific legal facts, a "when do you actually need a lawyer" section, and links to the related guides.
+
+### Wills & Inheritance Lawyers in Spain | ExpatLawyerSpain
+- URL: https://expatlawyerspain.com/wills-inheritance-lawyers-spain
+- Description: Compare verified English-speaking inheritance lawyers in Spain. Spanish wills, forced heirship, regional inheritance tax and probate — one free enquiry.
+- Contains: a live table of every verified English-speaking firm listed for wills & inheritance work (coverage, languages, Google rating), specific legal facts, a "when do you actually need a lawyer" section, and links to the related guides.
+<!-- money-pages:end -->
+
 ### Admin Guides for Expats in Spain | ExpatLawyerSpain
 - URL: https://expatlawyerspain.com/blog/admin/
 - Description: NIE numbers, TIE cards, bank accounts and the essential admin steps for expats in Spain. Start here for practical legal-administrative tasks before buying, relocating or hiring a lawyer.
