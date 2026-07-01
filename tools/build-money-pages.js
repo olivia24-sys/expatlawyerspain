@@ -488,7 +488,7 @@ function llmsFullBlock(pages) {
 }
 
 function lawyersLinksBlock(pages) {
-  const links = pages.map((p) => `<a href="/${p.slug}">${p.label}</a>`).join(' · ');
+  const links = pages.map((p) => `<a href="/${p.slug}">${esc(p.label)}</a>`).join(' · ');
   return `          <div class="filter-help">
             <h3>Browse by specialty</h3>
             <p>Compare verified firms by legal area: ${links}.</p>
