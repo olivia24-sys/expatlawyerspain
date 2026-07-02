@@ -1,9 +1,11 @@
-# PROPOSAL (not applied): cluster down-links from blog posts to the pillar pages
+# Cluster down-links from blog posts to the pillar pages
 
-**Status: awaiting Olivia's approval. Nothing in this file has been done.**
-Blog post copy and SEO are frozen; per the build brief, edits to existing
-posts need explicit sign-off first. This file lists every line that would be
-touched, so the approval is informed.
+**Status: APPROVED by Olivia and APPLIED on branch `money-pages` (2 July 2026).**
+All 35 href swaps below were applied mechanically (href attribute only — link
+text, surrounding copy and everything else byte-identical). Verified: the diff
+is 35 changed lines across 15 posts, nothing else; the 3 `?specialty=family`
+links were left untouched as planned. This file is kept as the record of
+exactly what was approved and changed.
 
 ## The idea
 
@@ -52,9 +54,7 @@ Swap `…/?specialty=wills` → `/wills-inheritance-lawyers-spain`:
 (Line numbers as of branch `money-pages`, commit b38f5e1. A tiny script can
 do the swaps mechanically on approval so nothing else in those files moves.)
 
-## Decision needed from Olivia
+## Decision
 
-- [ ] Approve all 35 href swaps (recommended), or
-- [ ] Approve per-pillar, or
-- [ ] Leave the posts untouched for now (pillar pages still link *down* to the
-      posts either way; only the post→pillar direction waits).
+- [x] Approved all 35 href swaps (Olivia, 2 July 2026) — applied in the same
+      session, same branch.
