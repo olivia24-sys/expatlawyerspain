@@ -153,6 +153,14 @@ module.exports = {
       featured: [],
     },
     {
+      slug: 'wealth-tax-spain',
+      tag: 'Tax and Fiscal',
+      title: 'Wealth Tax Spain: The Non-Resident Guide (2026)',
+      desc: 'Who pays wealth tax in Spain, the 700,000 euro threshold, regional rebates in Madrid and Andalucia, and the Solidarity Tax on large fortunes.',
+      categories: ['tax'],
+      featured: [],
+    },
+    {
       slug: 'moving-to-spain-from-uk',
       tag: 'Moving to Spain',
       title: 'Moving to Spain from the UK: The Complete Legal Guide After Brexit (2026)',
