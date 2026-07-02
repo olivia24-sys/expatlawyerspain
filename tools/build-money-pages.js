@@ -174,7 +174,7 @@ const FOOTER = `  <footer class="site-footer">
       </div>
     </div>
     <div class="footer-bar">
-      <div class="container">© 2026 ExpatLawyerSpain.com - Not a law firm. Directory service only.</div>
+      <div class="container">© 2026 ExpatLawyerSpain.com. Not a law firm, directory service only.</div>
     </div>
   </footer>`;
 
@@ -204,14 +204,14 @@ function firmCardsSection(page, firms) {
 
   return `  <p>${firms.length} verified English-speaking firms are currently listed for ${esc(
     page.label.toLowerCase()
-  )} work - pulled from the live ELS directory, so this list always matches <a href="/lawyers?specialty=${page.specialty}">the full listings</a>. Every firm here is checked before listing: <a href="${data.vettingUrl}">how we verify firms</a>.</p>
+  )} work, pulled from the live ELS directory, so this list always matches <a href="/lawyers?specialty=${page.specialty}">the full listings</a>. Every firm here is checked before listing: <a href="${data.vettingUrl}">how we verify firms</a>.</p>
 
   <div class="firm-grid lawyers-grid">
 ${cards}
   </div>
 
   <div class="info-box">
-    <p><strong>Prefer not to compare firms yourself?</strong> <a href="/#contact-form">Send one enquiry</a> and we route it to the best-fit firm for your city and situation. If a firm doesn't respond within 2-5 working days, we route it to the next one - that's the service.</p>
+    <p><strong>Prefer not to compare firms yourself?</strong> <a href="/#contact-form">Send one enquiry</a> and we route it to the best-fit firm for your city and situation.</p>
   </div>`;
 }
 
@@ -317,7 +317,7 @@ ${s.html}${extra}`;
   const itemList = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    name: `${page.label} lawyers in Spain - verified English-speaking firms`,
+    name: `${page.label} lawyers in Spain: verified English-speaking firms`,
     itemListOrder: 'https://schema.org/ItemListUnordered',
     numberOfItems: firms.length,
     itemListElement: firms.map((f, i) => ({
