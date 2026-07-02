@@ -98,6 +98,7 @@ function parseFirms() {
     const verified = /class="firm-badge"/.test(card);
 
     return {
+      html: card, // the full card markup, reused verbatim on the money pages
       name, // already HTML-escaped in source (e.g. &amp;)
       location: locRaw.trim(),
       cities,
@@ -196,43 +197,21 @@ const FAQ_SCRIPT = `<script>
 
 // --- 2. page pieces ----------------------------------------------------------
 
-function firmTableSection(page, firms) {
-  const rows = firms
-    .map((f) => {
-      const rating = f.rating
-        ? `${esc(f.rating.score)} ★ <span style="color:var(--text-light)">(${esc(f.rating.count)} Google reviews)</span>`
-        : '—';
-      return `      <tr>
-        <th scope="row">${f.name}</th>
-        <td>${esc(f.location)}</td>
-        <td>${esc(f.langsText)}</td>
-        <td>${rating}</td>
-        <td><a href="${f.enquiry}">Enquire ${ARROW_SVG}</a></td>
-      </tr>`;
-    })
-    .join('\n');
+function firmCardsSection(page, firms) {
+  // Reuse each /lawyers firm card byte-for-byte — same markup, same classes,
+  // so the money pages can never drift from the live directory.
+  const cards = firms.map((f) => f.html).join('\n');
 
   return `  <p>${firms.length} verified English-speaking firms are currently listed for ${esc(
     page.label.toLowerCase()
-  )} work — pulled from the live ELS directory, so this table always matches <a href="/lawyers?specialty=${page.specialty}">the full listings</a>. Every firm here is checked before listing: <a href="${data.vettingUrl}">how we verify firms</a>.</p>
+  )} work - pulled from the live ELS directory, so this list always matches <a href="/lawyers?specialty=${page.specialty}">the full listings</a>. Every firm here is checked before listing: <a href="${data.vettingUrl}">how we verify firms</a>.</p>
 
-  <table class="region-table firm-table">
-    <thead>
-      <tr>
-        <th scope="col">Firm</th>
-        <th scope="col">Coverage</th>
-        <th scope="col">Languages</th>
-        <th scope="col">Google rating</th>
-        <th scope="col"></th>
-      </tr>
-    </thead>
-    <tbody>
-${rows}
-    </tbody>
-  </table>
+  <div class="firm-grid lawyers-grid">
+${cards}
+  </div>
 
   <div class="info-box">
-    <p><strong>Prefer not to compare firms yourself?</strong> <a href="/#contact-form">Send one enquiry</a> and we route it to the best-fit firm for your city and situation. If a firm doesn't respond within 2–5 working days, we route it to the next one — that's the service.</p>
+    <p><strong>Prefer not to compare firms yourself?</strong> <a href="/#contact-form">Send one enquiry</a> and we route it to the best-fit firm for your city and situation. If a firm doesn't respond within 2-5 working days, we route it to the next one - that's the service.</p>
   </div>`;
 }
 
@@ -311,7 +290,7 @@ function buildPage(pageKey, page, firms) {
   // Section list drives both the body and the "On this page" TOC.
   const firmHeading = `Verified ${page.label.toLowerCase()} lawyers in Spain`;
   const sections = [
-    { heading: firmHeading, html: firmTableSection(page, firms) },
+    { heading: firmHeading, html: firmCardsSection(page, firms) },
     ...page.sections,
     { heading: page.when.heading, html: page.when.html },
     { heading: 'Frequently Asked Questions', tocLabel: 'FAQs', html: faqSection(page.faq) },
@@ -482,7 +461,7 @@ function llmsFullBlock(pages) {
       (p) => `### ${p.title}
 - URL: ${SITE}/${p.slug}
 - Description: ${p.description}
-- Contains: a live table of every verified English-speaking firm listed for ${p.label.toLowerCase()} work (coverage, languages, Google rating), specific legal facts, a "when do you actually need a lawyer" section, and links to the related guides.`
+- Contains: a live list of every verified English-speaking firm listed for ${p.label.toLowerCase()} work (location, specialties, languages, Google rating), specific legal facts, a "when do you actually need a lawyer" section, and links to the related guides.`
     )
     .join('\n\n');
 }

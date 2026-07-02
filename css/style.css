@@ -1143,6 +1143,13 @@ header nav a:not(.btn-nav):hover{ color:#FBF7EF; }
 .firm-meta{ margin-top:16px; }
 .firm-foot{ margin-top:18px; padding-top:14px; }
 
+/* Firm cards embedded in the pillar-page article column (/immigration-lawyers-spain etc.):
+   undo the article typography that would otherwise override the card component */
+.post .article-wrap .firm-grid{ margin:1.6em 0; }
+.post .article-wrap .firm-card h3{ font-size:1.25rem; color:var(--text); margin:0; padding-bottom:0; border-bottom:none; }
+.post .article-wrap .firm-card p{ font-size:0.875rem; line-height:1.5; color:var(--text-light); margin-bottom:0; }
+.post .article-wrap .firm-card a{ border-bottom:none; }
+
 /* /lawyers: tighter intro + smaller help button */
 .lawyers-intro{ margin-bottom:28px; }
 .btn-help{ padding:6px 16px; font-size:0.78rem; font-weight:500; }
