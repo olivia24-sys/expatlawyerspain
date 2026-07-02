@@ -1,6 +1,6 @@
 /*
- * money-pages-data.js — THE SINGLE SOURCE OF TRUTH for every money page
- * (the national specialty pillar pages, and later — if approved — city pages).
+ * money-pages-data.js - THE SINGLE SOURCE OF TRUTH for every money page
+ * (the national specialty pillar pages, and later - if approved - city pages).
  * ---------------------------------------------------------------------------
  * This file is the ONLY thing you edit to add or change a money page.
  *
@@ -28,7 +28,7 @@ module.exports = {
   // The vetting-methodology page every money page links to.
   vettingUrl: '/how-we-verify',
 
-  // Minimum verified firms for a page to exist. Do not lower this —
+  // Minimum verified firms for a page to exist. Do not lower this -
   // below 2 the intent routes to the enquiry form instead (no thin stubs).
   minFirms: 2,
 
@@ -48,7 +48,7 @@ module.exports = {
    *   sections       - the verified legal-facts sections (heading + HTML)
    *   when           - the "when do you actually need a lawyer?" section
    *   cta            - the navy CTA box (goes to the enquiry form)
-   *   faq            - FAQ accordion items (no JSON-LD — dropped by Google June 2026)
+   *   faq            - FAQ accordion items (no JSON-LD - dropped by Google June 2026)
    */
   pages: {
     immigration: {
@@ -58,7 +58,7 @@ module.exports = {
       shortLabel: 'Immigration',
       title: 'Immigration & Residency Lawyers in Spain | ExpatLawyerSpain',
       description:
-        'Compare verified English-speaking immigration lawyers in Spain. Visas, residency, the NLV and DNV, appeals and nationality — one free enquiry, no hidden fees.',
+        'Compare verified English-speaking immigration lawyers in Spain. Visas, residency, the NLV and DNV, appeals and nationality - one free enquiry, no hidden fees.',
       h1: 'Immigration & Residency Lawyers in Spain',
       lead: 'Verified English-speaking lawyers for visa applications, residency cards, appeals and nationality - compared in one place, with one enquiry form.',
       blogCategories: ['immigration', 'moving-to-spain'],
@@ -84,7 +84,7 @@ module.exports = {
         {
           heading: 'Residency paperwork: NIE, TIE and the queues',
           html: `
-  <p>Every route ends in the same paperwork. Your <a href="/blog/nie-number-spain-lawyer">NIE</a> is the identification number Spain uses to track you financially — nothing of legal significance happens without it. The TIE is the physical residency card non-EU nationals collect once a visa is approved.</p>
+  <p>Every route ends in the same paperwork. Your <a href="/blog/nie-number-spain-lawyer">NIE</a> is the identification number Spain uses to track you financially - nothing of legal significance happens without it. The TIE is the physical residency card non-EU nationals collect once a visa is approved.</p>
   <p>The bottleneck is appointments. Public NIE and TIE appointment slots in Barcelona and Madrid regularly run 6-8 weeks out; lawyers and <em>gestores</em> have access to appointment channels that aren't available through the public booking system and can often get the same thing done in days. If you're on a deadline - a property completion, a job start date, a visa expiry - that difference is usually the whole reason to instruct someone.</p>
   <div class="callout">
     <strong>The 90-day rule</strong>
@@ -100,10 +100,10 @@ module.exports = {
       when: {
         heading: 'When do you actually need an immigration lawyer?',
         html: `
-  <p>If you're an EU citizen registering residency, or you need a one-off NIE for a bank account, you can usually manage the process yourself — it's form-filling plus patience with the appointment system.</p>
+  <p>If you're an EU citizen registering residency, or you need a one-off NIE for a bank account, you can usually manage the process yourself - it's form-filling plus patience with the appointment system.</p>
   <p>A lawyer earns their fee in these situations:</p>
   <ul>
-    <li><strong>Your application has any complication.</strong> A previous refusal, an overstay, a criminal-record certificate issue, or income that doesn't fit neatly into the passive/active boxes. These need to be presented correctly the first time — appeals take months.</li>
+    <li><strong>Your application has any complication.</strong> A previous refusal, an overstay, a criminal-record certificate issue, or income that doesn't fit neatly into the passive/active boxes. These need to be presented correctly the first time - appeals take months.</li>
     <li><strong>You're combining a visa with tax planning.</strong> The Beckham Law's six-month deadline runs from your Social Security registration in Spain, not from when you get around to it. Visa and tax election need to be sequenced by one adviser.</li>
     <li><strong>You're on a hard deadline.</strong> Professional access to appointment slots is the difference between days and 6-8 weeks in the big cities.</li>
     <li><strong>Family reunification or nationality.</strong> Both are documentation-heavy and unforgiving of gaps; both are routinely refused on technicalities that a specialist would have caught.</li>
@@ -125,7 +125,7 @@ module.exports = {
         },
         {
           q: 'Do the lawyers listed here speak English?',
-          a: 'Yes. Every firm listed on ExpatLawyerSpain is checked for genuine English-language service before it appears in the directory — that is the point of the site.',
+          a: 'Yes. Every firm listed on ExpatLawyerSpain is checked for genuine English-language service before it appears in the directory - that is the point of the site.',
         },
         {
           q: 'What if no firm here covers my city?',
@@ -168,9 +168,9 @@ module.exports = {
         {
           heading: 'The contrato de arras - where deals go wrong',
           html: `
-  <p>Before completion you'll sign the <em>contrato de arras</em> - a private deposit contract between you and the seller, typically at 10% of the purchase price. It is legally binding and not standardised: if you pull out, you lose the deposit; if the seller pulls out, they owe you double. Terms, conditions and exit clauses are all negotiable — which means they're all checkable, and the moment to check them is before you sign, not after. A property lawyer reviews the arras as a standard part of the instruction.</p>
+  <p>Before completion you'll sign the <em>contrato de arras</em> - a private deposit contract between you and the seller, typically at 10% of the purchase price. It is legally binding and not standardised: if you pull out, you lose the deposit; if the seller pulls out, they owe you double. Terms, conditions and exit clauses are all negotiable - which means they're all checkable, and the moment to check them is before you sign, not after. A property lawyer reviews the arras as a standard part of the instruction.</p>
   <div class="info-box">
-    <p><strong>What independent due diligence covers:</strong> title and ownership at the Land Registry, outstanding charges and embargoes, unpaid IBI and community fees (both transfer to you with the property), planning status and building licences, and — on new builds — the developer's bank guarantee on your stage payments.</p>
+    <p><strong>What independent due diligence covers:</strong> title and ownership at the Land Registry, outstanding charges and embargoes, unpaid IBI and community fees (both transfer to you with the property), planning status and building licences, and - on new builds - the developer's bank guarantee on your stage payments.</p>
   </div>`,
         },
         {
@@ -188,7 +188,7 @@ module.exports = {
     <li><strong>Buying off-plan</strong> - your stage payments must be secured by a bank guarantee; unsecured payments to a developer that fails are usually gone.</li>
     <li><strong>Buying rural or older property</strong> - planning irregularities and unregistered extensions are common, and legalising them after purchase is your problem, at your cost.</li>
     <li><strong>Buying from a non-resident seller</strong> - the 3% retention (Modelo 211) is your legal obligation as the buyer; get it wrong and the tax office pursues you.</li>
-    <li><strong>Selling</strong> — a lawyer handles the capital gains position, the 3% retention refund and the <a href="/blog/spanish-property-taxes-foreign-owners">Plusvalía</a> calculation.</li>
+    <li><strong>Selling</strong> - a lawyer handles the capital gains position, the 3% retention refund and the <a href="/blog/spanish-property-taxes-foreign-owners">Plusvalía</a> calculation.</li>
   </ul>
   <p>At roughly 1% of the purchase price, the lawyer is one of the smallest line items in the 10-14% costs stack - and the only one working for you. More detail: <a href="/blog/property-lawyer-spain">do I need a lawyer to buy property in Spain?</a></p>`,
       },
@@ -200,7 +200,7 @@ module.exports = {
       faq: [
         {
           q: 'How much does a property lawyer cost in Spain?',
-          a: 'Around 1% of the purchase price, with typical minimum fees of €1,000–2,000 on lower-value properties. On a €300,000 purchase expect €2,500–3,500 all in for legal fees, covering due diligence through to completion.',
+          a: 'Around 1% of the purchase price, with typical minimum fees of €1,000-2,000 on lower-value properties. On a €300,000 purchase expect €2,500-3,500 all in for legal fees, covering due diligence through to completion.',
         },
         {
           q: 'Doesn’t the notary check the property for me?',
@@ -208,7 +208,7 @@ module.exports = {
         },
         {
           q: 'Can these lawyers help if I’m buying from abroad?',
-          a: 'Yes. Buying remotely via power of attorney is routine — your lawyer attends the notary on your behalf. Several listed firms handle the whole purchase for buyers who are not yet in Spain.',
+          a: 'Yes. Buying remotely via power of attorney is routine - your lawyer attends the notary on your behalf. Several listed firms handle the whole purchase for buyers who are not yet in Spain.',
         },
         {
           q: 'What taxes will I pay when buying?',
@@ -265,7 +265,7 @@ module.exports = {
   <p>For a single rental property and a straightforward annual Modelo 210, a <em>gestor</em> or accountant handles it cheaply and well. A tax lawyer - as opposed to a bookkeeper - matters when the stakes or the structure justify it:</p>
   <ul>
     <li><strong>The year you become resident.</strong> Sequencing the move, the Beckham election and the sale of assets before or after the residency line routinely saves five figures.</li>
-    <li><strong>Cross-border income.</strong> Pensions, US retirement accounts, UK rental income, stock options — treaty positions need to be claimed correctly, not assumed.</li>
+    <li><strong>Cross-border income.</strong> Pensions, US retirement accounts, UK rental income, stock options - treaty positions need to be claimed correctly, not assumed.</li>
     <li><strong>A dispute with Hacienda.</strong> Once the tax office opens an inspection or issues a surcharge (late Modelo 210 penalties run up to 150% of the unpaid tax), you need representation, not software.</li>
     <li><strong>Selling property as a non-resident.</strong> The 3% retention, the CGT calculation with documented improvement costs, and the home-country top-up (most UK higher-rate taxpayers owe HMRC a small balance) belong in one pair of hands.</li>
   </ul>`,
@@ -278,7 +278,7 @@ module.exports = {
       faq: [
         {
           q: 'What is the deadline for the Beckham Law?',
-          a: 'Six months from the start-of-activity date on your Spanish Social Security registration - the filing is Modelo 149. There is no retroactive application — if the window closes, the regime is gone for good. It caps tax on Spanish-source income at a flat 24% (up to €600,000/year) for up to six years.',
+          a: 'Six months from the start-of-activity date on your Spanish Social Security registration - the filing is Modelo 149. There is no retroactive application - if the window closes, the regime is gone for good. It caps tax on Spanish-source income at a flat 24% (up to €600,000/year) for up to six years.',
         },
         {
           q: 'I own a Spanish holiday home but live in the UK. Do I owe Spanish tax?',
@@ -309,7 +309,7 @@ module.exports = {
       // The wills category has one post; top the related-guides cards up with:
       fallbackGuides: ['getting-married-in-spain', 'spanish-property-taxes-foreign-owners'],
       intro: `
-  <p>Spanish succession law is nothing like UK or US law: children are entitled to two-thirds of your estate by default (<em>la legítima</em>), an unmarried partner inherits nothing under intestacy, and the inheritance tax bill on the same asset can differ by a factor of ten between regions. Almost all of that is plannable — with a Spanish will and, where it's warranted, a specialist lawyer. The firms below are verified English-speaking wills and inheritance specialists listed on ELS.</p>`,
+  <p>Spanish succession law is nothing like UK or US law: children are entitled to two-thirds of your estate by default (<em>la legítima</em>), an unmarried partner inherits nothing under intestacy, and the inheritance tax bill on the same asset can differ by a factor of ten between regions. Almost all of that is plannable - with a Spanish will and, where it's warranted, a specialist lawyer. The firms below are verified English-speaking wills and inheritance specialists listed on ELS.</p>`,
       sections: [
         {
           heading: 'Inheritance tax: the region decides the bill',
@@ -320,8 +320,8 @@ module.exports = {
       <tr><th scope="col">Region</th><th scope="col">Close-family treatment</th></tr>
     </thead>
     <tbody>
-      <tr><th scope="row">Madrid, Andalusia, Murcia, Valencia</th><td>99% reduction — effectively near zero</td></tr>
-      <tr><th scope="row">Balearic Islands</th><td>100% exemption — no tax for spouses and children</td></tr>
+      <tr><th scope="row">Madrid, Andalusia, Murcia, Valencia</th><td>99% reduction - effectively near zero</td></tr>
+      <tr><th scope="row">Balearic Islands</th><td>100% exemption - no tax for spouses and children</td></tr>
       <tr><th scope="row">Galicia</th><td>Tax-free up to €1M per heir; reduced rates (5-18%) above</td></tr>
       <tr><th scope="row">Catalonia</th><td>Spouses 99% relief; children's relief tapers with estate size - real tax on larger estates</td></tr>
       <tr><th scope="row">Basque Country</th><td>€400,000 exemption per heir; 1.5% above</td></tr>
@@ -329,13 +329,13 @@ module.exports = {
   </table>
   <div class="callout">
     <strong>The six-month deadline</strong>
-    <p>Inheritance tax is due six months from the date of death. A further six-month extension exists, but it must be requested within the first five months. Missing the deadline triggers surcharges and interest — and for families handling a Spanish estate from abroad, six months disappears fast once translations, apostilles and notary appointments are in the chain.</p>
+    <p>Inheritance tax is due six months from the date of death. A further six-month extension exists, but it must be requested within the first five months. Missing the deadline triggers surcharges and interest - and for families handling a Spanish estate from abroad, six months disappears fast once translations, apostilles and notary appointments are in the chain.</p>
   </div>`,
         },
         {
           heading: 'A Spanish will: the cheapest insurance an expat can buy',
           html: `
-  <p>A Spanish will covers your Spanish assets and sits alongside your UK or US will — it doesn't replace it. Made before a <em>notario</em>, the notary fee for a straightforward case is regulated and low - typically €40-80 (budget €200-500 where a lawyer drafts it for a cross-border estate), and it's registered automatically with the Central Registry of Wills. Compare that with what your heirs face without one: Spanish intestacy rules deciding who inherits, plus a recognition process for any foreign will - sworn translation, apostille, notary validation - that routinely adds months and costs many times the price of the will.</p>
+  <p>A Spanish will covers your Spanish assets and sits alongside your UK or US will - it doesn't replace it. Made before a <em>notario</em>, the notary fee for a straightforward case is regulated and low - typically €40-80 (budget €200-500 where a lawyer drafts it for a cross-border estate), and it's registered automatically with the Central Registry of Wills. Compare that with what your heirs face without one: Spanish intestacy rules deciding who inherits, plus a recognition process for any foreign will - sworn translation, apostille, notary validation - that routinely adds months and costs many times the price of the will.</p>
   <p>The will is also where the EU succession regulation (Brussels IV) election is made - choosing which country's law governs your estate instead of Spain's default rules. The election only works if the clause is drafted precisely, which is exactly the part a specialist does. Background: <a href="/blog/inheritance-law-spain-expats">Spanish inheritance law for expats</a>.</p>`,
         },
         {
@@ -357,7 +357,7 @@ module.exports = {
   </ul>`,
       },
       cta: {
-        strong: 'Planning an estate — or handling one?',
+        strong: 'Planning an estate - or handling one?',
         text: 'Send one enquiry and we’ll route it to a verified English-speaking inheritance specialist. Free, no obligation.',
         btn: 'Send an enquiry',
       },

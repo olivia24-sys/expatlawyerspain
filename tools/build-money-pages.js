@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /*
- * build-money-pages.js — regenerates every money page from money-pages-data.js
+ * build-money-pages.js - regenerates every money page from money-pages-data.js
  * ---------------------------------------------------------------------------
  * Run from the repo root:   node tools/build-money-pages.js
  * Check only (no writing):  node tools/build-money-pages.js --check
@@ -65,7 +65,7 @@ function parseFirms() {
   const cards = html.match(/<article class="firm-card lawyer-card"[\s\S]*?<\/article>/g) || [];
   if (cards.length < 25) {
     die(
-      `only found ${cards.length} firm cards in lawyers.html — expected 25+. ` +
+      `only found ${cards.length} firm cards in lawyers.html - expected 25+. ` +
         'The card markup may have changed; update parseFirms() in tools/build-money-pages.js to match.'
     );
   }
@@ -77,7 +77,7 @@ function parseFirms() {
     };
     const one = (re, label) => {
       const m = card.match(re);
-      if (!m) die(`firm card #${i + 1} in lawyers.html is missing its ${label} — markup drift?`);
+      if (!m) die(`firm card #${i + 1} in lawyers.html is missing its ${label} - markup drift?`);
       return m[1].trim();
     };
 
@@ -198,7 +198,7 @@ const FAQ_SCRIPT = `<script>
 // --- 2. page pieces ----------------------------------------------------------
 
 function firmCardsSection(page, firms) {
-  // Reuse each /lawyers firm card byte-for-byte — same markup, same classes,
+  // Reuse each /lawyers firm card byte-for-byte - same markup, same classes,
   // so the money pages can never drift from the live directory.
   const cards = firms.map((f) => f.html).join('\n');
 
@@ -317,7 +317,7 @@ ${s.html}${extra}`;
   const itemList = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    name: `${page.label} lawyers in Spain — verified English-speaking firms`,
+    name: `${page.label} lawyers in Spain - verified English-speaking firms`,
     itemListOrder: 'https://schema.org/ItemListUnordered',
     numberOfItems: firms.length,
     itemListElement: firms.map((f, i) => ({
@@ -427,7 +427,7 @@ function replaceBetween(file, startMark, endMark, replacement, label) {
   if (start === -1 || end === -1 || end < start) {
     die(
       `${file} is missing the managed ${label} block markers ` +
-        `("${startMark}" … "${endMark}"). Restore them — the script only ever edits between markers.`
+        `("${startMark}" … "${endMark}"). Restore them - the script only ever edits between markers.`
     );
   }
   const afterStartLine = src.indexOf('\n', start) + 1;
@@ -488,7 +488,7 @@ function main() {
     if (matching.length < data.minFirms) {
       die(
         `page "${page.slug}" has only ${matching.length} verified firm(s) for specialty "${page.specialty}" ` +
-          `(minimum ${data.minFirms}). The page was NOT built — that intent should route to the enquiry form. ` +
+          `(minimum ${data.minFirms}). The page was NOT built - that intent should route to the enquiry form. ` +
           'If firm coverage has genuinely grown, re-run; do not lower the threshold.'
       );
     }

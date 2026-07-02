@@ -17,7 +17,7 @@ ExpatLawyerSpain is a directory and enquiry-routing service for English-speaking
 <!-- money-pages:start (managed by tools/build-money-pages.js — do not hand-edit) -->
 ### Immigration & Residency Lawyers in Spain | ExpatLawyerSpain
 - URL: https://expatlawyerspain.com/immigration-lawyers-spain
-- Description: Compare verified English-speaking immigration lawyers in Spain. Visas, residency, the NLV and DNV, appeals and nationality — one free enquiry, no hidden fees.
+- Description: Compare verified English-speaking immigration lawyers in Spain. Visas, residency, the NLV and DNV, appeals and nationality - one free enquiry, no hidden fees.
 - Contains: a live list of every verified English-speaking firm listed for immigration & residency work (location, specialties, languages, Google rating), specific legal facts, a "when do you actually need a lawyer" section, and links to the related guides.
 
 ### Property Lawyers in Spain for Expats | ExpatLawyerSpain
