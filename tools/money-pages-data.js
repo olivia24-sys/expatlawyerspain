@@ -78,7 +78,7 @@ module.exports = {
       <tr><th scope="row">Digital Nomad Visa (DNV)</th><td>€2,850/month (200% of the minimum wage, updated January 2026), plus €1,069/month for a spouse and €356/month per child</td><td>Yes — remote work, with at most 20% of income from Spanish clients</td></tr>
     </tbody>
   </table>
-  <p>The DNV also opens the door to the <a href="/blog/beckham-law-spain">Beckham Law</a> — a flat 24% income tax rate on Spanish-source income up to €600,000 for up to six years. The application must be made within six months of registering as a Spanish resident, and missing that window forfeits it permanently. A lawyer handling your visa will normally bundle the Beckham application into the same instruction.</p>
+  <p>The DNV also opens the door to the <a href="/blog/beckham-law-spain">Beckham Law</a> — a flat 24% income tax rate on Spanish-source income up to €600,000 for up to six years. The application (Modelo 149) must be made within six months of the start-of-activity date on your Spanish Social Security registration, and missing that window forfeits it permanently. A lawyer handling your visa will normally bundle the Beckham application into the same instruction.</p>
   <p>Beyond the headline visas, immigration lawyers in Spain handle family reunification, the <em>arraigo</em> regularisation routes for people already in Spain, work permits, student-visa conversions, visa refusals and appeals, and Spanish nationality applications.</p>`,
         },
         {
@@ -104,7 +104,7 @@ module.exports = {
   <p>A lawyer earns their fee in these situations:</p>
   <ul>
     <li><strong>Your application has any complication.</strong> A previous refusal, an overstay, a criminal-record certificate issue, or income that doesn't fit neatly into the passive/active boxes. These need to be presented correctly the first time — appeals take months.</li>
-    <li><strong>You're combining a visa with tax planning.</strong> The Beckham Law's six-month deadline runs from residency registration, not from when you get around to it. Visa and tax election need to be sequenced by one adviser.</li>
+    <li><strong>You're combining a visa with tax planning.</strong> The Beckham Law's six-month deadline runs from your Social Security registration in Spain, not from when you get around to it. Visa and tax election need to be sequenced by one adviser.</li>
     <li><strong>You're on a hard deadline.</strong> Professional access to appointment slots is the difference between days and 6–8 weeks in the big cities.</li>
     <li><strong>Family reunification or nationality.</strong> Both are documentation-heavy and unforgiving of gaps; both are routinely refused on technicalities that a specialist would have caught.</li>
   </ul>`,
@@ -157,7 +157,7 @@ module.exports = {
       <tr><th scope="col">Cost</th><th scope="col">Rate</th><th scope="col">Notes</th></tr>
     </thead>
     <tbody>
-      <tr><th scope="row">ITP (transfer tax, resale property)</th><td>6–10% by region</td><td>6% in Madrid, 7% in Andalusia, up to 10% in Catalonia — a €12,000 difference on a €300,000 resale</td></tr>
+      <tr><th scope="row">ITP (transfer tax, resale property)</th><td>~4–13% by region</td><td>6% in Madrid, 7% in Andalusia, 10% in Catalonia up to €600,000 — a €12,000 difference on a €300,000 resale. Catalonia now tiers above that: 11% to €900,000, 12% to €1.5M, 13% beyond (20% for large holders)</td></tr>
       <tr><th scope="row">IVA + AJD (new builds)</th><td>10% + ~1.5%</td><td>VAT replaces ITP on new builds, plus stamp duty</td></tr>
       <tr><th scope="row">Independent lawyer</th><td>~1% of price</td><td>Typical minimum €1,000–2,000 on lower-value properties; covers due diligence to completion</td></tr>
       <tr><th scope="row">Notary + registry</th><td>~1% combined</td><td>Fixed by scale; paid at completion</td></tr>
@@ -212,7 +212,7 @@ module.exports = {
         },
         {
           q: 'What taxes will I pay when buying?',
-          a: 'On a resale: ITP at 6–10% depending on the region. On a new build: 10% IVA plus roughly 1.5% stamp duty. Budget 10–14% on top of the purchase price for all taxes, fees and legal costs combined.',
+          a: 'On a resale: ITP at 6–10% for most buyers depending on the region — Catalonia now tiers up to 13% above €1.5 million, and the Basque provinces charge as little as 4% on a main home. On a new build: 10% IVA plus roughly 1.5% stamp duty. Budget 10–14% on top of the purchase price for all taxes, fees and legal costs combined.',
         },
       ],
     },
@@ -229,12 +229,12 @@ module.exports = {
       lead: 'Verified English-speaking tax specialists for residency tax planning, non-resident filings, property taxes and cross-border income.',
       blogCategories: ['tax'],
       intro: `
-  <p>Spanish tax runs on deadlines that don't announce themselves: the Beckham Law election expires six months after you register as a resident, the non-resident property return is due every 31 December, and inheritance tax falls due six months after a death. Most expat tax problems in Spain aren't clever-planning failures — they're missed windows. The firms below are verified English-speaking tax and fiscal specialists listed on ELS.</p>`,
+  <p>Spanish tax runs on deadlines that don't announce themselves: the Beckham Law election expires six months after your Social Security registration, the non-resident property return is due every 31 December, and inheritance tax falls due six months after a death. Most expat tax problems in Spain aren't clever-planning failures — they're missed windows. The firms below are verified English-speaking tax and fiscal specialists listed on ELS.</p>`,
       sections: [
         {
           heading: 'The Beckham Law: the six-month window',
           html: `
-  <p>The <a href="/blog/beckham-law-spain">Beckham Law</a> caps tax on your Spanish-source income at a flat 24% (up to €600,000 a year) for up to six years, instead of progressive rates that reach 47%. You must apply within six months of registering as a Spanish resident — miss the window and it's gone, with no retroactive application. On a €70,000 salary the difference between the flat rate and the standard scale is worth €10,000–15,000 a year.</p>
+  <p>The <a href="/blog/beckham-law-spain">Beckham Law</a> caps tax on your Spanish-source income at a flat 24% (up to €600,000 a year) for up to six years, instead of progressive rates that reach 47% — higher still in some regions. You must apply (Modelo 149) within six months of the start-of-activity date on your Spanish Social Security registration — miss the window and it's gone, with no retroactive application. On a €70,000 salary the difference between the flat rate and the standard scale is worth €10,000–15,000 a year.</p>
   <p>Qualifying is not automatic: you need a Spanish employment contract or a qualifying remote-work arrangement (Digital Nomad Visa holders are eligible), and you must not have been Spanish tax resident in the previous five years. The application, the payroll setup and the annual filings are exactly the kind of paperwork that is easy to get wrong once and impossible to fix later.</p>`,
         },
         {
@@ -256,7 +256,7 @@ module.exports = {
         {
           heading: 'Becoming tax resident: what changes',
           html: `
-  <p>Spend more than 183 days a year in Spain and you're tax resident — worldwide income, progressive rates, and the savings scale on investment income running 19% to 28%. UK and US double-tax treaties prevent most double payment but not double filing: US citizens keep filing IRS returns (and FATCA forms like Form 8938) regardless of residency. The year you move is the year that decides most of your tax position, and it's decided by dates, not intentions — the point of taking advice before the move rather than after.</p>`,
+  <p>Spend more than 183 days a year in Spain and you're tax resident — worldwide income, progressive rates, and the savings scale on investment income running 19% to 30% (the 30% band, on gains and investment income above €300,000, applies since 1 January 2025). UK and US double-tax treaties prevent most double payment but not double filing: US citizens keep filing IRS returns (and FATCA forms like Form 8938) regardless of residency. The year you move is the year that decides most of your tax position, and it's decided by dates, not intentions — the point of taking advice before the move rather than after.</p>`,
         },
       ],
       when: {
@@ -278,7 +278,7 @@ module.exports = {
       faq: [
         {
           q: 'What is the deadline for the Beckham Law?',
-          a: 'Six months from registering as a Spanish resident. There is no retroactive application — if the window closes, the regime is gone for good. It caps tax on Spanish-source income at a flat 24% (up to €600,000/year) for up to six years.',
+          a: 'Six months from the start-of-activity date on your Spanish Social Security registration — the filing is Modelo 149. There is no retroactive application — if the window closes, the regime is gone for good. It caps tax on Spanish-source income at a flat 24% (up to €600,000/year) for up to six years.',
         },
         {
           q: 'I own a Spanish holiday home but live in the UK. Do I owe Spanish tax?',
@@ -290,7 +290,7 @@ module.exports = {
         },
         {
           q: 'How are capital gains taxed when I sell Spanish property?',
-          a: 'Non-residents pay a flat 19% on the net gain, and the buyer must withhold 3% of the price (Modelo 211) on account. Residents pay the savings scale, 19% to 28%. Documented purchase costs and improvement works with invoices reduce the gain.',
+          a: 'Non-residents pay a flat 19% on the net gain, and the buyer must withhold 3% of the price (Modelo 211) on account. Residents pay the savings scale, 19% to 30%. Documented purchase costs and improvement works with invoices reduce the gain.',
         },
       ],
     },
@@ -314,28 +314,28 @@ module.exports = {
         {
           heading: 'Inheritance tax: the region decides the bill',
           html: `
-  <p>Spanish inheritance tax is paid by the beneficiary, and the applicable rules follow where the assets are — not where the deceased lived. The regional spread for spouses and children:</p>
+  <p>Spanish inheritance tax is paid by the beneficiary, and which region's rules apply depends on where the person who died was living. If they lived in Spain, their home region's rules govern the whole estate; only when they lived abroad do the rules follow the region where the most valuable Spanish assets sit. The regional spread for spouses and children:</p>
   <table class="region-table">
     <thead>
       <tr><th scope="col">Region</th><th scope="col">Close-family treatment</th></tr>
     </thead>
     <tbody>
-      <tr><th scope="row">Madrid, Andalusia, Murcia</th><td>99% reduction — effectively near zero</td></tr>
-      <tr><th scope="row">Galicia</th><td>99% reduction up to €1M</td></tr>
-      <tr><th scope="row">Valencia</th><td>75% reduction</td></tr>
-      <tr><th scope="row">Balearic Islands, Catalonia</th><td>Partial reductions — moderate to significant tax</td></tr>
-      <tr><th scope="row">Basque Country</th><td>€400,000 exemption per heir</td></tr>
+      <tr><th scope="row">Madrid, Andalusia, Murcia, Valencia</th><td>99% reduction — effectively near zero</td></tr>
+      <tr><th scope="row">Balearic Islands</th><td>100% exemption — no tax for spouses and children</td></tr>
+      <tr><th scope="row">Galicia</th><td>Tax-free up to €1M per heir; reduced rates (5–18%) above</td></tr>
+      <tr><th scope="row">Catalonia</th><td>Spouses 99% relief; children's relief tapers with estate size — real tax on larger estates</td></tr>
+      <tr><th scope="row">Basque Country</th><td>€400,000 exemption per heir; 1.5% above</td></tr>
     </tbody>
   </table>
   <div class="callout">
     <strong>The six-month deadline</strong>
-    <p>Inheritance tax is due six months from the date of death. An extension exists but must be requested before the original deadline expires. Missing it triggers surcharges and interest — and for families handling a Spanish estate from abroad, six months disappears fast once translations, apostilles and notary appointments are in the chain.</p>
+    <p>Inheritance tax is due six months from the date of death. A further six-month extension exists, but it must be requested within the first five months. Missing the deadline triggers surcharges and interest — and for families handling a Spanish estate from abroad, six months disappears fast once translations, apostilles and notary appointments are in the chain.</p>
   </div>`,
         },
         {
           heading: 'A Spanish will: the cheapest insurance an expat can buy',
           html: `
-  <p>A Spanish will covers your Spanish assets and sits alongside your UK or US will — it doesn't replace it. Made before a <em>notario</em>, it costs €150–300 in notary fees for a straightforward case (€200–500 where a lawyer drafts it), and it's registered automatically with the Central Registry of Wills. Compare that with what your heirs face without one: Spanish intestacy rules deciding who inherits, plus a recognition process for any foreign will — sworn translation, apostille, notary validation — that routinely adds months and costs many times the price of the will.</p>
+  <p>A Spanish will covers your Spanish assets and sits alongside your UK or US will — it doesn't replace it. Made before a <em>notario</em>, the notary fee for a straightforward case is regulated and low — typically €40–80 (budget €200–500 where a lawyer drafts it for a cross-border estate), and it's registered automatically with the Central Registry of Wills. Compare that with what your heirs face without one: Spanish intestacy rules deciding who inherits, plus a recognition process for any foreign will — sworn translation, apostille, notary validation — that routinely adds months and costs many times the price of the will.</p>
   <p>The will is also where the EU succession regulation (Brussels IV) election is made — choosing which country's law governs your estate instead of Spain's default rules. The election only works if the clause is drafted precisely, which is exactly the part a specialist does. Background: <a href="/blog/inheritance-law-spain-expats">Spanish inheritance law for expats</a>.</p>`,
         },
         {
@@ -364,7 +364,7 @@ module.exports = {
       faq: [
         {
           q: 'How much does a Spanish will cost?',
-          a: 'Notary fees for a straightforward Spanish will are €150–300. Where a lawyer drafts it — advisable for cross-border estates, Brussels IV elections or forced-heirship planning — expect €200–500. It is one of the lowest-cost legal documents an expat with Spanish assets can put in place.',
+          a: 'The notary fee for a straightforward Spanish will is regulated and low — typically €40–80. Where a lawyer drafts it — advisable for cross-border estates, Brussels IV elections or forced-heirship planning — expect €200–500 including the notary. It is one of the lowest-cost legal documents an expat with Spanish assets can put in place.',
         },
         {
           q: 'Does my UK or US will cover my Spanish property?',
@@ -372,11 +372,11 @@ module.exports = {
         },
         {
           q: 'How much inheritance tax will my children pay?',
-          a: 'It depends almost entirely on the region where the assets are. Madrid, Andalusia and Murcia apply a 99% reduction for spouses and children — effectively near zero. Catalonia and the Balearics apply partial reductions with real tax. The bill is due within six months of the death.',
+          a: 'It depends almost entirely on the region — the one where the deceased lived, or, if they lived abroad, where the most valuable Spanish assets are. Madrid, Andalusia, Murcia and Valencia apply a 99% reduction for spouses and children — effectively near zero — and the Balearics exempt them entirely. Catalonia still charges real tax on larger estates. The bill is due within six months of the death.',
         },
         {
           q: 'My partner and I aren’t married. What happens to my Spanish flat?',
-          a: 'Under Spanish intestacy rules an unmarried partner inherits nothing — the default order is children, then parents, then siblings, then a surviving spouse. If you want your partner to inherit, a Spanish will is the mechanism, structured around the forced-heirship shares if you have children.',
+          a: 'Under Spain\'s general intestacy rules an unmarried partner inherits nothing — the estate passes to children first, then parents, then a surviving spouse, then siblings. (Catalonia and some other regions do give registered partners inheritance rights — one more variable a specialist checks.) If you want your partner to inherit, a Spanish will is the mechanism, structured around the forced-heirship shares if you have children.',
         },
       ],
     },
