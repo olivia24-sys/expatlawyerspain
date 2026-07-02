@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /*
- * build-money-pages.js — regenerates every money page from money-pages-data.js
+ * build-money-pages.js - regenerates every money page from money-pages-data.js
  * ---------------------------------------------------------------------------
  * Run from the repo root:   node tools/build-money-pages.js
  * Check only (no writing):  node tools/build-money-pages.js --check
@@ -65,7 +65,7 @@ function parseFirms() {
   const cards = html.match(/<article class="firm-card lawyer-card"[\s\S]*?<\/article>/g) || [];
   if (cards.length < 25) {
     die(
-      `only found ${cards.length} firm cards in lawyers.html — expected 25+. ` +
+      `only found ${cards.length} firm cards in lawyers.html - expected 25+. ` +
         'The card markup may have changed; update parseFirms() in tools/build-money-pages.js to match.'
     );
   }
@@ -77,7 +77,7 @@ function parseFirms() {
     };
     const one = (re, label) => {
       const m = card.match(re);
-      if (!m) die(`firm card #${i + 1} in lawyers.html is missing its ${label} — markup drift?`);
+      if (!m) die(`firm card #${i + 1} in lawyers.html is missing its ${label} - markup drift?`);
       return m[1].trim();
     };
 
@@ -98,6 +98,7 @@ function parseFirms() {
     const verified = /class="firm-badge"/.test(card);
 
     return {
+      html: card, // the full card markup, reused verbatim on the money pages
       name, // already HTML-escaped in source (e.g. &amp;)
       location: locRaw.trim(),
       cities,
@@ -196,43 +197,21 @@ const FAQ_SCRIPT = `<script>
 
 // --- 2. page pieces ----------------------------------------------------------
 
-function firmTableSection(page, firms) {
-  const rows = firms
-    .map((f) => {
-      const rating = f.rating
-        ? `${esc(f.rating.score)} ★ <span style="color:var(--text-light)">(${esc(f.rating.count)} Google reviews)</span>`
-        : '—';
-      return `      <tr>
-        <th scope="row">${f.name}</th>
-        <td>${esc(f.location)}</td>
-        <td>${esc(f.langsText)}</td>
-        <td>${rating}</td>
-        <td><a href="${f.enquiry}">Enquire ${ARROW_SVG}</a></td>
-      </tr>`;
-    })
-    .join('\n');
+function firmCardsSection(page, firms) {
+  // Reuse each /lawyers firm card byte-for-byte - same markup, same classes,
+  // so the money pages can never drift from the live directory.
+  const cards = firms.map((f) => f.html).join('\n');
 
   return `  <p>${firms.length} verified English-speaking firms are currently listed for ${esc(
     page.label.toLowerCase()
-  )} work — pulled from the live ELS directory, so this table always matches <a href="/lawyers?specialty=${page.specialty}">the full listings</a>. Every firm here is checked before listing: <a href="${data.vettingUrl}">how we verify firms</a>.</p>
+  )} work - pulled from the live ELS directory, so this list always matches <a href="/lawyers?specialty=${page.specialty}">the full listings</a>. Every firm here is checked before listing: <a href="${data.vettingUrl}">how we verify firms</a>.</p>
 
-  <table class="region-table firm-table">
-    <thead>
-      <tr>
-        <th scope="col">Firm</th>
-        <th scope="col">Coverage</th>
-        <th scope="col">Languages</th>
-        <th scope="col">Google rating</th>
-        <th scope="col"></th>
-      </tr>
-    </thead>
-    <tbody>
-${rows}
-    </tbody>
-  </table>
+  <div class="firm-grid lawyers-grid">
+${cards}
+  </div>
 
   <div class="info-box">
-    <p><strong>Prefer not to compare firms yourself?</strong> <a href="/#contact-form">Send one enquiry</a> and we route it to the best-fit firm for your city and situation. If a firm doesn't respond within 2–5 working days, we route it to the next one — that's the service.</p>
+    <p><strong>Prefer not to compare firms yourself?</strong> <a href="/#contact-form">Send one enquiry</a> and we route it to the best-fit firm for your city and situation. If a firm doesn't respond within 2-5 working days, we route it to the next one - that's the service.</p>
   </div>`;
 }
 
@@ -311,7 +290,7 @@ function buildPage(pageKey, page, firms) {
   // Section list drives both the body and the "On this page" TOC.
   const firmHeading = `Verified ${page.label.toLowerCase()} lawyers in Spain`;
   const sections = [
-    { heading: firmHeading, html: firmTableSection(page, firms) },
+    { heading: firmHeading, html: firmCardsSection(page, firms) },
     ...page.sections,
     { heading: page.when.heading, html: page.when.html },
     { heading: 'Frequently Asked Questions', tocLabel: 'FAQs', html: faqSection(page.faq) },
@@ -338,7 +317,7 @@ ${s.html}${extra}`;
   const itemList = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    name: `${page.label} lawyers in Spain — verified English-speaking firms`,
+    name: `${page.label} lawyers in Spain - verified English-speaking firms`,
     itemListOrder: 'https://schema.org/ItemListUnordered',
     numberOfItems: firms.length,
     itemListElement: firms.map((f, i) => ({
@@ -448,7 +427,7 @@ function replaceBetween(file, startMark, endMark, replacement, label) {
   if (start === -1 || end === -1 || end < start) {
     die(
       `${file} is missing the managed ${label} block markers ` +
-        `("${startMark}" … "${endMark}"). Restore them — the script only ever edits between markers.`
+        `("${startMark}" … "${endMark}"). Restore them - the script only ever edits between markers.`
     );
   }
   const afterStartLine = src.indexOf('\n', start) + 1;
@@ -482,7 +461,7 @@ function llmsFullBlock(pages) {
       (p) => `### ${p.title}
 - URL: ${SITE}/${p.slug}
 - Description: ${p.description}
-- Contains: a live table of every verified English-speaking firm listed for ${p.label.toLowerCase()} work (coverage, languages, Google rating), specific legal facts, a "when do you actually need a lawyer" section, and links to the related guides.`
+- Contains: a live list of every verified English-speaking firm listed for ${p.label.toLowerCase()} work (location, specialties, languages, Google rating), specific legal facts, a "when do you actually need a lawyer" section, and links to the related guides.`
     )
     .join('\n\n');
 }
@@ -509,7 +488,7 @@ function main() {
     if (matching.length < data.minFirms) {
       die(
         `page "${page.slug}" has only ${matching.length} verified firm(s) for specialty "${page.specialty}" ` +
-          `(minimum ${data.minFirms}). The page was NOT built — that intent should route to the enquiry form. ` +
+          `(minimum ${data.minFirms}). The page was NOT built - that intent should route to the enquiry form. ` +
           'If firm coverage has genuinely grown, re-run; do not lower the threshold.'
       );
     }
