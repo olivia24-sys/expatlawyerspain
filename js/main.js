@@ -356,6 +356,45 @@ function setupFormSpamGuard() {
     if (typeof gtag === 'function') {
       gtag('event', 'form_submit', { form_name: formName });
     }
+
+    // Lead capture: mirror the enquiry into our own database (/api/lead) alongside the
+    // Formspree POST. sendBeacon survives the page navigating away to Formspree; a
+    // failure here must never block the submission, so everything is inside try/catch
+    // and the result is ignored. Enquiry form only — not the list-your-firm form.
+    if (formName === 'els_lead_capture') {
+      try {
+        const val = name => {
+          const field = form.querySelector('[name="' + name + '"]');
+          return field ? field.value : '';
+        };
+        const params = new URLSearchParams(location.search);
+        const payload = JSON.stringify({
+          submission_id: (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : String(Date.now()) + '-' + Math.random().toString(16).slice(2),
+          name: val('name'),
+          email: val('email'),
+          specialty: val('specialty'),
+          region: val('region'),
+          message: val('message'),
+          heard_about_us: val('heard_about_us'),
+          lawyer: val('lawyer'),
+          gotcha: val('_gotcha'),
+          ms_since_load: Date.now() - loadedAt,
+          page_url: location.href.slice(0, 500),
+          utm_source: params.get('utm_source') || '',
+          utm_medium: params.get('utm_medium') || '',
+          utm_campaign: params.get('utm_campaign') || ''
+        });
+        let sent = false;
+        if (navigator.sendBeacon) {
+          sent = navigator.sendBeacon('/api/lead', new Blob([payload], { type: 'application/json' }));
+        }
+        if (!sent && typeof fetch === 'function') {
+          fetch('/api/lead', { method: 'POST', body: payload, keepalive: true }).catch(() => {});
+        }
+      } catch (e) {
+        /* never interfere with the native submit */
+      }
+    }
   });
 }
 

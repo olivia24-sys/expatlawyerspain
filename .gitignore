@@ -14,3 +14,5 @@ secrets/
 dist/
 .cache/
 .claude/
+.wrangler/
+pages-dev.log
