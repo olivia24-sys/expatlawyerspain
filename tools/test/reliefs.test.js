@@ -535,6 +535,120 @@ test('an exclusive deduction applies alone on the standard quota', () => {
   assert.ok(ivaLine && ivaLine.amount === 30000, 'IVA line untouched');
 });
 
+// --- 9. spine pins: structural encodings of the transcribed rules -------------------
+// These lock the riskiest data-entry decisions from the research file so a
+// future edit cannot silently undo them. They are about SHAPE, not values -
+// Olivia's verification pass owns the values.
+
+test('spine pins: transcribed structural encodings hold', () => {
+  const all = spine.allReliefs();
+  const get = (id) => {
+    const r = all.find((x) => x.id === id);
+    assert.ok(r, `rule ${id} must exist`);
+    return r;
+  };
+  const condOf = (r, type) => r.conditions.find((c) => c.type === type);
+  const anyOfGroups = (r) => r.conditions.filter((c) => Array.isArray(c.anyOf));
+
+  // every launch rule is draft until Olivia flips it; exclusions never entered
+  assert.equal(all.length, 73, 'expected 73 rules (8 Catalunya + 65 transcribed)');
+  assert.ok(all.every((r) => r.status === 'draft'), 'all launch rules stay draft');
+  for (const banned of [
+    'itp.andalucia.professional-reseller',
+    'itp.andalucia.storm-habitual-2026',
+    'itp.andalucia.storm-nonhabitual-2026',
+  ]) {
+    assert.equal(all.some((r) => r.id === banned), false, `${banned} must not be transcribed`);
+  }
+
+  // Balears: reduced rates carry the band cap + island-differentiated caps...
+  const ISLAND_CAPS = { 'mallorca-menorca': 331859.7, 'ibiza-formentera': 378212 };
+  for (const id of ['itp.balears.habitual-4pc', 'itp.balears.under36-first-home-2pc', 'itp.balears.disability-2pc']) {
+    const r = get(id);
+    assert.equal(r.result.bandCap, 270151.2, `${id} band cap`);
+    const mpv = condOf(r, 'maxPropertyValue');
+    assert.deepEqual(mpv.byIsland, ISLAND_CAPS, `${id} island caps`);
+    assert.equal('value' in mpv, false, `${id} must not also carry a plain cap`);
+  }
+  // ...while the 100% bonifications keep the FIXED cap and both hard gates
+  for (const id of [
+    'itp.balears.under30-100pc-bonification',
+    'itp.balears.disability33-100pc-bonification',
+    'ajd.balears.under30-disability33-100pc-bonification',
+  ]) {
+    const r = get(id);
+    assert.deepEqual(r.result, { type: 'deduction', value: 100 }, `${id} is a 100% deduction`);
+    const mpv = condOf(r, 'maxPropertyValue');
+    assert.equal(mpv.value, 270151.2, `${id} fixed cap`);
+    assert.equal(mpv.byIsland, undefined, `${id} cap must never be island-raised`);
+    assert.equal(condOf(r, 'priorRegionResidenceYears').value, 3, `${id} residence gate`);
+    assert.equal(condOf(r, 'mortgageLtvMin').value, 60, `${id} mortgage gate`);
+  }
+
+  // Madrid: graduated base is a whole-value cliff, bonifs stack on it by id,
+  // the 10%/95% pair is mutually incompatible, large-family has NO value cap
+  const grad = get('ajd.madrid.newbuild-value-graduated-rate');
+  assert.equal(grad.result.bandType, 'whole');
+  assert.deepEqual(grad.result.bands, [
+    { upTo: 120000, rate: 0.4 },
+    { upTo: 180000, rate: 0.5 },
+    { upTo: null, rate: 0.75 },
+  ]);
+  for (const id of ['ajd.madrid.habitual-residence-bonif', 'ajd.madrid.depopulation-young-bonif', 'ajd.madrid.large-family-bonif']) {
+    const r = get(id);
+    assert.equal(r.combinesWith, 'cumulative', id);
+    assert.deepEqual(r.stacksOn, ['ajd.madrid.newbuild-value-graduated-rate'], `${id} stacks on the graduated base`);
+  }
+  assert.deepEqual(get('ajd.madrid.habitual-residence-bonif').incompatibleWith, ['ajd.madrid.large-family-bonif']);
+  assert.deepEqual(get('ajd.madrid.large-family-bonif').incompatibleWith, ['ajd.madrid.habitual-residence-bonif']);
+  for (const id of ['itp.madrid.large-family-rate', 'ajd.madrid.large-family-bonif']) {
+    const r = get(id);
+    assert.equal(condOf(r, 'maxPropertyValue'), undefined, `${id} must carry NO value cap (the aggregator-error trap)`);
+    assert.equal(condOf(r, 'priorHomeSaleWindow').value, 2, `${id} prior-home-sale gate`);
+  }
+
+  // Canarias: both 20% bonificaciones stack ONLY on the 5% base
+  for (const id of ['itp.canarias.under40-bonificacion-20pct', 'itp.canarias.gender-violence-bonificacion-20pct']) {
+    const r = get(id);
+    assert.equal(r.combinesWith, 'cumulative', id);
+    assert.deepEqual(r.stacksOn, ['itp.canarias.habitual-residence-5pct'], `${id} stacks on the 5% rule only`);
+  }
+
+  // anyOf conversions: the research's flattened OR-groups must stay OR-groups
+  for (const id of [
+    'itp.valenciana.large-family-single-parent-over180k',
+    'itp.valenciana.large-family-single-parent-under180k',
+    'ajd.balears.collectives-0-5pc',
+    'ajd.balears.under30-disability33-100pc-bonification',
+    'igic.canarias.newbuild-habitual-superreduced-3pct',
+  ]) {
+    assert.ok(anyOfGroups(get(id)).length >= 1, `${id} must keep its anyOf group`);
+  }
+
+  // strictly-under age boundaries
+  for (const id of [
+    'itp.andalucia.under35',
+    'ajd.andalucia.under35',
+    'itp.valenciana.young-under35-over180k',
+    'itp.valenciana.young-under35-under180k',
+    'itp.madrid.depopulation-young-bonif',
+    'ajd.madrid.depopulation-young-bonif',
+    'itp.balears.under36-first-home-2pc',
+    'itp.balears.under30-100pc-bonification',
+  ]) {
+    assert.equal(condOf(get(id), 'maxAge').inclusive, false, `${id} age bound is strictly under`);
+  }
+  // ...and the at-or-under ones stay inclusive (no flag)
+  for (const id of ['itp.murcia.young-under40-resale', 'itp.canarias.under40-bonificacion-20pct']) {
+    assert.equal(condOf(get(id), 'maxAge').inclusive, undefined, `${id} age bound is at-or-under`);
+  }
+
+  // Murcia: the savings-base cap is its own condition type, general cap strict
+  const murcia = get('itp.murcia.young-under40-resale');
+  assert.equal(condOf(murcia, 'maxSavingsIncome').value, 1800);
+  assert.equal(condOf(murcia, 'maxIncome').inclusive, false);
+});
+
 test('a relief that cannot beat the standard quota is not applied', () => {
   // "reduced" 12% is worse than Catalunya's standard on a cheap flat
   const worse = rule({ result: { type: 'rate', value: 12 } });

@@ -17,9 +17,9 @@
 
 module.exports = {
   // Bump when the site CSS cache-buster changes.
-  cssVersion: 'redesign-20260705-18',
+  cssVersion: 'redesign-20260705-19',
   // Bump when js/calc-engine.js or js/itp-calculator.js change.
-  jsVersion: 'itp-20260705-2',
+  jsVersion: 'itp-20260705-3',
 
   // Shown in the page hero and used as sitemap <lastmod>. Change together.
   updatedLabel: 'Updated July 2026',
@@ -27,7 +27,7 @@ module.exports = {
 
   /*
    * One entry per tool page. Copy fields mirror money-pages-data.js
-   * (title/description/h1/lead/intro/when/cta/faq); the calculator sits
+   * (title/description/h1/lead/intro/when/refine/cta/faq); the calculator sits
    * between sectionsBefore and sectionsAfter. Build-only fields:
    *   slug            page URL, /<slug> (file <slug>.html at repo root)
    *   breadcrumb      the pillar this tool belongs to (cluster up-link)
@@ -128,6 +128,81 @@ module.exports = {
         btn: 'Send an enquiry',
       },
 
+      // The refine (relief personalisation) copy. Embedded at build time as
+      // window.ELS_ITP_COPY; every string is British English with no em/en
+      // dashes and no banned words. The handful of numerals here (the 3-year
+      // Balearic residence gate, the 60% mortgage LTV gate, the 33/64/65
+      // disability bands) are the ENGINE'S FIXED INPUT CONTRACT from
+      // js/calc-engine.js, not spine figures. No rate or euro threshold ever
+      // lives here: those are substituted at runtime from engine output.
+      refine: {
+        heading: 'Could you pay less? Refine for your situation',
+        intro: 'Some regions charge less when the buyer meets set conditions. Answer what applies to you and the calculator checks the reductions it has verified for your region.',
+        yes: 'Yes',
+        no: 'No',
+        choose: 'Choose',
+        labelJoin: ' and ',
+        gate: { label: 'Will this be your main home, the one you live in?' },
+        questions: {
+          age: { label: 'Your age' },
+          firstHome: { label: 'Will this be your first home?' },
+          ownsOtherHome: { label: 'Do you own half or more of another home?' },
+          income: {
+            label: "Your taxable income on your last Spanish IRPF return, roughly. If you're buying as a household, use the household figure.",
+            noIrpfLabel: "I don't file Spanish tax returns yet",
+          },
+          savingsIncome: { label: 'Your savings and investment income last year, roughly' },
+          disability: { label: 'Recognised disability?', none: 'None', mid: '33 to 64%', high: '65% or more' },
+          family: {
+            label: 'Family status',
+            none: 'None of these',
+            large: 'Large family (familia numerosa)',
+            single: 'Single-parent family (familia monoparental)',
+            both: 'Both',
+          },
+          priorResidence: { label: 'Have you lived in the Balearic Islands for the last 3 years or more?' },
+          mortgageLtv: { label: 'Will a mortgage cover 60% or more of the appraised value?' },
+          island: {
+            label: 'Which island?',
+            options: { 'mallorca-menorca': 'Mallorca or Menorca', 'ibiza-formentera': 'Ibiza or Formentera' },
+          },
+        },
+        taxNames: { resale: 'ITP', newBuild: 'IVA plus AJD', newBuildCanarias: 'IGIC plus AJD' },
+        appliedHeadline: 'Based on what you told us, you likely qualify for {label}. Your {taxName} would be about {yourTotal} instead of {standardTotal}, saving about {saving}.',
+        dependsOnHeading: 'This depends on',
+        sourcesHeading: 'Where these rules come from',
+        appliedClose: 'A lawyer confirms you qualify and files the reduced rate. Getting a relief wrong means a top-up assessment later, with interest.',
+        unavailable: "For a holiday home or a property you won't live in, the reduced rates don't apply. Nearly every regional relief requires the home to be your habitual residence in Spain, and most also need Spanish income-tax history.",
+        otherSituation: 'Something else about your situation, for example protected housing or another special category? A lawyer can check every relief your region offers.',
+        otherSituationLink: 'Compare verified property lawyers in Spain',
+        noIrpf: 'Most of these reliefs are checked against your Spanish IRPF return, so they generally need Spanish tax residency first. A lawyer can confirm what applies in your case.',
+        ctaBtn: 'Send an enquiry',
+        conditions: {
+          relAtMost: 'no more than',
+          relUnder: 'under',
+          anyOfPrefix: 'Either ',
+          anyOfJoin: ' or ',
+          maxAgeInclusive: 'You are {value} or under',
+          maxAgeStrict: 'You are under {value}',
+          habitualResidence: 'The home is your habitual residence, the one you live in',
+          firstHome: 'This is your first home',
+          noPriorPropertyOwnership: 'You do not own half or more of another home',
+          maxIncome: 'Your income is {rel} {value}, measured as {basis}',
+          maxHouseholdIncome: 'Your household income is {rel} {value}, measured as {basis}',
+          maxSavingsIncome: 'Your savings and investment income is {rel} {value}, measured as {basis}',
+          maxPropertyValue: 'The property costs no more than {value}',
+          maxPropertyValueIsland: 'The property costs no more than {value} on {island}',
+          disabilityMin: 'A recognised disability of {value}% or more',
+          disabilityAny: 'A legally recognised disability',
+          largeFamily: 'You are a large family (familia numerosa)',
+          singleParentFamily: 'You are a single-parent family (familia monoparental)',
+          priorRegionResidenceYears: 'You have lived in the region for the last {value} years or more',
+          mortgageLtvMin: 'A mortgage covers {value}% or more of the appraised value',
+          priorHomeSaleWindow: 'You own no other home, or you sell your previous home within the legal window',
+          other: 'A further condition the calculator does not check, so a lawyer confirms it',
+        },
+      },
+
       faq: [
         {
           q: 'Do I pay ITP on a new-build property?',
@@ -143,7 +218,15 @@ module.exports = {
         },
         {
           q: 'Does the calculator include reduced rates?',
-          a: "No. It shows each region's general rate. Several regions apply reduced rates in particular cases, for a primary residence, for young buyers, or for large families, and the eligibility rules differ region by region. Whether you qualify is worth confirming with a lawyer or gestor, because a reduced rate can cut the bill significantly.",
+          a: "Only the officially verified ones. Several regions charge a reduced rate, or a discount on the tax due, for a main home bought by a young buyer, a large family or a buyer with a recognised disability. Where we have verified a region's rules against its official source, the calculator asks a few extra questions and applies the most favourable relief you likely qualify for, with the conditions listed. Where we have not, it shows the general rate and says so.",
+        },
+        {
+          q: 'What are the reduced ITP rates?',
+          a: 'Most regions charge less than their general rate for certain buyers, most commonly on a main home bought by a young buyer, a large family or a buyer with a recognised disability. Each region writes its own rules, so the conditions and the paperwork differ depending on where you buy. The reduction can be a lower rate on the price or a percentage off the tax due, and the difference is often thousands of euros.',
+        },
+        {
+          q: 'Why does the calculator ask about my main home and my Spanish tax returns?',
+          a: 'Nearly every regional relief requires the home to be your habitual residence in Spain, and most check your income against your Spanish IRPF return. If you are buying a holiday home, or you do not file Spanish tax returns yet, the reduced rates generally do not apply to you. That is why the refine questions start there: two answers rule most reliefs in or out.',
         },
         {
           q: 'Why do the results show sources?',

@@ -77,9 +77,22 @@ try {
 const allItp = spine.allFigures().filter((f) => f.domain === 'itp');
 const shippable = allItp.filter((f) => (allowDraft ? true : f.status === 'verified'));
 
+// Relief rules, filtered exactly like the figures: verified only unless
+// --allow-draft. The engine re-filters drafts too (belt and braces), but a
+// production build must never even embed a draft rule.
+const allItpReliefs = spine.allReliefs().filter((r) => r.domain === 'itp');
+const shippableReliefs = allItpReliefs.filter((r) => (allowDraft ? true : r.status === 'verified'));
+
 // Strip the internal maintenance note before anything reaches a page.
 function publicFigure(f) {
   const { note, domain, ...pub } = f;
+  return pub;
+}
+
+// Same for a relief rule: drop the internal `note` and `domain`, keep the
+// user-facing `userNote`, source and everything the engine reads.
+function publicRelief(r) {
+  const { note, domain, ...pub } = r;
   return pub;
 }
 
@@ -110,7 +123,19 @@ const embedded = {
   figures: shippable
     .filter((f) => f.region === 'national' || availableRegions.includes(f.region))
     .map(publicFigure),
+  // Reliefs mirror the figures' region filter: only rules for a region the
+  // user can actually pick reach the page. In production (zero verified
+  // reliefs) this is [], so the engine returns standard-only and the refine
+  // UI stays dormant.
+  reliefs: shippableReliefs
+    .filter((r) => availableRegions.includes(r.region))
+    .map(publicRelief),
 };
+// --allow-draft previews only: let the page evaluate the embedded draft
+// rules so the refine flow can be walked before verification. A production
+// build never sets this AND embeds no draft rules at all, so this flag can
+// never surface a draft "you likely qualify" on a live page.
+if (allowDraft) embedded.draftPreview = true;
 
 // "Figures last verified" line, derived from the shipped figures.
 const latestAccessed = embedded.figures.map((f) => f.source.accessed).sort().pop();
@@ -252,6 +277,7 @@ ${options}
     <button type="submit" class="cta-btn itp-calc-btn">Calculate the tax</button>
   </form>
   <div id="itp-result" class="itp-result" hidden aria-live="polite"></div>
+  <div id="itp-refine" class="itp-refine" hidden></div>
   <noscript>
     <p>The calculator needs JavaScript, but you don't: every verified rate is in the table below, so the sum works on paper too.</p>
   </noscript>
@@ -377,6 +403,9 @@ ${cards}
 // --- 3. page assembly ------------------------------------------------------------
 
 function buildPage(page) {
+  if (!page.refine) {
+    die(`page "${page.slug}": missing the "refine" copy block in tool-pages-data.js.`);
+  }
   const canonical = `${SITE}/${page.slug}`;
 
   const sections = [
@@ -421,6 +450,9 @@ ${s.html}${extra}`;
   // The spine slice the browser calculates from. </ escaped so figure text
   // can never terminate the script block.
   const embedJson = JSON.stringify(embedded).replace(/</g, '\\u003c');
+  // The refine (relief) copy, embedded so every string stays in
+  // tool-pages-data.js. </ escaped for the same reason.
+  const refineJson = JSON.stringify(page.refine).replace(/</g, '\\u003c');
 
   const draftBanner = allowDraft
     ? `\n  <div class="itp-draft-banner" style="background:#b3261e;color:#fff;text-align:center;padding:10px 16px;font-weight:600;">PREVIEW BUILD with unverified draft figures. Not for production. Rebuild without --allow-draft before merging.</div>`
@@ -508,6 +540,7 @@ ${FOOTER}
 ${FAQ_SCRIPT}
 
 <script>window.ELS_LEGAL_DATA_ITP = ${embedJson};</script>
+<script>window.ELS_ITP_COPY = ${refineJson};</script>
 <script src="/js/calc-engine.js?v=${data.jsVersion}"></script>
 <script src="/js/itp-calculator.js?v=${data.jsVersion}"></script>
 ${CF_BEACON}
@@ -573,6 +606,9 @@ function main() {
     `  spine: ${allItp.length} ITP figures, ${shippable.length} shippable (${
       allowDraft ? 'DRAFTS ALLOWED - preview build' : 'verified only'
     }), ${availableRegions.length} region(s): ${availableRegions.join(', ')}`
+  );
+  console.log(
+    `  reliefs: ${allItpReliefs.length} ITP relief rules, ${embedded.reliefs.length} shippable and region-available (embedded)`
   );
 
   const pages = Object.values(data.pages);
