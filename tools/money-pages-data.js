@@ -163,7 +163,8 @@ module.exports = {
       <tr><th scope="row">Notary + registry</th><td>~1% combined</td><td>Fixed by scale; paid at completion</td></tr>
     </tbody>
   </table>
-  <p>Full breakdown, including the 3% retention when you buy from a non-resident seller (Modelo 211, the buyer's legal obligation, not the seller's), in the <a href="/blog/buying-property-spain-foreigner">complete buying guide</a>.</p>`,
+  <p>Full breakdown, including the 3% retention when you buy from a non-resident seller (Modelo 211, the buyer's legal obligation, not the seller's), in the <a href="/blog/buying-property-spain-foreigner">complete buying guide</a>.</p>
+  <p>You can <a href="/itp-calculator-spain">work out the exact ITP or IVA on a purchase with our calculator</a>, which shows the banded breakdown for your region and links every official source.</p>`,
         },
         {
           heading: 'The contrato de arras: where deals go wrong',
