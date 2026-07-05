@@ -131,6 +131,14 @@ test('region without an AJD figure: new-build says which figure is missing', () 
   assert.equal(r.missing, 'itp.catalunya.new-build-ajd');
 });
 
+test('new-build in IGIC/IPSI territories refuses to apply mainland IVA', () => {
+  for (const region of ['canarias', 'ceuta', 'melilla']) {
+    const r = ELSCalc.calculateITP(data, { region, price: 300000, propertyType: 'new-build' });
+    assert.equal(r.ok, false, region);
+    assert.equal(r.error, 'iva-not-applicable', region);
+  }
+});
+
 test('invalid price', () => {
   for (const price of [0, -5, NaN, Infinity, '300000', undefined]) {
     const r = ELSCalc.calculateITP(data, { region: 'madrid', price, propertyType: 'resale' });

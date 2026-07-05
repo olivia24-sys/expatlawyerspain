@@ -35,6 +35,12 @@ ExpatLawyerSpain is a directory and enquiry-routing service for English-speaking
 - Description: Compare verified English-speaking inheritance lawyers in Spain. Spanish wills, forced heirship, regional inheritance tax and probate. One free enquiry.
 - Contains: a live list of every verified English-speaking firm listed for wills & inheritance work (location, specialties, languages, Google rating), specific legal facts, a "when do you actually need a lawyer" section, and links to the related guides.
 <!-- money-pages:end -->
+<!-- tool-pages:start (managed by tools/build-tool-pages.js — do not hand-edit) -->
+### ITP Calculator Spain: Property Transfer Tax | ExpatLawyerSpain
+- URL: https://expatlawyerspain.com/itp-calculator-spain
+- Description: Work out ITP property transfer tax on a Spanish resale by region, or IVA plus stamp duty on a new build. Sourced figures, banded breakdown, one free enquiry.
+- Contains: an interactive calculator that computes ITP on a resale purchase or IVA plus AJD on a new build, reading only verified figures with official tax-authority sources; a per-region rate table with source links and effective dates; a worked banded example; a "when do you actually need a property lawyer" section; and links to the related buying guides.
+<!-- tool-pages:end -->
 
 ### Admin Guides for Expats in Spain | ExpatLawyerSpain
 - URL: https://expatlawyerspain.com/blog/admin/

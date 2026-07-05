@@ -151,6 +151,14 @@
     return taxName + ' at ' + step.rate + '% from ' + fmtEUR(step.from) + ' to ' + fmtEUR(step.to);
   }
 
+  // Mainland IVA does not exist in these territories (IGIC in the Canary
+  // Islands, IPSI in Ceuta/Melilla). Structural fact, not a figure: the
+  // engine must refuse to apply the national IVA figure there rather than
+  // compute a wrong number. Their new-build mode goes live when their own
+  // figures (e.g. itp.canarias.new-build-igic) are verified and a branch
+  // is added here.
+  var NON_IVA_REGIONS = ['canarias', 'ceuta', 'melilla'];
+
   // --- the ITP calculator --------------------------------------------------------
   /*
    * calculateITP(data, { region, price, propertyType })
@@ -204,6 +212,9 @@
       useFigure(itp, 'ITP');
     } else {
       // New build: IVA + AJD. Never ITP.
+      if (NON_IVA_REGIONS.indexOf(region) !== -1) {
+        return { ok: false, error: 'iva-not-applicable', region: region };
+      }
       var iva = findFigure(data, 'itp.national.new-build-iva');
       var ajd = findFigure(data, 'itp.' + region + '.new-build-ajd');
       if (!iva) return { ok: false, error: 'figure-missing', missing: 'itp.national.new-build-iva' };

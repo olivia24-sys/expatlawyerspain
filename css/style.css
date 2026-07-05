@@ -1456,3 +1456,33 @@ html{ scroll-behavior:smooth; }
 
 /* QA: explicit accessible placeholder colour (clay on white = 6.06:1, opacity:1 stops Firefox lightening it). */
 ::placeholder{ color:#705F57; opacity:1; }
+
+/* ---- Calculator tool pages (/itp-calculator-spain) — added 2026-07-05 ---- */
+.itp-form{ background:var(--card-bg); border:1px solid var(--sand); border-radius:16px; padding:26px 28px; margin:18px 0 10px; display:grid; gap:18px; }
+.itp-field label, .itp-field legend{ display:block; font-weight:600; color:var(--navy); margin-bottom:6px; font-size:0.95rem; }
+.itp-field select, .itp-field input[type="text"]{ width:100%; max-width:420px; padding:11px 14px; border:1px solid #D8CCBE; border-radius:10px; background:#fff; font:inherit; color:inherit; }
+.itp-type{ border:0; padding:0; margin:0; }
+.itp-type label{ display:inline-flex; align-items:center; gap:7px; font-weight:400; margin:0 22px 0 0; color:inherit; }
+.itp-calc-btn{ justify-self:start; background:var(--primary); color:#fff; border:0; border-radius:999px; padding:12px 26px; font:inherit; font-weight:500; cursor:pointer; }
+.itp-calc-btn:hover{ background:var(--primary-dark); }
+.itp-result{ margin:14px 0 6px; }
+.itp-total{ background:var(--navy); color:#fff; border-radius:16px; padding:22px 26px; margin-bottom:16px; }
+.itp-total-label{ font-size:0.9rem; opacity:0.85; }
+.itp-total-amount{ font-family:'Fraunces',Georgia,serif; font-size:2.1rem; font-weight:500; margin:2px 0; }
+.itp-total-rate{ font-size:0.9rem; opacity:0.85; }
+.itp-breakdown-total th, .itp-breakdown-total td{ font-weight:600; border-top:2px solid var(--sand); }
+.itp-error{ background:#FBEDE6; border:1px solid var(--primary-light); border-radius:12px; padding:14px 18px; color:var(--navy); }
+.itp-sources{ font-size:0.9rem; margin-top:14px; }
+.itp-sources ul{ margin:8px 0 0 18px; }
+.itp-verified-line{ font-size:0.9rem; color:#705F57; margin-top:14px; }
+.itp-base-note{ font-size:0.9rem; color:#705F57; }
+.itp-type{ min-inline-size:0; }
+.itp-form > *{ min-width:0; }
+/* Calc pages: give the article a definite width so wide tables scroll inside it
+   instead of forcing the page wider (article-wrap is otherwise shrink-to-fit). */
+.calc-page .post-layout .article-wrap{ min-width:0; width:100%; }
+.post .cost-table.itp-rate-table, .post .cost-table.itp-breakdown, .post .cost-table.itp-worked{ display:block; overflow-x:auto; }
+@media (max-width:640px){
+  .itp-form{ padding:20px 18px; }
+  .itp-type label{ display:flex; margin:0 0 8px; }
+}

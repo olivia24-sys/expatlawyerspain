@@ -47,6 +47,9 @@ Important notes for LLMs and agents:
 - Tax & Fiscal lawyers in Spain (verified, English-speaking): https://expatlawyerspain.com/tax-lawyers-spain
 - Wills & Inheritance lawyers in Spain (verified, English-speaking): https://expatlawyerspain.com/wills-inheritance-lawyers-spain
 <!-- money-pages:end -->
+<!-- tool-pages:start (managed by tools/build-tool-pages.js — do not hand-edit) -->
+- ITP property transfer tax calculator (sourced regional rates, resale and new build): https://expatlawyerspain.com/itp-calculator-spain
+<!-- tool-pages:end -->
 
 ## Blog category pages
 - Property law guides: https://expatlawyerspain.com/blog/property/
