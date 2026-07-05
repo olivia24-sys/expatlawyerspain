@@ -28,7 +28,7 @@ function goldenFigure() {
  * figures, by staging a copy of tools/ in a temp dir with itp.js replaced.
  * Returns { code, out }.
  */
-function runValidator(figures, args = []) {
+function runValidator(figures, args = [], reliefs = []) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'els-spine-test-'));
   const legalDir = path.join(dir, 'legal-data');
   fs.mkdirSync(legalDir);
@@ -38,6 +38,12 @@ function runValidator(figures, args = []) {
     'module.exports = ' +
       JSON.stringify({ domain: 'itp', domainLabel: 'test', figures }, null, 2) +
       ';\n'
+  );
+  // index.js requires itp-reliefs.js too - stage it (empty by default so the
+  // figure-mutation tests are unaffected).
+  fs.writeFileSync(
+    path.join(legalDir, 'itp-reliefs.js'),
+    'module.exports = ' + JSON.stringify({ domain: 'itp', reliefs }, null, 2) + ';\n'
   );
   fs.copyFileSync(path.join(REPO, 'tools', 'validate-legal-data.js'), path.join(dir, 'validate-legal-data.js'));
   try {
@@ -212,4 +218,106 @@ test('--list prints the verification worklist', () => {
   assert.equal(code, 0, out);
   assert.match(out, /Verification worklist/);
   assert.match(out, /itp\.catalunya\.resale/);
+});
+
+// --- relief rules (v2) ----------------------------------------------------------------
+
+function goldenRelief() {
+  return JSON.parse(JSON.stringify(spine.getRelief('itp.catalunya.young-buyer')));
+}
+
+function expectReliefRejected(relief, fragment) {
+  const { code, out } = runValidator([goldenFigure()], [], [relief]);
+  assert.equal(code, 1, `expected exit 1, got ${code}\n${out}`);
+  assert.match(out, /REJECTED/);
+  if (fragment) assert.ok(out.includes(fragment), `expected "${fragment}" in:\n` + out);
+}
+
+test('the real relief rules validate clean', () => {
+  const { code, out } = runValidator(spine.domains.itp.figures, [], spine.allReliefs());
+  assert.equal(code, 0, out);
+  assert.match(out, /relief rule\(s\)/);
+});
+
+test('relief: unknown condition type is rejected', () => {
+  const r = goldenRelief();
+  r.conditions.push({ type: 'luckyBuyer', value: true });
+  expectReliefRejected(r, 'not in the vocabulary');
+});
+
+test('relief: bad appliesTo is rejected', () => {
+  const r = goldenRelief();
+  r.appliesTo = 'resale-ish';
+  expectReliefRejected(r, 'appliesTo');
+});
+
+test('relief: exempt result with a value is rejected', () => {
+  const r = goldenRelief();
+  r.result = { type: 'exempt', value: 100 };
+  expectReliefRejected(r, 'no value or bands');
+});
+
+test('relief: rate result with both value and bands is rejected', () => {
+  const r = goldenRelief();
+  r.result = { type: 'rate', value: 5, bands: [{ upTo: 100, rate: 1 }, { upTo: null, rate: 2 }], bandType: 'whole' };
+  expectReliefRejected(r, 'exactly one of value or bands');
+});
+
+test('relief: income cap without a basis is rejected', () => {
+  const r = goldenRelief();
+  r.conditions = [{ type: 'maxIncome', value: 36000 }];
+  expectReliefRejected(r, 'basis');
+});
+
+test('relief: byIsland outside baleares is rejected', () => {
+  const r = goldenRelief(); // region catalunya
+  r.conditions = [{ type: 'maxPropertyValue', byIsland: { 'mallorca-menorca': 300000 } }];
+  expectReliefRejected(r, 'byIsland caps only exist for baleares');
+});
+
+test('relief: dangling stacksOn id is rejected', () => {
+  const r = goldenRelief();
+  r.result = { type: 'deduction', value: 20 };
+  r.combinesWith = 'cumulative';
+  r.stacksOn = ['itp.nowhere.no-such-rule'];
+  expectReliefRejected(r, 'does not exist');
+});
+
+test('relief: stacksOn on an exclusive rule is rejected', () => {
+  const r = goldenRelief();
+  r.result = { type: 'deduction', value: 20 };
+  r.combinesWith = 'exclusive';
+  r.stacksOn = ['standard'];
+  expectReliefRejected(r, 'cumulative deduction');
+});
+
+test('relief: dangling incompatibleWith id is rejected', () => {
+  const r = goldenRelief();
+  r.incompatibleWith = ['ajd.nowhere.no-such-rule'];
+  expectReliefRejected(r, 'does not exist');
+});
+
+test('relief: empty conditions are rejected', () => {
+  const r = goldenRelief();
+  r.conditions = [];
+  expectReliefRejected(r, 'non-empty conditions');
+});
+
+test('relief: single-entry anyOf is rejected', () => {
+  const r = goldenRelief();
+  r.conditions = [{ anyOf: [{ type: 'largeFamily', value: true }] }];
+  expectReliefRejected(r, 'at least 2 alternatives');
+});
+
+test("relief: 'verified' with a non-official source is rejected", () => {
+  const r = goldenRelief();
+  r.status = 'verified';
+  r.source.url = 'https://some-law-firm-blog.com/reduced-itp';
+  expectReliefRejected(r, 'official tax-authority');
+});
+
+test('relief: duplicate id against a figure is rejected', () => {
+  const r = goldenRelief();
+  r.id = 'itp.catalunya.resale'; // collides with the staged figure
+  expectReliefRejected(r, 'duplicate id');
 });

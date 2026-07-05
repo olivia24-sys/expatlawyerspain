@@ -28,6 +28,50 @@ const domains = {
   itp: require('./itp.js'),
 };
 
+// Relief rules (v2, the personalised calculator): reduced rates and
+// bonifications keyed to a buyer's circumstances. Same one rule, same
+// draft/verified gate as figures. See itp-reliefs.js for the shape.
+const reliefDomains = {
+  itp: require('./itp-reliefs.js'),
+};
+
+// Condition vocabulary for relief rules. 'askable' types map to a calculator
+// input; 'lawyerRoute' types are never asked - a verified rule carrying one
+// only ever surfaces as the "other situation? a lawyer can confirm" path.
+const reliefConditionTypes = {
+  askable: [
+    'maxAge',
+    'habitualResidence',
+    'firstHome',
+    'noPriorPropertyOwnership',
+    'maxIncome',
+    'maxHouseholdIncome',
+    'maxSavingsIncome',
+    'maxPropertyValue',
+    'disability',
+    'largeFamily',
+    'singleParentFamily',
+    'priorRegionResidenceYears',
+    'mortgageLtvMin',
+  ],
+  lawyerRoute: [
+    'vpoProtectedHousing',
+    'genderViolenceVictim',
+    'ruralDepopulatedArea',
+    'terrorismVictim',
+    'priorHomeSaleWindow',
+  ],
+};
+
+const reliefTracks = ['resale', 'newbuild-ajd', 'newbuild-igic'];
+
+// Balearic island groups for the island-differentiated eligibility caps
+// (maxPropertyValue byIsland). Labels are user-facing.
+const balearicIslands = {
+  'mallorca-menorca': 'Mallorca or Menorca',
+  'ibiza-formentera': 'Ibiza or Formentera',
+};
+
 // Canonical region keys. A figure's `region` must be one of these.
 // Labels are the user-facing English names rendered on pages.
 const regions = {
@@ -116,13 +160,31 @@ function getFigure(id) {
   return allFigures().find((f) => f.id === id);
 }
 
+// Every relief rule across every relief domain, with `domain` stamped on.
+function allReliefs() {
+  return Object.values(reliefDomains).flatMap((d) =>
+    (d.reliefs || []).map((r) => ({ ...r, domain: d.domain }))
+  );
+}
+
+// Look one relief up by id (or undefined).
+function getRelief(id) {
+  return allReliefs().find((r) => r.id === id);
+}
+
 module.exports = {
-  version: 1,
+  version: 2,
   regions,
   units,
   domains,
+  reliefDomains,
+  reliefConditionTypes,
+  reliefTracks,
+  balearicIslands,
   officialSourceHosts,
   isOfficialSourceUrl,
   allFigures,
   getFigure,
+  allReliefs,
+  getRelief,
 };
