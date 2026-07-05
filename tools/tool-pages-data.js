@@ -19,7 +19,7 @@ module.exports = {
   // Bump when the site CSS cache-buster changes.
   cssVersion: 'redesign-20260705-18',
   // Bump when js/calc-engine.js or js/itp-calculator.js change.
-  jsVersion: 'itp-20260705-1',
+  jsVersion: 'itp-20260705-2',
 
   // Shown in the page hero and used as sitemap <lastmod>. Change together.
   updatedLabel: 'Updated July 2026',
@@ -75,7 +75,7 @@ module.exports = {
           html: `
   <p>Two purchases, two completely different tax bills. Getting this right before you calculate anything matters, because the taxes do not overlap: you pay one route or the other, never both.</p>
   <p><strong>Buying a resale home</strong> (any property being sold on, not for the first time) means you pay ITP, the transfer tax, at your region's rate. The buyer pays it. There is no VAT on a resale.</p>
-  <p><strong>Buying a new build</strong> (a first delivery straight from the developer) means you pay IVA at 10% instead, plus AJD, the regional stamp duty on the purchase deed (<em>Actos Jurídicos Documentados</em>). The developer charges the IVA and passes it to the tax office; you pay the AJD. A new build never attracts ITP.</p>
+  <p><strong>Buying a new build</strong> (a first delivery straight from the developer) means you pay IVA at 10% instead, plus AJD, the regional stamp duty on the purchase deed (<em>Actos Jurídicos Documentados</em>). The developer charges the IVA and passes it to the tax office; you pay the AJD. A new build never attracts ITP. In the Canary Islands the developer charges IGIC, the local equivalent of IVA, and the calculator handles that too.</p>
   <p>On a resale you file and pay ITP yourself, usually within 30 working days of signing the deed at the notary. Miss that window and the tax office adds a surcharge, so this is a date to diarise, not a bill that waits for you.</p>
   <p>One thing the calculator flags but cannot decide for you: on a resale, the tax office can assess ITP on the <em>valor de referencia</em>, the official reference value it assigns to the property, if that figure is higher than the price you actually pay. When it is, your tax is worked out on the reference value, not on your price.</p>`,
         },

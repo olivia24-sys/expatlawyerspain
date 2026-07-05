@@ -151,13 +151,13 @@
     return taxName + ' at ' + step.rate + '% from ' + fmtEUR(step.from) + ' to ' + fmtEUR(step.to);
   }
 
-  // Mainland IVA does not exist in these territories (IGIC in the Canary
-  // Islands, IPSI in Ceuta/Melilla). Structural fact, not a figure: the
-  // engine must refuse to apply the national IVA figure there rather than
-  // compute a wrong number. Their new-build mode goes live when their own
-  // figures (e.g. itp.canarias.new-build-igic) are verified and a branch
-  // is added here.
-  var NON_IVA_REGIONS = ['canarias', 'ceuta', 'melilla'];
+  // Mainland IVA does not exist in these territories: IGIC in the Canary
+  // Islands (handled by its own branch below, live since the 2026-07-05
+  // verification pass), IPSI in Ceuta/Melilla (no verified figures yet, so
+  // the engine refuses rather than compute a wrong number). Structural
+  // fact, not a figure. When Ceuta/Melilla IPSI figures are verified, give
+  // them a branch like the Canarias one.
+  var IPSI_REGIONS = ['ceuta', 'melilla'];
 
   // --- the ITP calculator --------------------------------------------------------
   /*
@@ -211,15 +211,22 @@
       if (!itp) return { ok: false, error: 'figure-missing', missing: 'itp.' + region + '.resale' };
       useFigure(itp, 'ITP');
     } else {
-      // New build: IVA + AJD. Never ITP.
-      if (NON_IVA_REGIONS.indexOf(region) !== -1) {
+      // New build: indirect tax (IVA, or IGIC in the Canary Islands) + AJD.
+      // Never ITP.
+      if (IPSI_REGIONS.indexOf(region) !== -1) {
         return { ok: false, error: 'iva-not-applicable', region: region };
       }
-      var iva = findFigure(data, 'itp.national.new-build-iva');
       var ajd = findFigure(data, 'itp.' + region + '.new-build-ajd');
-      if (!iva) return { ok: false, error: 'figure-missing', missing: 'itp.national.new-build-iva' };
       if (!ajd) return { ok: false, error: 'figure-missing', missing: 'itp.' + region + '.new-build-ajd' };
-      useFigure(iva, 'IVA');
+      if (region === 'canarias') {
+        var igic = findFigure(data, 'itp.canarias.new-build-igic');
+        if (!igic) return { ok: false, error: 'figure-missing', missing: 'itp.canarias.new-build-igic' };
+        useFigure(igic, 'IGIC');
+      } else {
+        var iva = findFigure(data, 'itp.national.new-build-iva');
+        if (!iva) return { ok: false, error: 'figure-missing', missing: 'itp.national.new-build-iva' };
+        useFigure(iva, 'IVA');
+      }
       useFigure(ajd, 'AJD');
     }
 

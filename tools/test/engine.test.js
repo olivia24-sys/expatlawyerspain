@@ -125,18 +125,36 @@ test('region without a resale figure yet', () => {
 });
 
 test('region without an AJD figure: new-build says which figure is missing', () => {
-  const r = ELSCalc.calculateITP(data, { region: 'catalunya', price: 100000, propertyType: 'new-build' });
+  const r = ELSCalc.calculateITP(data, { region: 'galicia', price: 100000, propertyType: 'new-build' });
   assert.equal(r.ok, false);
   assert.equal(r.error, 'figure-missing');
-  assert.equal(r.missing, 'itp.catalunya.new-build-ajd');
+  assert.equal(r.missing, 'itp.galicia.new-build-ajd');
 });
 
-test('new-build in IGIC/IPSI territories refuses to apply mainland IVA', () => {
-  for (const region of ['canarias', 'ceuta', 'melilla']) {
+test('new-build in IPSI territories (Ceuta/Melilla) refuses to apply mainland IVA', () => {
+  for (const region of ['ceuta', 'melilla']) {
     const r = ELSCalc.calculateITP(data, { region, price: 300000, propertyType: 'new-build' });
     assert.equal(r.ok, false, region);
     assert.equal(r.error, 'iva-not-applicable', region);
   }
+});
+
+test('Canarias new-build uses IGIC + its own AJD, never mainland IVA', () => {
+  const r = ELSCalc.calculateITP(data, { region: 'canarias', price: 300000, propertyType: 'new-build' });
+  assert.equal(r.ok, true);
+  const ids = r.figuresUsed.map((f) => f.id);
+  assert.deepEqual(ids, ['itp.canarias.new-build-igic', 'itp.canarias.new-build-ajd']);
+  assert.ok(r.lines[0].label.startsWith('IGIC'));
+  assert.ok(!ids.includes('itp.national.new-build-iva'));
+});
+
+test('Valencia whole-band cliff: boundary stays at 9%, one euro more re-rates the whole price', () => {
+  const at = ELSCalc.calculateITP(data, { region: 'comunidad-valenciana', price: 1000000, propertyType: 'resale' });
+  const over = ELSCalc.calculateITP(data, { region: 'comunidad-valenciana', price: 1000001, propertyType: 'resale' });
+  assert.equal(at.total, 90000);
+  assert.equal(over.total, 110000.11);
+  // The cliff is the point: €1 more of price adds €20,000.11 of tax.
+  assert.equal(Math.round((over.total - at.total) * 100), 2000011);
 });
 
 test('invalid price', () => {

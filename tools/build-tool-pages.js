@@ -203,6 +203,17 @@ const FAQ_SCRIPT = `<script>
 
 function describeRate(f) {
   if (f.bands) {
+    // 'whole' scales are cliffs: one rate on the ENTIRE price, picked by the
+    // total. Reading them like marginal tranches would mislead near the
+    // threshold, so they get their own wording.
+    if (f.bandType === 'whole') {
+      const parts = f.bands.map((b, i) => {
+        if (b.upTo !== null) return `${b.rate}% up to ${engine.fmtEUR(b.upTo)}`;
+        const prev = f.bands[i - 1].upTo;
+        return `${b.rate}% on the whole price above ${engine.fmtEUR(prev)}`;
+      });
+      return parts.join(', ');
+    }
     const parts = f.bands.map((b) =>
       b.upTo === null ? `${b.rate}% above` : `${b.rate}% to ${engine.fmtEUR(b.upTo)}`
     );
@@ -254,14 +265,17 @@ function rateTableSection() {
     .map((r) => {
       const resale = fig(`itp.${r}.resale`);
       const ajd = fig(`itp.${r}.new-build-ajd`);
-      const nonIva = ['canarias', 'ceuta', 'melilla'].includes(r);
-      const newBuild = nonIva
-        ? r === 'canarias'
-          ? 'IGIC applies instead of IVA'
-          : 'IPSI applies instead of IVA'
-        : ajd
+      const igic = fig('itp.canarias.new-build-igic');
+      let newBuild;
+      if (r === 'canarias') {
+        newBuild = igic && ajd ? `IGIC ${igic.value}% + AJD ${describeRate(ajd)}` : 'IGIC applies instead of IVA';
+      } else if (r === 'ceuta' || r === 'melilla') {
+        newBuild = 'IPSI applies instead of IVA';
+      } else {
+        newBuild = ajd
           ? `IVA${iva ? ' ' + iva.value + '%' : ''} + AJD ${describeRate(ajd)}`
           : 'AJD rate not yet verified';
+      }
       return `      <tr>
         <th scope="row">${esc(spine.regions[r])}</th>
         <td>${esc(describeRate(resale))}</td>

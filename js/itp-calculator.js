@@ -150,8 +150,7 @@
       renderError('Choose a region and whether the property is a resale or a new build.');
     } else if (r.error === 'iva-not-applicable') {
       renderError(
-        'New builds in ' + (data.regions[region] || region) + ' pay ' +
-        (region === 'canarias' ? 'IGIC' : 'IPSI') + ' instead of mainland IVA. ' +
+        'New builds in ' + (data.regions[region] || region) + ' pay IPSI instead of mainland IVA. ' +
         'We have not yet verified that rate, so this calculator will not guess it. ' +
         'The resale calculation for the region works normally.'
       );

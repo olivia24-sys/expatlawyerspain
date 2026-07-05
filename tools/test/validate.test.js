@@ -184,6 +184,7 @@ test("'verified' with an official regional source passes", () => {
 
 test("'draft' with a secondary source passes but is flagged", () => {
   const f = goldenFigure();
+  f.status = 'draft';
   f.source.url = 'https://some-aggregator.com/spain-tax-rates';
   const { code, out } = runValidator([f]);
   assert.equal(code, 0, out);
@@ -205,7 +206,9 @@ test('stale figure: warning on default run, exit 1 under --check', () => {
 });
 
 test('--list prints the verification worklist', () => {
-  const { code, out } = runValidator([goldenFigure()], ['--list']);
+  const f = goldenFigure();
+  f.status = 'draft'; // the worklist lists drafts; the real spine may have none
+  const { code, out } = runValidator([f], ['--list']);
   assert.equal(code, 0, out);
   assert.match(out, /Verification worklist/);
   assert.match(out, /itp\.catalunya\.resale/);

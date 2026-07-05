@@ -64,6 +64,7 @@ const officialSourceHosts = [
   'agenciatributaria.gob.es', // AEAT (national)
   'agenciatributaria.es',
   'boe.es', // state law gazette
+  'borm.es', // Murcia official gazette (regional law texts)
   'atc.gencat.cat', // Catalunya
   'gencat.cat',
   'comunidad.madrid', // Madrid

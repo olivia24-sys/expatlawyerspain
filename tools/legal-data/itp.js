@@ -1,13 +1,14 @@
 /*
- * tools/legal-data/itp.js - property purchase tax figures (ITP, IVA, AJD)
+ * tools/legal-data/itp.js - property purchase tax figures (ITP, IVA, IGIC, AJD)
  * ---------------------------------------------------------------------------
  * The figures behind the ITP calculator (/itp-calculator-spain):
- *   - itp.<region>.resale         ITP on resale residential property
- *   - itp.national.new-build-iva  IVA on new-build housing (national)
- *   - itp.<region>.new-build-ajd  AJD stamp duty paid on top of IVA
- *   - itp.<region>.*              any regional special rate, kept for the
- *                                 record even if the calculator only surfaces
- *                                 it as a caveat (e.g. Catalunya large holders)
+ *   - itp.<region>.resale          ITP on resale residential property
+ *   - itp.national.new-build-iva   IVA on new-build housing (mainland + Balears)
+ *   - itp.canarias.new-build-igic  IGIC on new-build housing (Canary Islands)
+ *   - itp.<region>.new-build-ajd   AJD stamp duty paid on top of IVA/IGIC
+ *   - itp.<region>.*               any regional special rate kept for the
+ *                                  record even if only surfaced as a caveat
+ *                                  (e.g. Catalunya large holders)
  *
  * FIELDS (all enforced by tools/validate-legal-data.js):
  *   id            unique dot-path, must start with "itp."
@@ -19,7 +20,7 @@
  *                 bands: [{ upTo, rate }] thresholds strictly ascending,
  *                 last band upTo: null. bandType 'marginal' (each rate
  *                 taxes its own slice) or 'whole' (one rate, picked by the
- *                 total, applied to the whole price).
+ *                 total, applied to the whole price - a cliff).
  *   effectiveFrom ISO date the figure took effect
  *   source        { url, title, accessed } - url must be https. A figure
  *                 can only be VERIFIED when the url is an official
@@ -28,16 +29,29 @@
  *                 freshness guard reads these)
  *   note          internal maintenance context - what changed, edge cases
  *   userNote      OPTIONAL user-facing caveat, shown with results. Must
- *                 pass els-brand-voice.md. Only for things that genuinely
- *                 vary by case - never a catch-all.
+ *                 pass els-brand-voice.md. Only where the shown general
+ *                 rate could understate the tax or not apply at all -
+ *                 never a catch-all. (Plain discounts live in the FAQ.)
  *   status        'draft' until Olivia has checked the figure against the
  *                 official source, then 'verified'. The production build
  *                 only ships verified figures.
  *
- * SEED DATA WARNING: every figure below started life as EXAMPLE data to
- * exercise the engine and tests. Whether a region's scale is marginal or
- * whole, and the exact bands, are per-region facts to confirm against the
- * official source before flipping to 'verified'.
+ * VERIFICATION 2026-07-05: the 7 priority regions (Andalucía, Valencia,
+ * Catalunya, Madrid, Balears, Canarias, Murcia) plus national IVA and
+ * Canarias IGIC were reconciled to Olivia's official-source rate sheet,
+ * `aios/context/els/els-itp-rates-verification-2026-07.md`, and set
+ * verified. Key corrections from that pass: Valencia is WHOLE (cliff at
+ * EUR 1M), not marginal; Canarias IGIC is 7% (not 6.5%) and its new-build
+ * AJD is 1.00% (not 0.75%); Balears scale runs from 2023-01-01.
+ *
+ * CEUTA / MELILLA (not modelled, deliberately): IPSI replaces IVA there.
+ * Ceuta's ~4% new-build IPSI is indicative only (AEAT framework page, the
+ * ordinance article is unconfirmed); Melilla runs a 0.5-10% IPSI band
+ * scale with no single new-build figure pinned. Per the rate sheet, do
+ * not publish either without checking the local IPSI ordinance. Neither
+ * city has a resale figure either, so neither renders anywhere. When real
+ * figures land, add them here and give the engine an IPSI branch (see
+ * NON_IVA_REGIONS in js/calc-engine.js).
  * ---------------------------------------------------------------------------
  */
 
@@ -45,8 +59,9 @@
 
 module.exports = {
   domain: 'itp',
-  domainLabel: 'Property purchase taxes: ITP (resale), IVA and AJD (new build)',
+  domainLabel: 'Property purchase taxes: ITP (resale), IVA/IGIC and AJD (new build)',
   figures: [
+    // --- Catalunya ------------------------------------------------------------
     {
       id: 'itp.catalunya.resale',
       label: 'ITP on resale residential property, Catalunya',
@@ -61,16 +76,16 @@ module.exports = {
       bandType: 'marginal',
       effectiveFrom: '2025-06-27',
       source: {
-        url: 'https://atc.gencat.cat/ca/tributs/itpajd/',
-        title: 'Agència Tributària de Catalunya: ITP i AJD, tipus de gravamen',
+        url: 'https://www.boe.es/ccaa/dogc/2025/9379/f00001-00028.pdf',
+        title: 'Decret llei 5/2025, DOGC núm. 9379 (26/03/2025)',
         accessed: '2026-07-05',
       },
-      reviewBy: '2027-01-31',
+      reviewBy: '2027-07-05',
       note:
-        'Tiered scale from the June 2025 reform. CONFIRM against the ATC page: the exact thresholds, that the scale is marginal (per tranche) not whole, and the effective date. The separate 20% rate for large holders and whole buildings is itp.catalunya.resale-large-holder.',
+        'Marginal four-band scale from the 2025 reform (Decret llei 5/2025, in force 2025-06-27 after a 3-month deferral; replaced the old 10%/11% two-band scale). Confirmed MARGINAL: the law builds the quota tranche by tranche (tipus mitjà). ATC entry-into-force notice: atc.gencat.cat/ca/agencia/noticies/detall-noticia/20250627-mesures-fiscals-2025-itpajd-isd. The separate 20% large-holder rate is itp.catalunya.resale-large-holder. Verified against els-itp-rates-verification-2026-07.md.',
       userNote:
         'Catalunya charges a separate 20% rate when the buyer is a large holder (a gran tenidor, roughly ten or more residential properties) or buys a whole building. If that is you, this result does not apply.',
-      status: 'draft',
+      status: 'verified',
     },
     {
       id: 'itp.catalunya.resale-large-holder',
@@ -80,48 +95,50 @@ module.exports = {
       value: 20,
       effectiveFrom: '2025-06-27',
       source: {
-        url: 'https://atc.gencat.cat/ca/tributs/itpajd/',
-        title: 'Agència Tributària de Catalunya: ITP i AJD, tipus de gravamen',
+        url: 'https://www.boe.es/ccaa/dogc/2025/9379/f00001-00028.pdf',
+        title: 'Decret llei 5/2025, DOGC núm. 9379 (26/03/2025)',
         accessed: '2026-07-05',
       },
-      reviewBy: '2027-01-31',
+      reviewBy: '2027-07-05',
       note:
-        'Not calculated by the v1 tool - surfaced as a caveat on Catalunya resale results via userNote on itp.catalunya.resale. Kept here so the figure itself is on the record with its source.',
-      status: 'draft',
+        'Not calculated by the v1 tool - surfaced as a caveat on Catalunya resale results via userNote on itp.catalunya.resale. The 20% gran tenidor / whole-building rate was added by the same Decret llei 5/2025 the rate sheet confirms; verified on that basis.',
+      status: 'verified',
     },
+    {
+      id: 'itp.catalunya.new-build-ajd',
+      label: 'AJD on new-build purchases, Catalunya',
+      region: 'catalunya',
+      unit: 'percent',
+      value: 1.5,
+      effectiveFrom: '2025-06-27',
+      source: {
+        url: 'https://www.boe.es/ccaa/dogc/2025/9379/f00001-00028.pdf',
+        title: 'Decret llei 5/2025, DOGC núm. 9379 (26/03/2025)',
+        accessed: '2026-07-05',
+      },
+      reviewBy: '2027-07-05',
+      note:
+        'General AJD 1.5%, unchanged by the 2025 reform (the reform only raised the waived-IVA-exemption case to 3.5% and added an under-35 bonificació, neither modelled). New figure added in the 2026-07-05 verification pass; Catalunya new-build previously showed "AJD not yet verified".',
+      status: 'verified',
+    },
+
+    // --- Madrid ------------------------------------------------------------------
     {
       id: 'itp.madrid.resale',
       label: 'ITP on resale residential property, Madrid',
       region: 'madrid',
       unit: 'percent',
       value: 6,
-      effectiveFrom: '2014-01-01',
+      effectiveFrom: '2026-04-23',
       source: {
-        url: 'https://www.comunidad.madrid/servicios/vivienda/impuesto-transmisiones-patrimoniales',
-        title: 'Comunidad de Madrid: Impuesto sobre Transmisiones Patrimoniales',
+        url: 'https://www.comunidad.madrid/atencion-contribuyente/transmisiones-patrimoniales-onerosas',
+        title: 'Comunidad de Madrid: Transmisiones Patrimoniales Onerosas',
         accessed: '2026-07-05',
       },
-      reviewBy: '2027-01-31',
+      reviewBy: '2027-07-05',
       note:
-        'Flat 6% general rate. CONFIRM the exact source page URL on comunidad.madrid and check the current family/reduced rates before verifying.',
-      status: 'draft',
-    },
-    {
-      id: 'itp.national.new-build-iva',
-      label: 'IVA on new-build residential property (national)',
-      region: 'national',
-      unit: 'percent',
-      value: 10,
-      effectiveFrom: '2012-09-01',
-      source: {
-        url: 'https://sede.agenciatributaria.gob.es/Sede/iva.html',
-        title: 'AEAT: IVA, tipos impositivos - entregas de viviendas',
-        accessed: '2026-07-05',
-      },
-      reviewBy: '2027-01-31',
-      note:
-        'Reduced IVA rate for dwellings (first delivery). Does not apply in the Canary Islands (IGIC instead) or Ceuta/Melilla (IPSI instead) - those need their own figures before their new-build mode can go live. CONFIRM the exact AEAT page URL.',
-      status: 'draft',
+        'Flat 6%, long-standing. effectiveFrom is NOT a statutory commencement date: the reforming statute is unconfirmed (rate sheet flags search chatter citing Ley 5/2024 / Ley 2/2025, unverified), so effectiveFrom carries the official page\'s own last-updated date (2026-04-23), i.e. "confirmed in force as of". The 6% itself is confirmed current on that page. A 10% deduction on the quota applies to a habitual residence priced at EUR 250,000 or less (effective ~5.4%) - not modelled, covered by the reduced-rates FAQ.',
+      status: 'verified',
     },
     {
       id: 'itp.madrid.new-build-ajd',
@@ -129,17 +146,38 @@ module.exports = {
       region: 'madrid',
       unit: 'percent',
       value: 0.75,
-      effectiveFrom: '2019-01-01',
+      effectiveFrom: '2026-04-23',
       source: {
-        url: 'https://www.comunidad.madrid/servicios/vivienda/impuesto-actos-juridicos-documentados',
-        title: 'Comunidad de Madrid: Impuesto sobre Actos Jurídicos Documentados',
+        url: 'https://www.comunidad.madrid/atencion-contribuyente/actos-juridicos-documentados',
+        title: 'Comunidad de Madrid: Actos Jurídicos Documentados',
         accessed: '2026-07-05',
       },
-      reviewBy: '2027-01-31',
+      reviewBy: '2027-07-05',
       note:
-        'General documented-deeds rate applied to a new-build purchase deed. CONFIRM the exact source page URL and the current rate before verifying.',
-      status: 'draft',
+        'General 0.75% for new-build homes above EUR 180,000. Reduced scale for cheaper homes (0.4% up to 120k, 0.5% 120-180k) not modelled - overstates only, covered by the reduced-rates FAQ. effectiveFrom = official page last-updated date, same reasoning as itp.madrid.resale.',
+      status: 'verified',
     },
+
+    // --- National IVA (mainland + Balears) ------------------------------------------
+    {
+      id: 'itp.national.new-build-iva',
+      label: 'IVA on new-build residential property (mainland and Balearic Islands)',
+      region: 'national',
+      unit: 'percent',
+      value: 10,
+      effectiveFrom: '2012-09-01',
+      source: {
+        url: 'https://sede.agenciatributaria.gob.es/Sede/iva/iva-operaciones-inmobiliarias/compro-vivienda-tengo-que-pagar-itp.html',
+        title: 'AEAT: Compro una vivienda, ¿IVA o ITP?',
+        accessed: '2026-07-05',
+      },
+      reviewBy: '2027-07-05',
+      note:
+        'Reduced IVA 10% on new dwellings, Ley 37/1992 art. 91.Uno.1.7 (4% only for VPO régimen especial / promoción pública, not modelled). Applies on the mainland and in the Balearic Islands, NOT in the Canary Islands (IGIC, itp.canarias.new-build-igic) or Ceuta/Melilla (IPSI, not yet modelled - see header).',
+      status: 'verified',
+    },
+
+    // --- Andalucía ----------------------------------------------------------------------
     {
       id: 'itp.andalucia.resale',
       label: 'ITP on resale residential property, Andalucía',
@@ -148,14 +186,14 @@ module.exports = {
       value: 7,
       effectiveFrom: '2021-04-28',
       source: {
-        url: 'https://www.juntadeandalucia.es/organismos/economiahaciendayfondoseuropeos/areas/tributos-juego/tributos/paginas/impuestos-cedidos-transmisiones.html',
-        title: 'Junta de Andalucía: Impuesto sobre Transmisiones Patrimoniales y Actos Jurídicos Documentados',
+        url: 'https://www.juntadeandalucia.es/organismos/economiahaciendayfondoseuropeos/areas/tributos-juego/tributos/paginas/tipositpajd.html',
+        title: 'Junta de Andalucía: Tipos de gravamen ITPAJD',
         accessed: '2026-07-05',
       },
-      reviewBy: '2027-01-31',
+      reviewBy: '2027-07-05',
       note:
-        'Flat 7% general rate, confirmed via the official Junta de Andalucía tributos page (fetched 2026-07-05), effective from 28/04/2021 per a regional decree-law. A reduced 6% applies to primary residences valued at EUR 150,000 or less (from 27/10/2021), plus 3.5% for under-35s, disability, victims of violence/terrorism, and depopulation-risk municipalities, and 2% for licensed resale-flipper businesses - none of these reduced rates are modelled in v1. CONFIRM the 7% figure and 2021-04-28 date against the primary legal text (Decreto-ley) before verifying; also check no later 2025/2026 budget law has changed it.',
-      status: 'draft',
+        'Flat 7% since 2021-04-28 (Decreto-ley 7/2021), made permanent by Ley 5/2021 de 20 de octubre; replaced the former banded scale. No 2024-25 reform. Reduced rates (6% habitual residence <= EUR 150,000; 3.5% under-35s and certain groups, same cap) not modelled, covered by the reduced-rates FAQ. Verified against els-itp-rates-verification-2026-07.md.',
+      status: 'verified',
     },
     {
       id: 'itp.andalucia.new-build-ajd',
@@ -165,15 +203,16 @@ module.exports = {
       value: 1.2,
       effectiveFrom: '2021-04-28',
       source: {
-        url: 'https://www.juntadeandalucia.es/organismos/economiahaciendayfondoseuropeos/areas/tributos-juego/tributos/paginas/impuestos-cedidos-transmisiones.html',
-        title: 'Junta de Andalucía: Impuesto sobre Actos Jurídicos Documentados',
+        url: 'https://www.juntadeandalucia.es/organismos/economiahaciendayfondoseuropeos/areas/tributos-juego/tributos/paginas/tipositpajd.html',
+        title: 'Junta de Andalucía: Tipos de gravamen ITPAJD',
         accessed: '2026-07-05',
       },
-      reviewBy: '2027-01-31',
-      note:
-        'Flat 1.2% general documented-deeds rate applied to a new-build purchase deed, effective 28/04/2021. Reduced rates of 0.3% (young buyers/large families, primary residence <= EUR 150,000) and 0.1% (disability, primary residence <= EUR 250,000) exist - not modelled in v1. CONFIRM against the primary legal text before verifying.',
-      status: 'draft',
+      reviewBy: '2027-07-05',
+      note: 'General AJD 1.2% since 2021-04-28. Verified against els-itp-rates-verification-2026-07.md.',
+      status: 'verified',
     },
+
+    // --- Comunidad Valenciana -----------------------------------------------------------
     {
       id: 'itp.comunidad-valenciana.resale',
       label: 'ITP on resale residential property, Valencia (Comunitat Valenciana)',
@@ -183,17 +222,19 @@ module.exports = {
         { upTo: 1000000, rate: 9 },
         { upTo: null, rate: 11 },
       ],
-      bandType: 'marginal',
+      bandType: 'whole',
       effectiveFrom: '2026-06-01',
       source: {
-        url: 'https://atv.gva.es/es/tarifes-itpajd',
-        title: 'Agència Tributària Valenciana: Tarifes ITP i AJD',
+        url: 'https://www.boe.es/buscar/doc.php?id=BOE-A-2025-11959',
+        title: 'Ley 5/2025, de 30 de mayo (Comunitat Valenciana), BOE-A-2025-11959',
         accessed: '2026-07-05',
       },
-      reviewBy: '2027-01-31',
+      reviewBy: '2027-07-05',
       note:
-        'UNRESOLVED - CONFIRM BEFORE VERIFYING: Ley 5/2025 cut the general rate from a flat 10% to a two-band scale, effective 2026-06-01: 9% up to EUR 1,000,000, 11% above. I could NOT confirm from a primary source whether the 11% band is MARGINAL (only the slice above EUR 1M taxed at 11%, entered here) or WHOLE (11% applied to the entire price once it exceeds EUR 1M - a cliff edge). Secondary sources conflict: one explicitly called it a cliff ("11% applies to the entire transaction value"), another described it as "excess over EUR 1,000,000 taxed at 11%" and called the structure a progressive two-tranche tariff. atv.gva.es/es/tarifes-itpajd itself only lists tariff codes (e.g. TU1 = Type 9) without rendering the euro thresholds in this session - the real scale lives in a linked normativa/law page I could not fetch. I have entered bandType marginal as the working assumption (consistent with Catalunya and Baleares regional scales, and the "tarifa progresiva" wording) but this MUST be verified against the literal text of Ley 5/2025 (or its BOE/DOGV publication) before status can move to verified - if it turns out to be whole, both the bandType and the calculator logic that reads it must be checked. Reduced rates of 8% (under-35/VPO <= EUR 180,000), 6%, 4% (large families/disability >=65%) and 3% (depopulation municipalities) also exist and are not modelled in v1.',
-      status: 'draft',
+        'WHOLE, not marginal (corrected 2026-07-05; earlier draft assumed marginal): 9% up to EUR 1,000,000, and once the price exceeds EUR 1M the 11% applies to the ENTIRE price - a cliff, not a top tranche. Sanity checks: 1,000,000 -> 90,000; 1,000,001 -> 110,000.11. General rate cut 10% -> 9% by Ley 5/2025 for purchases from 2026-06-01. STALE OFFICIAL PAGE: the live ATV Modelo 600 tariff table (atv.gva.es/es/itpajd) still displayed 10% / AJD 1.5% on 2026-07-05; the statute governs. Verified against els-itp-rates-verification-2026-07.md.',
+      userNote:
+        'Valencia cut this rate from 10% to 9% for purchases from 1 June 2026 (Ley 5/2025). The regional tax agency\'s tariff page still showed the old 10% when we checked on 5 July 2026, but the law governs. Above one million euros the 11% rate applies to the whole price, not just the part above the threshold.',
+      status: 'verified',
     },
     {
       id: 'itp.comunidad-valenciana.new-build-ajd',
@@ -203,15 +244,19 @@ module.exports = {
       value: 1.4,
       effectiveFrom: '2026-06-01',
       source: {
-        url: 'https://atv.gva.es/es/tarifes-itpajd',
-        title: 'Agència Tributària Valenciana: Tarifes ITP i AJD',
+        url: 'https://www.boe.es/buscar/doc.php?id=BOE-A-2025-11959',
+        title: 'Ley 5/2025, de 30 de mayo (Comunitat Valenciana), BOE-A-2025-11959',
         accessed: '2026-07-05',
       },
-      reviewBy: '2027-01-31',
+      reviewBy: '2027-07-05',
       note:
-        'RATE FROM SECONDARY SOURCE (guiafiscal.es/patrimonio/itp/valencia/) - official page did not clearly state the general AJD rate for this session; atv.gva.es/es/tarifes-itpajd shows a "DA1 / Type 0.1" tariff code for "Adquisicion de vivienda habitual" under notarial acts, which does not obviously match 1.4% and may be a different, narrower concept (e.g. a fixed-fee code rather than the ad-valorem rate). Ley 5/2025 reportedly cut the general AJD rate from 1.5% to 1.4% effective 2026-06-01. CONFIRM the 1.4% figure and what DA1/Type 0.1 actually represents against the official normativa before verifying.',
-      status: 'draft',
+        'General AJD cut 1.5% -> 1.4% by the same Ley 5/2025, from 2026-06-01. The ATV page still showed 1.5% on 2026-07-05; the statute governs. Verified against els-itp-rates-verification-2026-07.md.',
+      userNote:
+        'The same 2026 law cut Valencia\'s AJD from 1.5% to 1.4% for deeds from 1 June 2026. The tax agency\'s page still showed 1.5% when we checked on 5 July 2026; the law governs.',
+      status: 'verified',
     },
+
+    // --- Illes Balears ---------------------------------------------------------------------
     {
       id: 'itp.baleares.resale',
       label: 'ITP on resale residential property, Balearic Islands',
@@ -225,16 +270,16 @@ module.exports = {
         { upTo: null, rate: 13 },
       ],
       bandType: 'marginal',
-      effectiveFrom: '2025-01-01',
+      effectiveFrom: '2023-01-01',
       source: {
-        url: 'https://www.atib.es/TA/normativa/impuestos/ITP/',
-        title: 'Agència Tributària de les Illes Balears: normativa ITP',
+        url: 'https://www.atib.es/TA/contenido.aspx?Id=16198&lang=es',
+        title: 'ATIB: Tipos de gravamen ITPAJD (TPO inmuebles)',
         accessed: '2026-07-05',
       },
-      reviewBy: '2027-01-31',
+      reviewBy: '2027-07-05',
       note:
-        'RATE FROM SECONDARY SOURCES (multiple aggregators cross-confirmed, e.g. calculadoraitp.es/calculadora/itp-baleares, guiafiscal.es/patrimonio/itp/baleares/) - atib.es did not render the numeric scale for this session (empty/404 body). Confirmed MARGINAL (not whole) via an explicit worked example found in research: a EUR 700,000 purchase computes as 400,000 x 8% + 200,000 x 9% + 100,000 x 10% = 32,000 + 18,000 + 10,000 = EUR 60,000, which only reconciles under marginal banding (a whole reading would give 700,000 x 10% = EUR 70,000 instead). effectiveFrom of 2025-01-01 is a placeholder - sources call this the "new" 2025 scale but I could not pin the exact commencement date; CONFIRM against atib.es directly. A 0% rate for primary residence under-30s and a 5% rate for large families/VPO <= EUR 270,151.20 exist and are not modelled in v1.',
-      status: 'draft',
+        'Marginal five-band scale in force since 2023-01-01 (the pre-2023 scale topped out at 11.5%; the earlier draft\'s 2025-01-01 placeholder was wrong). Confirmed MARGINAL: ATIB tariff builds the quota tranche by tranche (tipo medio). 2024 added first-home buyer reliefs (Ley 12/2023), general scale unchanged. Verified against els-itp-rates-verification-2026-07.md.',
+      status: 'verified',
     },
     {
       id: 'itp.baleares.new-build-ajd',
@@ -242,68 +287,76 @@ module.exports = {
       region: 'baleares',
       unit: 'percent',
       value: 1.5,
-      effectiveFrom: '2025-01-01',
+      effectiveFrom: '2023-01-01',
       source: {
-        url: 'https://www.atib.es/TA/normativa/impuestos/ITP/',
-        title: 'Agència Tributària de les Illes Balears: normativa AJD',
+        url: 'https://www.atib.es/TA/contenido.aspx?Id=9854&lang=es',
+        title: 'ATIB: ITPAJD (sistema tributario)',
         accessed: '2026-07-05',
       },
-      reviewBy: '2027-01-31',
+      reviewBy: '2027-07-05',
       note:
-        'RATE FROM SECONDARY SOURCES (atib.es did not render for this session) - general 1.5% AJD rate on new-build purchase deeds. A 2.0% AJD surcharge reportedly applies specifically to new-build homes priced at or above EUR 1,000,000 - not modelled in v1 (v1 only carries the general rate). effectiveFrom is a placeholder pending direct confirmation on atib.es.',
-      status: 'draft',
+        'General AJD 1.5%. A 2% rate applies when the value is EUR 1,000,000 or more (surfaced as a userNote because the general figure would UNDERSTATE tax there); 1.2% first habitual home <= 270,151.20 and 2.5% waived-exemption cases not modelled. Verified against els-itp-rates-verification-2026-07.md.',
+      userNote:
+        'A new build priced at one million euros or more pays AJD at 2% in the Balearic Islands, not the general 1.5% shown here.',
+      status: 'verified',
     },
+
+    // --- Canarias --------------------------------------------------------------------------
     {
       id: 'itp.canarias.resale',
       label: 'ITP on resale residential property, Canary Islands',
       region: 'canarias',
       unit: 'percent',
       value: 6.5,
-      effectiveFrom: '2012-01-01',
+      effectiveFrom: '2012-07-01',
       source: {
-        url: 'https://www3.gobiernodecanarias.org/tributos/atc/',
-        title: 'Agencia Tributaria Canaria (ATC)',
+        url: 'https://www3.gobiernodecanarias.org/tributos/atc/estatico/asistencia_contribuyente/guias/pdf/guia_completa_itp_y_ajd.pdf',
+        title: 'Agencia Tributaria Canaria: Guía ITP y AJD',
         accessed: '2026-07-05',
       },
-      reviewBy: '2027-01-31',
+      reviewBy: '2027-07-05',
       note:
-        'RATE FROM SECONDARY SOURCES (multiple aggregators agree on a flat, non-progressive 6.5% general rate) - the official ATC guide PDF exists (guia_completa_itp_y_ajd.pdf on gobiernodecanarias.org) but returned as an unreadable image-based PDF in this session; open it directly to confirm. effectiveFrom 2012-01-01 is a rough placeholder (when the current devolved-rate regime broadly settled) and NOT independently confirmed - check the actual commencement date. Reduced rates around 3-4% for primary residence under value/age/income thresholds exist (sources are slightly inconsistent on the exact reduced number) - not modelled in v1.',
-      status: 'draft',
-    },
-    {
-      id: 'itp.canarias.new-build-ajd',
-      label: 'AJD on new-build purchases, Canary Islands',
-      region: 'canarias',
-      unit: 'percent',
-      value: 0.75,
-      effectiveFrom: '2012-01-01',
-      source: {
-        url: 'https://www3.gobiernodecanarias.org/tributos/atc/',
-        title: 'Agencia Tributaria Canaria (ATC)',
-        accessed: '2026-07-05',
-      },
-      reviewBy: '2027-01-31',
-      note:
-        'RATE FROM SECONDARY SOURCES (rankia.com blog, fiscaly.com) - the official ATC PDF guide could not be read in this session (image-based PDF). 0.75% is the general AJD rate applied to a new-build purchase deed in the Canary Islands. effectiveFrom 2012-01-01 is an unconfirmed placeholder. CONFIRM directly against the ATC guide or normativa before verifying.',
-      status: 'draft',
+        'Flat 6.5% since 2012-07-01 (Ley 4/2012); no 2024-25 change. New builds pay IGIC (itp.canarias.new-build-igic) + AJD instead. Verified against els-itp-rates-verification-2026-07.md.',
+      status: 'verified',
     },
     {
       id: 'itp.canarias.new-build-igic',
       label: 'IGIC on new-build residential property, Canary Islands',
       region: 'canarias',
       unit: 'percent',
-      value: 6.5,
-      effectiveFrom: '2012-01-01',
+      value: 7,
+      effectiveFrom: '2012-07-01',
       source: {
-        url: 'https://www3.gobiernodecanarias.org/tributos/atc/',
-        title: 'Agencia Tributaria Canaria (ATC)',
+        url: 'https://www.boe.es/buscar/act.php?id=BOE-A-2012-9282',
+        title: 'Ley 4/2012 (Canarias), BOE, arts. 51/58',
         accessed: '2026-07-05',
       },
-      reviewBy: '2027-01-31',
+      reviewBy: '2027-07-05',
       note:
-        'IGIC (Impuesto General Indirecto Canario) replaces IVA in the Canary Islands - national IVA (itp.national.new-build-iva, 10%) does not apply here. This figure is NOT yet used by the calculator (Canarias new-build mode is not live) but must validate. RATE FROM SECONDARY SOURCES - conflicting: several aggregators quote 6.5% as the rate specifically for new housing (vivienda), while the GENERAL IGIC rate on most other goods/services is quoted as 7%. It is unclear whether 6.5% is a housing-specific reduced IGIC rate distinct from the 7% general rate, or whether one of these numbers is simply wrong in the secondary sources. I have recorded 6.5% as it was the figure most consistently tied to "vivienda" specifically. CONFIRM this against Ley 4/2012 (IGIC law) or the official ATC guide PDF before verifying - this is the single biggest open question for Canarias. effectiveFrom 2012-01-01 is an unconfirmed placeholder tied to when IGIC housing rates broadly settled.',
-      status: 'draft',
+        'IGIC replaces IVA in the Canary Islands. GENERAL rate is 7% (corrected 2026-07-05; the earlier 6.5% draft conflated it with the ITP rate). Reduced rates: 5% habitual residence delivered by the developer, 3% under-35/large family/disability >= 65%, 0% VPO first home - the 5% is surfaced as a userNote because most owner-occupier buyers qualify. Used by the calculator\'s Canarias new-build branch since the 2026-07-05 pass. Verified against els-itp-rates-verification-2026-07.md.',
+      userNote:
+        'Buying the home as your habitual residence straight from the developer usually qualifies for the reduced 5% IGIC rate instead of the general 7% shown here. A lawyer or gestor confirms eligibility before you complete.',
+      status: 'verified',
     },
+    {
+      id: 'itp.canarias.new-build-ajd',
+      label: 'AJD on new-build purchases, Canary Islands',
+      region: 'canarias',
+      unit: 'percent',
+      value: 1,
+      effectiveFrom: '2012-07-01',
+      source: {
+        url: 'https://www3.gobiernodecanarias.org/tributos/atc/estatico/asistencia_contribuyente/guias/pdf/guia_completa_itp_y_ajd.pdf',
+        title: 'Agencia Tributaria Canaria: Guía ITP y AJD',
+        accessed: '2026-07-05',
+      },
+      reviewBy: '2027-07-05',
+      note:
+        'A new-build PURCHASE deed (operation subject to IGIC) falls in the 1.00% band (corrected 2026-07-05 from the 0.75% draft; 0.75% is the general immovable/obra-nueva band, not the purchase deed). Verified against els-itp-rates-verification-2026-07.md.',
+      status: 'verified',
+    },
+
+    // --- Región de Murcia --------------------------------------------------------------------
     {
       id: 'itp.murcia.resale',
       label: 'ITP on resale residential property, Murcia',
@@ -312,14 +365,14 @@ module.exports = {
       value: 7.75,
       effectiveFrom: '2025-07-25',
       source: {
-        url: 'https://agenciatributaria.carm.es/en/-/novedades-en-materia-de-tributos-aprobadas-en-la-ley-de-presupuestos-generales-de-la-comunidad-autonoma-de-la-region-de-murcia-para-el-ano-2025',
-        title: 'Agencia Tributaria de la Región de Murcia (ATRM): novedades en materia de tributos, Ley de Presupuestos 2025',
+        url: 'https://www.borm.es/services/anuncio/ano/2025/numero/3684/pdf?id=837745',
+        title: 'Ley 3/2025 (Presupuestos CARM 2025), BORM 24/07/2025',
         accessed: '2026-07-05',
       },
-      reviewBy: '2027-01-31',
+      reviewBy: '2027-07-05',
       note:
-        'Flat 7.75% general rate, confirmed directly on the official CARM/ATRM announcement page, effective 2025-07-25 (reduced from a prior flat 8% by Ley 3/2025, the CARM 2025 budget law). Reduced rates of 3% (under-35/large-family/disability >=65%, primary residence <= EUR 150,000) and 4% (VPO) exist - not modelled in v1. Strongest-sourced region in this batch; still confirm the announcement matches the final published Ley 3/2025 text before verifying.',
-      status: 'draft',
+        'Flat 7.75% from 2025-07-25, cut from 8% by Ley 3/2025 (BORM anuncio 3684). ATRM news confirmation: agenciatributaria.carm.es novedades page (29/07/2025). WARNING: the ATRM FAQ page still shows the old 8%/2% - never cite the FAQ for the headline rate. Verified against els-itp-rates-verification-2026-07.md.',
+      status: 'verified',
     },
     {
       id: 'itp.murcia.new-build-ajd',
@@ -329,14 +382,14 @@ module.exports = {
       value: 1.5,
       effectiveFrom: '2025-07-25',
       source: {
-        url: 'https://agenciatributaria.carm.es/en/-/novedades-en-materia-de-tributos-aprobadas-en-la-ley-de-presupuestos-generales-de-la-comunidad-autonoma-de-la-region-de-murcia-para-el-ano-2025',
-        title: 'Agencia Tributaria de la Región de Murcia (ATRM): novedades en materia de tributos, Ley de Presupuestos 2025',
+        url: 'https://www.borm.es/services/anuncio/ano/2025/numero/3684/pdf?id=837745',
+        title: 'Ley 3/2025 (Presupuestos CARM 2025), BORM 24/07/2025',
         accessed: '2026-07-05',
       },
-      reviewBy: '2027-01-31',
+      reviewBy: '2027-07-05',
       note:
-        'Confirmed directly on the official CARM/ATRM announcement page: reduced from 2% to 1.5%, effective 2025-07-25, applying to first-copy deeds for property transfers subject to and not exempt from VAT (i.e. new-build). A 0.1% reduced rate for qualifying primary-residence buyers exists - not modelled in v1.',
-      status: 'draft',
+        'General AJD cut 2% -> 1.5% from 2025-07-25 by the same Ley 3/2025. Verified against els-itp-rates-verification-2026-07.md.',
+      status: 'verified',
     },
   ],
 };
