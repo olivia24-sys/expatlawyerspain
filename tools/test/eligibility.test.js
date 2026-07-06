@@ -232,17 +232,37 @@ test('before nationality: every rule is need-more-info asking ONLY for nationali
   assert.deepEqual(res.missingInputs, ['nationality']);
 });
 
-test('EEA/Swiss short-circuits to not-needed on both real visas', () => {
+test('EEA/Swiss short-circuits: every visa route is not-needed with its honest note; only EU registration evaluates', () => {
   const res = E.checkEligibility(realData(), { nationality: 'eea-swiss' }, DRAFTS);
   for (const r of res.results) {
-    assert.equal(r.outcome, 'not-needed');
-    assert.ok(r.applicabilityNote, `${r.id} needs its honest EEA note`);
+    if (r.id === 'visa.eu-registration') {
+      assert.notEqual(r.outcome, 'not-needed');
+      assert.notEqual(r.outcome, 'not-applicable');
+    } else {
+      assert.equal(r.outcome, 'not-needed');
+      assert.ok(r.applicabilityNote, `${r.id} needs its honest EEA note`);
+    }
   }
 });
 
-test('UK is a third country: the gate never routes uk to not-needed', () => {
+test('UK is a third country: the visa routes evaluate for uk, and EU registration is not-applicable', () => {
   const res = E.checkEligibility(realData(), { nationality: 'uk' }, DRAFTS);
-  for (const r of res.results) assert.notEqual(r.outcome, 'not-needed');
+  for (const r of res.results) {
+    if (r.id === 'visa.eu-registration') {
+      assert.equal(r.outcome, 'not-applicable');
+    } else if (r.applicability === 'applies') {
+      // an evaluated route: some tri-state outcome, never the EEA shortcut
+      assert.ok(['eligible', 'not-eligible', 'need-more-info'].includes(r.outcome), `${r.id}: ${r.outcome}`);
+    } else {
+      // e.g. arraigo declares uk 'not-needed' (an irregular-status route that
+      // rarely fits visa-holding nationals) - allowed, but must carry a note
+      assert.equal(r.outcome, 'not-needed');
+      assert.ok(r.applicabilityNote, `${r.id} needs a note explaining why uk is ${r.applicability}`);
+    }
+  }
+  // the core third-country point: DNV and NLV genuinely evaluate for uk
+  assert.equal(resultFor(res, 'visa.digital-nomad').outcome, 'need-more-info');
+  assert.equal(resultFor(res, 'visa.non-lucrative').outcome, 'need-more-info');
 });
 
 test('not-applicable rules surface as not-applicable, not as failures', () => {

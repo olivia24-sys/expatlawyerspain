@@ -279,6 +279,124 @@ const scenarios = [
     answers: Object.assign({}, nlvSatisfied, { noWorkInSpain: false }),
     expected: { outcome: 'not-eligible', failed: ['visa.non-lucrative.no-work'] },
   },
+
+  // --- the six delegated visas: encoding pins -------------------------------
+  {
+    name: 'Student: admitted, 600.00 monthly (100% x 600 IPREM), alone -> eligible',
+    visa: 'visa.student',
+    answers: {
+      nationality: 'us',
+      admittedToStudies: true,
+      monthlyIncome: 600,
+      dependants: 0,
+      healthInsurance: true,
+      cleanCriminalRecord: true,
+    },
+    expected: { outcome: 'eligible' },
+  },
+  {
+    name: 'Student: 599.99 monthly and savings unanswered -> need-more-info (savings could still qualify)',
+    visa: 'visa.student',
+    answers: {
+      nationality: 'us',
+      admittedToStudies: true,
+      monthlyIncome: 599.99,
+      dependants: 0,
+      healthInsurance: true,
+      cleanCriminalRecord: true,
+    },
+    expected: { outcome: 'need-more-info', missing: ['savings'] },
+  },
+  {
+    name: 'Work permit: everything satisfied -> STILL need-more-info with the lawyer-route flag (the national employment test can never auto-grant)',
+    visa: 'visa.work-employee',
+    answers: {
+      nationality: 'uk',
+      jobOfferInSpain: true,
+      universityDegree: true,
+      cleanCriminalRecord: true,
+    },
+    expected: { outcome: 'need-more-info' },
+  },
+  {
+    name: 'Family reunification: sponsor income 900.00 (150% x 600), applicant alone, all answered -> need-more-info via the housing lawyer-route, never eligible',
+    visa: 'visa.family-reunification',
+    answers: {
+      nationality: 'other',
+      familyMemberSpanishResident: true,
+      monthlyIncome: 900,
+      dependants: 0,
+      healthInsurance: true,
+    },
+    expected: { outcome: 'need-more-info' },
+  },
+  {
+    name: 'Family reunification: one extra member raises the bar to 1,200.00 (150% + 50% of 600); 1,199.99 -> not-eligible (the first:0.5 encoding fix)',
+    visa: 'visa.family-reunification',
+    answers: {
+      nationality: 'other',
+      familyMemberSpanishResident: true,
+      monthlyIncome: 1199.99,
+      dependants: 1,
+      healthInsurance: true,
+    },
+    expected: { outcome: 'not-eligible', failed: ['visa.family-reunification.means'] },
+  },
+  {
+    name: 'Arraigo: under two years but a family tie -> stays open as need-more-info with the lawyer route (the anyOf fix)',
+    visa: 'visa.arraigo',
+    answers: {
+      nationality: 'other',
+      yearsLivingInSpain: 1,
+      familyMemberSpanishResident: true,
+    },
+    expected: { outcome: 'need-more-info' },
+  },
+  {
+    name: 'Arraigo: under two years and no family tie -> not-eligible',
+    visa: 'visa.arraigo',
+    answers: {
+      nationality: 'other',
+      yearsLivingInSpain: 1,
+      familyMemberSpanishResident: false,
+    },
+    expected: { outcome: 'not-eligible' },
+  },
+  {
+    name: 'Arraigo: three years in Spain -> need-more-info, never eligible (variant assessment is a lawyer route)',
+    visa: 'visa.arraigo',
+    answers: {
+      nationality: 'other',
+      yearsLivingInSpain: 3,
+      familyMemberSpanishResident: false,
+    },
+    expected: { outcome: 'need-more-info' },
+  },
+  {
+    name: 'Entrepreneur: project, 1,200.00 monthly (200% x 600 IPREM), alone, compliant -> eligible',
+    visa: 'visa.entrepreneur',
+    answers: {
+      nationality: 'us',
+      innovativeBusinessProject: true,
+      monthlyIncome: 1200,
+      dependants: 0,
+      healthInsurance: true,
+      cleanCriminalRecord: true,
+    },
+    expected: { outcome: 'eligible' },
+  },
+  {
+    name: 'EU registration: EEA citizen working in Spain -> eligible (the one route that evaluates for eea-swiss)',
+    visa: 'visa.eu-registration',
+    answers: { nationality: 'eea-swiss', jobOfferInSpain: true },
+    expected: { outcome: 'eligible' },
+  },
+  {
+    name: 'EU registration: not-applicable for a UK citizen (post-Brexit third country)',
+    visa: 'visa.eu-registration',
+    answers: { nationality: 'uk' },
+    expected: { outcome: 'not-applicable' },
+  },
 ];
 
 module.exports = {
