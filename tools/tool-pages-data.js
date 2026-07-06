@@ -15,10 +15,13 @@
  * ---------------------------------------------------------------------------
  */
 
+'use strict';
+
 module.exports = {
   // Bump when the site CSS cache-buster changes.
   cssVersion: 'redesign-20260705-19',
-  // Bump when js/calc-engine.js or js/itp-calculator.js change.
+  // Bump when js/calc-engine.js, js/itp-calculator.js, js/eligibility-engine.js
+  // or js/visa-checker.js change.
   jsVersion: 'itp-20260705-3',
 
   // Shown in the page hero and used as sitemap <lastmod>. Change together.
@@ -32,12 +35,24 @@ module.exports = {
    *   slug            page URL, /<slug> (file <slug>.html at repo root)
    *   breadcrumb      the pillar this tool belongs to (cluster up-link)
    *   breadcrumbLeaf  the crumb label for this page
-   *   calcHeading     heading of the calculator section
-   *   rateTableHeading heading of the generated rates-by-region section
+   *   calcHeading     heading of the calculator/checker section
+   *   rateTableHeading heading of the generated rates/routes-at-a-glance section
    *   baseNote        one-line tax-base caveat shown under the calculator
    *   blogCategories  used for the "All guides" link target
    *   guides          exactly 3 blog-data.js slugs for the related cards
    *   llmsLine / llmsFullContains   the llms.txt + llms-full.txt entries
+   *
+   * kind: 'calculator' (default, omit the field) | 'checker'.
+   *   'checker' pages (the visa checker) render the three eligibility-checker
+   *   mount divs instead of a calculator form, a static "routes at a glance"
+   *   comparison table instead of a rate table, and per-route requirement
+   *   sections instead of a worked example. See build-tool-pages.js for the
+   *   full branch. A checker page carries `checker` (its copy deck's
+   *   `checker` slice) instead of `refine`.
+   *
+   * noindex: true renders the robots noindex meta on EVERY build, production
+   *   included (not just --allow-draft previews). The kickoff rule: a new
+   *   page ships noindex until Olivia explicitly asks for it to be indexed.
    */
   pages: {
     itp: {
@@ -234,5 +249,28 @@ module.exports = {
         },
       ],
     },
+
+    // The visa checker's copy is authored in tools/visa-checker-copy.js (its
+    // own header documents the full shape, including the `checker` slice).
+    // Only the build-only fields this generator itself needs are added here,
+    // so the copy deck stays untouched: kind, calcHeading (the copy deck has
+    // no calculator/checker heading of its own), noindex, blogCategories and
+    // guides (mirroring how the itp entry adds its own build wiring).
+    visa: Object.assign(
+      {
+        kind: 'checker',
+        calcHeading: 'Check your routes',
+        rateTableHeading: 'Routes at a glance',
+        // New page ships noindex until Olivia requests indexing; flip to
+        // false and rebuild at launch.
+        noindex: true,
+        blogCategories: ['immigration'],
+        guides: ['digital-nomad-visa-spain', 'non-lucrative-visa-spain', 'moving-to-spain-from-uk'],
+        llmsLine: 'Spain visa eligibility checker (nationality-gated, sourced income floors and requirements)',
+        llmsFullContains:
+          'an interactive checker that asks a few questions and shows which Spanish residence visa routes you appear to meet the headline requirements for, reading only verified rules with official Spanish-government sources; a "routes at a glance" comparison table with income floors computed live from the current IPREM/SMI; per-route requirement breakdowns with sources; a "when do you actually need an immigration lawyer" section; and links to the related visa guides.',
+      },
+      require('./visa-checker-copy.js')
+    ),
   },
 };

@@ -49,6 +49,7 @@ Important notes for LLMs and agents:
 <!-- money-pages:end -->
 <!-- tool-pages:start (managed by tools/build-tool-pages.js — do not hand-edit) -->
 - ITP property transfer tax calculator (sourced regional rates, resale and new build): https://expatlawyerspain.com/itp-calculator-spain
+- Spain visa eligibility checker (nationality-gated, sourced income floors and requirements): https://expatlawyerspain.com/spain-visa-checker
 <!-- tool-pages:end -->
 
 ## Blog category pages

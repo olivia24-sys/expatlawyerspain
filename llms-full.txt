@@ -40,6 +40,11 @@ ExpatLawyerSpain is a directory and enquiry-routing service for English-speaking
 - URL: https://expatlawyerspain.com/itp-calculator-spain
 - Description: Work out ITP property transfer tax on a Spanish resale by region, or IVA plus stamp duty on a new build. Sourced figures, banded breakdown, one free enquiry.
 - Contains: an interactive calculator that computes ITP on a resale purchase or IVA plus AJD on a new build, reading only verified figures with official tax-authority sources; a per-region rate table with source links and effective dates; a worked banded example; a "when do you actually need a property lawyer" section; and links to the related buying guides.
+
+### Spain Visa Checker: Which Residence Route Fits You | ExpatLawyerSpain
+- URL: https://expatlawyerspain.com/spain-visa-checker
+- Description: Answer a few questions and see which Spanish visa routes match your situation, with the real requirements and official sources. Free, no sign-up.
+- Contains: an interactive checker that asks a few questions and shows which Spanish residence visa routes you appear to meet the headline requirements for, reading only verified rules with official Spanish-government sources; a "routes at a glance" comparison table with income floors computed live from the current IPREM/SMI; per-route requirement breakdowns with sources; a "when do you actually need an immigration lawyer" section; and links to the related visa guides.
 <!-- tool-pages:end -->
 
 ### Admin Guides for Expats in Spain | ExpatLawyerSpain

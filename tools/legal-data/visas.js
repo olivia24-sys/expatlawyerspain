@@ -129,7 +129,7 @@ module.exports = {
               type: 'maxSpanishClientsSharePercent',
               value: 20,
               label:
-                'You are self-employed for clients outside Spain, with Spanish clients making up no more than 20% of your work',
+                'Or you are self-employed for clients outside Spain, with Spanish clients making up no more than 20% of your work',
               effectiveFrom: '2023-01-12',
               source: {
                 url: 'https://www.inclusion.gob.es/web/unidadgrandesempresas/teletrabajadores',
