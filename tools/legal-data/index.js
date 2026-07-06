@@ -26,6 +26,7 @@
 
 const domains = {
   itp: require('./itp.js'),
+  'income-refs': require('./income-refs.js'),
 };
 
 // Relief rules (v2, the personalised calculator): reduced rates and
@@ -64,6 +65,58 @@ const reliefConditionTypes = {
 };
 
 const reliefTracks = ['resale', 'newbuild-ajd', 'newbuild-igic'];
+
+// Eligibility domains (the decision engine, js/eligibility-engine.js):
+// rule sets evaluated tri-state against a person's answers. Visas today;
+// a process-checklist or any future eligibility tool adds a domain file
+// with the same shape. See visas.js for the full field documentation.
+const eligibilityDomains = {
+  visa: require('./visas.js'),
+};
+
+// Condition vocabulary for eligibility criteria. 'askable' types map to a
+// checker question; 'lawyerRoute' types are never asked - a rule carrying
+// one never auto-grants, it surfaces as "a lawyer can confirm" + CTA.
+// Keep in sync with CRITERION_KINDS in js/eligibility-engine.js.
+const eligibilityConditionTypes = {
+  askable: [
+    'minIncomeMultiple', // answers.monthlyIncome (+ answers.dependants)
+    'minSavingsMultiple', // answers.savings (+ answers.dependants)
+    'remoteEmployeeOfForeignCompany',
+    'maxSpanishClientsSharePercent', // answers.spanishClientsSharePercent
+    'employmentRelationshipMonths',
+    'universityDegree',
+    'professionalExperienceYears',
+    'healthInsurance',
+    'cleanCriminalRecord',
+    'noWorkInSpain',
+    'medicalCertificate',
+    'admittedToStudies',
+    'jobOfferInSpain',
+    'familyMemberSpanishResident',
+    'yearsLivingInSpain',
+    'innovativeBusinessProject',
+  ],
+  lawyerRoute: [
+    'arraigoVariantAssessment',
+    'familyDependencyProof',
+    'sponsorMeansAndHousing',
+    'exceptionalCircumstances',
+  ],
+};
+
+// Nationality groups the checker gates on. Rules differ materially between
+// them (post-Brexit UK is a third country; EEA/Swiss citizens need no visa
+// at all). Labels are user-facing.
+const nationalityGroups = {
+  uk: 'UK citizen',
+  us: 'US citizen',
+  'eea-swiss': 'EU, EEA or Swiss citizen',
+  other: 'Another nationality',
+};
+
+// Applicability states a visa rule may declare per nationality group.
+const applicabilityStates = ['applies', 'not-needed', 'not-applicable'];
 
 // Balearic island groups for the island-differentiated eligibility caps
 // (maxPropertyValue byIsland). Labels are user-facing.
@@ -108,6 +161,10 @@ const officialSourceHosts = [
   'agenciatributaria.gob.es', // AEAT (national)
   'agenciatributaria.es',
   'boe.es', // state law gazette
+  'inclusion.gob.es', // Ministerio de Inclusión (extranjería / UGE - visa rules)
+  'migraciones.gob.es', // Secretaría de Estado de Migraciones
+  'exteriores.gob.es', // MAEC - consular visa pages
+  'administracion.gob.es', // Punto de Acceso General (official procedures)
   'borm.es', // Murcia official gazette (regional law texts)
   'atc.gencat.cat', // Catalunya
   'gencat.cat',
@@ -172,8 +229,20 @@ function getRelief(id) {
   return allReliefs().find((r) => r.id === id);
 }
 
+// Every eligibility rule across every eligibility domain, `domain` stamped on.
+function allEligibilityRules() {
+  return Object.values(eligibilityDomains).flatMap((d) =>
+    (d.rules || []).map((r) => ({ ...r, domain: d.domain }))
+  );
+}
+
+// Look one eligibility rule up by id (or undefined).
+function getEligibilityRule(id) {
+  return allEligibilityRules().find((r) => r.id === id);
+}
+
 module.exports = {
-  version: 2,
+  version: 3,
   regions,
   units,
   domains,
@@ -181,10 +250,16 @@ module.exports = {
   reliefConditionTypes,
   reliefTracks,
   balearicIslands,
+  eligibilityDomains,
+  eligibilityConditionTypes,
+  nationalityGroups,
+  applicabilityStates,
   officialSourceHosts,
   isOfficialSourceUrl,
   allFigures,
   getFigure,
   allReliefs,
   getRelief,
+  allEligibilityRules,
+  getEligibilityRule,
 };
