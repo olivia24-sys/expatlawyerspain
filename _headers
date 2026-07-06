@@ -11,3 +11,27 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(), camera=(), microphone=(), payment=(), usb=()
   Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://static.cloudflareinsights.com https://analytics.ahrefs.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://static.cloudflareinsights.com https://cloudflareinsights.com https://analytics.ahrefs.com; frame-src https://challenges.cloudflare.com; form-action https://formspree.io; base-uri 'self'; object-src 'none'
+
+# WIDGET FRAMEWORK (see tools/WIDGET-FRAMEWORK-NOTES.md). These blocks MUST
+# come AFTER the /* block: rules apply top to bottom, and the "!" detach only
+# removes a header attached by an EARLIER rule.
+#
+# /widgets/* is the ONLY embeddable path on the site. It detaches the global
+# X-Frame-Options: DENY (so partner sites can iframe it; frame-ancestors *
+# makes that explicit) and carries its own STRICT ENFORCED CSP: same-origin
+# only, no inline script/style, so a widget frame cannot load or run anything
+# third-party. The global report-only CSP is detached to keep violation
+# reports clean. NOTE for the CSP-enforce flip: when /* switches to an
+# enforced Content-Security-Policy, add "! Content-Security-Policy" above the
+# Content-Security-Policy line here, or /widgets/* will be governed by the
+# intersection of both policies.
+/widgets/*
+  ! X-Frame-Options
+  ! Content-Security-Policy-Report-Only
+  Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors *; base-uri 'none'; form-action 'none'
+  X-Robots-Tag: noindex
+
+# /embed/* is the loader partners <script src> from their own pages. Edge
+# cached, but short enough that a loader fix rolls out within the hour.
+/embed/*
+  Cache-Control: public, max-age=3600, stale-while-revalidate=86400

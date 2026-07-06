@@ -1,0 +1,135 @@
+/* ExpatLawyerSpain embeddable widget styles, v1.
+   Self-contained: system font stack only, no webfonts, no external assets.
+   Loaded inside a sandboxed cross-origin iframe under strict CSP. */
+
+:root {
+  --primary: #C94F1A;
+  --navy: #133356;
+  --bg: #FAF5ED;
+  --card-bg: #FFF;
+  --text: #190F0C;
+  --text-light: #705F57;
+  --border: #E2DCD2;
+  --verified: #386D50;
+  --radius: 12px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  margin: 0;
+  padding: 12px;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.els-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: var(--navy);
+  margin-bottom: 10px;
+}
+
+.els-header img {
+  display: block;
+}
+
+.els-wordmark {
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--navy);
+}
+
+#els-status {
+  color: var(--text-light);
+  font-size: 13px;
+  padding: 4px 0;
+}
+
+#els-status:empty {
+  display: none;
+}
+
+#els-firms {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.els-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.els-name {
+  color: var(--navy);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.els-verified {
+  font-size: 12px;
+  color: var(--verified);
+}
+
+.els-location {
+  color: var(--text-light);
+  font-size: 13px;
+}
+
+.els-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 2px;
+}
+
+.els-chip {
+  background: #FBEDE6;
+  color: var(--primary);
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.els-languages {
+  color: var(--text-light);
+  font-size: 12px;
+}
+
+.els-view-link {
+  color: var(--primary);
+  font-weight: 600;
+  font-size: 13px;
+  text-decoration: none;
+  margin-top: 4px;
+}
+
+.els-view-link:hover {
+  text-decoration: underline;
+}
+
+.els-footer {
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--text-light);
+}
+
+.els-footer a {
+  color: var(--text-light);
+}
