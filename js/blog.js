@@ -23,3 +23,23 @@
     }
   });
 })();
+
+/* FAQ accordion keyboard accessibility (a11y) */
+(function () {
+  function ready(fn){ if(document.readyState!=='loading'){fn();} else {document.addEventListener('DOMContentLoaded',fn);} }
+  ready(function () {
+    var qs = document.querySelectorAll('.faq-q');
+    if (!qs.length) return;
+    qs.forEach(function (q) {
+      q.setAttribute('role','button');
+      q.setAttribute('tabindex','0');
+      q.setAttribute('aria-expanded','false');
+      q.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') { e.preventDefault(); q.click(); }
+      });
+      q.addEventListener('click', function () {
+        qs.forEach(function (x) { x.setAttribute('aria-expanded', x.classList.contains('open') ? 'true' : 'false'); });
+      });
+    });
+  });
+})();

@@ -1280,6 +1280,7 @@ header nav a:not(.btn-nav):hover{ color:#FBF7EF; }
 .post .faq-q{ padding:16px 20px; font-weight:600; cursor:pointer; background:var(--bg); display:flex; justify-content:space-between; align-items:center; font-size:0.98rem; color:var(--navy); user-select:none; }
 .post .faq-q::after{ content:'+'; font-size:1.2rem; color:var(--primary); flex-shrink:0; }
 .post .faq-q.open::after{ content:'\2013'; }
+.post .faq-q:focus-visible{ outline:2px solid var(--primary); outline-offset:2px; }
 .post .faq-a{ display:none; padding:14px 20px 16px; font-size:0.98rem; color:var(--text); border-top:1px solid var(--border); }
 .post .faq-a.open{ display:block; }
 
