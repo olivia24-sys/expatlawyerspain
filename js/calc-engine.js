@@ -375,11 +375,13 @@
   function evaluateRule(rule, ctx) {
     var unknowns = [];
     var failed = false;
+    var sawUnknown = false;
     for (var i = 0; i < rule.conditions.length; i++) {
       var c = rule.conditions[i];
       var r = evaluateCondition(c, ctx);
       if (r === 'no') failed = true;
       if (r === 'unknown') {
+        sawUnknown = true;
         (c.anyOf || [c]).forEach(function (leaf) {
           if (ASKABLE_CONDITIONS.indexOf(leaf.type) !== -1 && unknowns.indexOf(leaf.type) === -1) {
             unknowns.push(leaf.type);
@@ -393,6 +395,13 @@
     // unknowns (it surfaces via otherSituationHint instead).
     if (hasLawyerRouteCondition(rule)) return { outcome: 'potential', unknowns: [] };
     if (unknowns.length) return { outcome: 'potential', unknowns: unknowns };
+    // Backstop: a condition evaluated unknown but produced neither an askable
+    // unknown nor a recognised lawyer-route condition. The only shape that does
+    // this is an anyOf group made entirely of lawyer-route types - it can never
+    // be satisfied from buyer input, so it must never auto-grant. Mirrors
+    // eligibility-engine.js (any unknown -> never eligible) and holds regardless
+    // of how future condition types are classified.
+    if (sawUnknown) return { outcome: 'potential', unknowns: [] };
     return { outcome: 'qualified', unknowns: [] };
   }
 

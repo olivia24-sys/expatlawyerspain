@@ -146,6 +146,30 @@ test('lawyer-route conditions never grant and never ask, only hint', () => {
   }
 });
 
+test('regression: an anyOf of only lawyer-route types never auto-grants', () => {
+  // The false-grant vector (audit #4): an anyOf group made entirely of
+  // lawyer-route condition types evaluates 'unknown' but contributes no askable
+  // unknown, and hasLawyerRouteCondition bails to false on anything carrying
+  // .anyOf. Before the sawUnknown backstop this fell through to 'qualified' and
+  // applied a discount on empty input. It must resolve to standard-only, never a
+  // grant. (The validator now forbids this shape; this pins the engine's own
+  // defence in case a bad rule ever reaches it.)
+  const vector = rule({
+    conditions: [
+      { anyOf: [{ type: 'vpoProtectedHousing', value: true }, { type: 'genderViolenceVictim', value: true }] },
+    ],
+  });
+  const r = calc(withReliefs([vector]), {
+    region: 'catalunya',
+    price: 350000,
+    propertyType: 'resale',
+    buyer: { mainHome: true }, // nothing that could satisfy either alternative
+  });
+  assert.equal(r.reliefStatus, 'standard-only', 'an all-lawyer-route anyOf must never auto-grant');
+  assert.equal(r.personalised, null, 'no discount may be applied');
+  assert.deepEqual(r.missingInputs, [], 'no askable question to surface');
+});
+
 test('maxAge boundaries: inclusive by default, strict when inclusive:false', () => {
   const at35 = { region: 'catalunya', price: 100000, propertyType: 'resale', buyer: { mainHome: true, age: 35 } };
   const inclusive = rule({ conditions: [{ type: 'maxAge', value: 35 }] });

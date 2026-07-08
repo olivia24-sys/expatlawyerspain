@@ -309,6 +309,14 @@ test('relief: single-entry anyOf is rejected', () => {
   expectReliefRejected(r, 'at least 2 alternatives');
 });
 
+test('relief: an anyOf of only lawyer-route types is rejected', () => {
+  const r = goldenRelief();
+  r.conditions = [
+    { anyOf: [{ type: 'vpoProtectedHousing', value: true }, { type: 'genderViolenceVictim', value: true }] },
+  ];
+  expectReliefRejected(r, 'at least one askable leaf');
+});
+
 test("relief: 'verified' with a non-official source is rejected", () => {
   const r = goldenRelief();
   r.status = 'verified';

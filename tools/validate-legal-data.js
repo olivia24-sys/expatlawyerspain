@@ -267,6 +267,14 @@ function checkCondition(r, c) {
   if (Array.isArray(c.anyOf)) {
     if (c.anyOf.length < 2) return bad(r, 'an anyOf group needs at least 2 alternatives.');
     if (Object.keys(c).length !== 1) return bad(r, 'an anyOf group must contain only anyOf.');
+    // At least one alternative must be askable in the calculator. A group of
+    // only lawyer-route (or otherwise never-asked) types can never be answered
+    // from buyer input, so it stays unknown forever and would fall through to a
+    // false grant in the engine. Forbid the shape here so future rule additions
+    // cannot reintroduce it.
+    if (!c.anyOf.some((inner) => inner && askableTypes.has(inner.type))) {
+      bad(r, 'an anyOf group needs at least one askable leaf: a group of only lawyer-route types can never be answered in the calculator and would fall through to a false grant.');
+    }
     return c.anyOf.forEach((inner) => {
       if (inner && Array.isArray(inner.anyOf)) return bad(r, 'anyOf groups cannot nest.');
       checkCondition(r, inner);
