@@ -135,7 +135,7 @@ module.exports = {
       reviewBy: '2027-07-05',
       note:
         'Age raised 32 to 35 by DL 5/2025. No property-value cap and no first-home rule in Catalan law. Habitual residence: occupy within 12 months, live there 3 years.',
-      status: 'draft',
+      status: 'verified',
     },
     {
       id: 'itp.catalunya.large-family',
@@ -162,7 +162,7 @@ module.exports = {
       },
       reviewBy: '2027-07-05',
       note: 'Familia numerosa per Ley 40/2003. Not applicable to bare ownership.',
-      status: 'draft',
+      status: 'verified',
     },
     {
       id: 'itp.catalunya.single-parent-family',
@@ -189,7 +189,7 @@ module.exports = {
       },
       reviewBy: '2027-07-05',
       note: 'Familia monoparental. Was 30,000 EUR plus 12,000 per child before 18 Mar 2023.',
-      status: 'draft',
+      status: 'verified',
     },
     {
       id: 'itp.catalunya.disability',
@@ -202,9 +202,9 @@ module.exports = {
         { type: 'habitualResidence', value: true },
         {
           type: 'maxHouseholdIncome',
-          value: 30000,
+          value: 36000,
           basis:
-            'sum of IRPF taxable bases minus the personal and family minimum of family-unit members. UNCONFIRMED whether this cap was raised to 36,000 EUR',
+            'sum of general and savings IRPF taxable bases minus the personal and family minimum of the family unit, last IRPF return',
         },
       ],
       combinesWith: 'exclusive',
@@ -216,8 +216,8 @@ module.exports = {
       },
       reviewBy: '2027-07-05',
       note:
-        'Disability in the buyer OR a family-unit member, degree 65% or more. The 30,000 EUR income cap needs primary-text confirmation (needs-my-eyes HIGH item 5) before this rule can be verified.',
-      status: 'draft',
+        'Disability in the buyer OR a family-unit member, degree 65% or more. Income cap 36,000 EUR (whole family unit) confirmed against art. 641-4 of the consolidated Codi Tributari (BOE-A-2024-6951, last mod 25 Mar 2026); the earlier 30,000 EUR figure belonged to unrelated IRPF provisions.',
+      status: 'verified',
     },
     {
       id: 'itp.catalunya.gender-violence-victim',
@@ -245,7 +245,7 @@ module.exports = {
       reviewBy: '2027-07-05',
       note:
         'New in DL 5/2025. Victim status per Llei 5/2008; the purchase must arise from the need to change residence. Not asked in the calculator: routes to the other-situation lawyer path.',
-      status: 'draft',
+      status: 'verified',
     },
     {
       id: 'itp.catalunya.vpo-protected-housing',
@@ -264,7 +264,7 @@ module.exports = {
       reviewBy: '2027-07-05',
       note:
         'Flat 7% for officially protected housing resale, against the 10-13% general scale. Not asked in the calculator: routes to the other-situation lawyer path.',
-      status: 'draft',
+      status: 'verified',
     },
     {
       id: 'itp.catalunya.young-buyer-newbuild-ajd',
@@ -292,7 +292,7 @@ module.exports = {
       reviewBy: '2027-07-05',
       note:
         '100% bonification of the AJD gradual quota (from 1.5% to nothing) on a VAT-subject first transfer. IVA at 10% still applies and the result must keep saying so.',
-      status: 'draft',
+      status: 'verified',
     },
     {
       id: 'itp.catalunya.vpo-newbuild-ajd',

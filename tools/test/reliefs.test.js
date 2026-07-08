@@ -574,9 +574,22 @@ test('spine pins: transcribed structural encodings hold', () => {
   const condOf = (r, type) => r.conditions.find((c) => c.type === type);
   const anyOfGroups = (r) => r.conditions.filter((c) => Array.isArray(c.anyOf));
 
-  // every launch rule is draft until Olivia flips it; exclusions never entered
+  // the rule count and the never-transcribed exclusions are fixed. Verification
+  // flips rules draft -> verified one region at a time, but the known-conflict
+  // rules (table verdict: hold) must NEVER ship verified while their official
+  // texts are unresolved - this tripwire fails if one is ever flipped by mistake.
   assert.equal(all.length, 73, 'expected 73 rules (8 Catalunya + 65 transcribed)');
-  assert.ok(all.every((r) => r.status === 'draft'), 'all launch rules stay draft');
+  for (const held of [
+    'itp.murcia.young-under40-resale',
+    'itp.murcia.disability-65-resale',
+    'itp.murcia.young-under40-newbuild-ajd',
+    'itp.murcia.disability-65-newbuild-ajd',
+    'itp.balears.habitual-4pc',
+    'itp.balears.under36-first-home-2pc',
+    'itp.balears.disability-2pc',
+  ]) {
+    assert.equal(get(held).status, 'draft', `${held} must stay draft (unresolved conflict, must not ship)`);
+  }
   for (const banned of [
     'itp.andalucia.professional-reseller',
     'itp.andalucia.storm-habitual-2026',
