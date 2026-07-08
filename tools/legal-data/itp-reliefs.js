@@ -678,7 +678,7 @@ module.exports = {
           type: 'maxHouseholdIncome',
           value: 30000,
           basis:
-            'sum of general and savings IRPF taxable base, per acquirer, prior-year IRPF, individual return; 47,000 EUR joint',
+            'sum of general and savings IRPF base liquidable (not base imponible), per acquirer, individual return; 47,000 EUR joint. Art. 4.Cuatro Ley 13/1997 (categoria general).',
         },
       ],
       combinesWith: 'exclusive',
@@ -690,7 +690,7 @@ module.exports = {
       },
       reviewBy: '2027-07-05',
       note: 'Value over 180,000 EUR. Art. 13.Dos.2 Ley 13/1997. Clave TU4.',
-      status: 'draft',
+      status: 'verified',
     },
     {
       id: 'itp.valenciana.young-under35-under180k',
@@ -707,7 +707,7 @@ module.exports = {
         {
           type: 'maxHouseholdIncome',
           value: 30000,
-          basis: 'sum of general and savings IRPF taxable base, per acquirer; 47,000 EUR joint',
+          basis: 'sum of general and savings IRPF base liquidable (not base imponible), per acquirer; 47,000 EUR joint. Art. 4.Cuatro Ley 13/1997.',
         },
       ],
       combinesWith: 'exclusive',
@@ -719,7 +719,7 @@ module.exports = {
       },
       reviewBy: '2027-07-05',
       note: 'Art. 13.Tres.1. Clave TJ8.',
-      status: 'draft',
+      status: 'verified',
     },
     {
       id: 'itp.valenciana.vpo-general-first-over180k',
@@ -741,7 +741,7 @@ module.exports = {
       },
       reviewBy: '2027-07-05',
       note: 'No income limit. Art. 13.Dos.1. Clave TO0.',
-      status: 'draft',
+      status: 'verified',
     },
     {
       id: 'itp.valenciana.vpo-general-first-under180k',
@@ -764,7 +764,7 @@ module.exports = {
       },
       reviewBy: '2027-07-05',
       note: 'No income limit. Art. 13.Tres.2. Clave TG8.',
-      status: 'draft',
+      status: 'verified',
     },
     {
       id: 'itp.valenciana.vpo-especial-first-over180k',
@@ -786,7 +786,7 @@ module.exports = {
       },
       reviewBy: '2027-07-05',
       note: 'No income limit. Art. 13.Cuatro.1.1. Clave TU8.',
-      status: 'draft',
+      status: 'verified',
     },
     {
       id: 'itp.valenciana.vpo-especial-first-under180k',
@@ -809,7 +809,7 @@ module.exports = {
       },
       reviewBy: '2027-07-05',
       note: 'No income limit. Art. 13.Cinco.1. Clave TE8.',
-      status: 'draft',
+      status: 'verified',
     },
     {
       id: 'itp.valenciana.large-family-single-parent-over180k',
@@ -829,7 +829,7 @@ module.exports = {
           type: 'maxHouseholdIncome',
           value: 30000,
           basis:
-            'per acquirer; 47,000 EUR joint (general category); 35,000/58,000 EUR special-category familia numerosa or monoparental',
+            'general and savings IRPF base liquidable (not base imponible), per acquirer; 47,000 EUR joint (categoria general); 35,000 individual / 58,000 EUR joint special category. Art. 4.Cuatro Ley 13/1997.',
         },
       ],
       combinesWith: 'exclusive',
@@ -841,7 +841,7 @@ module.exports = {
       },
       reviewBy: '2027-07-05',
       note: 'Large family or single-parent family, either qualifies. Art. 13.Cuatro.1.2. Clave TU9.',
-      status: 'draft',
+      status: 'verified',
     },
     {
       id: 'itp.valenciana.large-family-single-parent-under180k',
@@ -861,7 +861,7 @@ module.exports = {
         {
           type: 'maxHouseholdIncome',
           value: 30000,
-          basis: 'per acquirer; 47,000 EUR joint (general category); 35,000/58,000 EUR special category',
+          basis: 'general and savings IRPF base liquidable (not base imponible), per acquirer; 47,000 EUR joint (categoria general); 35,000/58,000 EUR special category. Art. 4.Cuatro Ley 13/1997.',
         },
       ],
       combinesWith: 'exclusive',
@@ -873,7 +873,7 @@ module.exports = {
       },
       reviewBy: '2027-07-05',
       note: 'Art. 13.Cinco.2. Clave TF8.',
-      status: 'draft',
+      status: 'verified',
     },
     {
       id: 'itp.valenciana.disability-over180k',
@@ -894,8 +894,8 @@ module.exports = {
       },
       reviewBy: '2027-07-05',
       note:
-        'No income limit. Applies only to the acquirer\'s own share. Law text reads physical or sensory disability 65% or more, OR intellectual or mental disability 33% or more; modelled here as a flat disability-65 condition, which under-grants a 33-64% intellectual or mental buyer rather than risk a wrong "you qualify" (calculator asks disability in bands none/33-64/65+, see RELIEFS-NOTES.md). Art. 13.Cuatro.1.3. Clave TU7.',
-      status: 'draft',
+        'No income limit. Applies only to the acquirer\'s own share. Ley 13/1997 art. 13.Cuatro.1.3 (amended by Ley 5/2025 art. 29, in force 1 Jun 2025): any disability 65% or more, OR intellectual or mental disability 33% or more recognised permanently. Modelled as a flat disability-65 condition (sign-off #3): deliberately under-grants a 33-64% intellectual or mental buyer rather than risk a wrong "you qualify" (calculator asks disability in bands none/33-64/65+, see RELIEFS-NOTES.md). Clave TU7.',
+      status: 'verified',
     },
     {
       id: 'itp.valenciana.disability-under180k',
@@ -917,8 +917,8 @@ module.exports = {
       },
       reviewBy: '2027-07-05',
       note:
-        'No income limit. Same physical/sensory-65 or intellectual/mental-33 nuance as the over-180k disability rule; modelled as flat disability-65, an accepted under-grant. Art. 13.Cinco.3. Clave TD8.',
-      status: 'draft',
+        'No income limit. Same disability wording as the over-180k rule (Ley 13/1997 art. 13.Cinco.3, per Ley 5/2025): any disability 65% or more, OR intellectual or mental 33% or more recognised permanently; modelled as flat disability-65, an accepted under-grant (sign-off #3). Clave TD8.',
+      status: 'verified',
     },
     {
       id: 'itp.valenciana.gender-violence-over180k',
@@ -991,7 +991,7 @@ module.exports = {
       reviewBy: '2027-07-05',
       note:
         'Flat 0.1% AJD on the acquisition of a habitual dwelling. No value, income or sub-category caps. Art. 14.Uno.a. Clave DA1.',
-      status: 'draft',
+      status: 'verified',
     },
 
     // --- Madrid -----------------------------------------------------------------
