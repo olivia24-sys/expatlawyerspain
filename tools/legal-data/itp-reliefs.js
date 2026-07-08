@@ -1321,7 +1321,7 @@ module.exports = {
       },
       reviewBy: '2027-07-05',
       note:
-        'Large family or single-parent family, either qualifies. 2% on the first 270,151.20 EUR, 8% on the excess. Eligibility cap is a plain 350,000 EUR (not island-differentiated); the single-parent GENERAL category is capped at 270,151.20 EUR instead, a nuance not separately modelled here. The 2026 reform ties the general cap to the island order plus 15%: verify the operative figure before flipping to verified.',
+        'HELD DRAFT - the 350,000 EUR cap is STALE. Ley 4/2026 (disp. final 67.4, in force 14 Jun 2026) deleted the flat 350,000 EUR and set the cap to the island order threshold plus 15% (approx 381,639 EUR Mallorca/Menorca, 434,944 EUR Ibiza/Formentera), EXCEPT general single-parent families capped at 270,151.20 EUR. The current flat 350,000 EUR OVER-GRANTS a general single-parent buyer between 270,151.20 and 350,000 EUR (a false you-qualify), so this rule must not ship until re-modelled as byIsland x1.15 with the single-parent carve-out. Do not flip.',
       status: 'draft',
     },
     {
@@ -1350,8 +1350,8 @@ module.exports = {
       },
       reviewBy: '2027-07-05',
       note:
-        'Also requires at least 3 years of prior habitual residence in the Balearics and a mortgage of at least 60% of the appraised value: both modelled as hard gates with no vocabulary type until this pass. Value cap is FIXED at 270,151.20 EUR, never island-raised, unlike the reduced-rate rules above. Self-assessment is still required even at zero tax due. Both maxIncome (individual) and maxHouseholdIncome (joint) are kept as AND conditions per the research; a joint filer who has only answered one of the two income questions is deliberately under-granted rather than guessed at.',
-      status: 'draft',
+        'Also requires at least 3 years of prior habitual residence in the Balearics and a mortgage of at least 60% of the appraised value: both modelled as hard gates with no vocabulary type until this pass. Value cap is FIXED at 270,151.20 EUR, never island-raised, unlike the reduced-rate rules above. Self-assessment is still required even at zero tax due. Both maxIncome (individual) and maxHouseholdIncome (joint) are kept as AND conditions per the research; a joint filer who has only answered one of the two income questions is deliberately under-granted rather than guessed at. Confirmed against Ley 4/2026 art. 14 quater (BOIB 74, 13 Jun 2026): income 52,800/84,480 EUR, fixed 270,151.20 EUR cap, 3-year residence and 60% LTV gates.',
+      status: 'verified',
     },
     {
       id: 'itp.balears.disability33-100pc-bonification',
@@ -1379,8 +1379,8 @@ module.exports = {
       },
       reviewBy: '2027-07-05',
       note:
-        'Same package as the under-30 bonification: also needs at least 3 years of prior Balearic residence and a mortgage of at least 60% of appraised value. Fixed 270,151.20 EUR cap, never island-raised. Both income caps kept as AND, same deliberate under-grant for joint filers noted on the sibling rule.',
-      status: 'draft',
+        'Same package as the under-30 bonification: also needs at least 3 years of prior Balearic residence and a mortgage of at least 60% of appraised value. Fixed 270,151.20 EUR cap, never island-raised. Both income caps kept as AND, same deliberate under-grant for joint filers noted on the sibling rule. Confirmed against Ley 4/2026 art. 14 quater (BOIB 74).',
+      status: 'verified',
     },
     {
       id: 'itp.balears.price-limited-housing-50pc',
@@ -1422,8 +1422,8 @@ module.exports = {
       },
       reviewBy: '2027-07-05',
       note:
-        'New-build first transfer. Supersedes the pre-2026 AJD 1.2% relief. 1% on the first 270,151.20 EUR, 1.5% on the excess. Eligibility cap is FIXED at 270,151.20 EUR, never island-raised (same fixed-cap role as the 100% bonifications, a different role from the byIsland reduced-rate rules above).',
-      status: 'draft',
+        'New-build first transfer. Supersedes the pre-2026 AJD 1.2% relief. 1% on the first 270,151.20 EUR, 1.5% on the excess. Eligibility cap is FIXED at 270,151.20 EUR, never island-raised (same fixed-cap role as the 100% bonifications, a different role from the byIsland reduced-rate rules above). Confirmed against Ley 4/2026 art. 17 (BOIB 74, in force 14 Jun 2026).',
+      status: 'verified',
     },
     {
       id: 'ajd.balears.collectives-0-5pc',
@@ -1452,8 +1452,8 @@ module.exports = {
       },
       reviewBy: '2027-07-05',
       note:
-        'Qualifying collectives (under 36, disability, large family or single-parent family) are ALTERNATIVES, not all required: modelled as an anyOf. 0.5% on the first 270,151.20 EUR, 1.5% on the excess. The large/single-parent cap is tied to the island order plus 15%, not separately modelled here.',
-      status: 'draft',
+        'Qualifying collectives (under 36, disability, large family or single-parent family) are ALTERNATIVES, not all required: modelled as an anyOf. 0.5% on the first 270,151.20 EUR, 1.5% on the excess. The large/single-parent cap is tied to the island order plus 15%, not separately modelled here (the fixed 270,151.20 EUR cap under-grants them, the safe direction). Confirmed against Ley 4/2026 art. 17 (BOIB 74).',
+      status: 'verified',
     },
     {
       id: 'ajd.balears.under30-disability33-100pc-bonification',
@@ -1486,8 +1486,8 @@ module.exports = {
       },
       reviewBy: '2027-07-05',
       note:
-        'New-build mirror of the ITP 100% bonification. Under 30 or disability 33% or more are alternatives, modelled as an anyOf. Also needs at least 3 years of prior Balearic residence and a mortgage of at least 60% of appraised value.',
-      status: 'draft',
+        'New-build mirror of the ITP 100% bonification. Under 30 or disability 33% or more are alternatives, modelled as an anyOf. Also needs at least 3 years of prior Balearic residence and a mortgage of at least 60% of appraised value. Confirmed against Ley 4/2026 art. 19 quater (BOIB 74).',
+      status: 'verified',
     },
     {
       id: 'ajd.balears.price-tasada-limited-housing-50pc',
