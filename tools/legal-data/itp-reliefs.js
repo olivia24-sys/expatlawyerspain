@@ -1029,8 +1029,8 @@ module.exports = {
       },
       reviewBy: '2027-07-05',
       note:
-        'Art. 30-bis. 10% off the quota, effective circa 5.4% on the standard 6%. maxPropertyValue includes annexes plus up to two garages and a storeroom. Clawback if the habitual-residence conditions are later breached (occupy within 12 months, reside 3 years).',
-      status: 'draft',
+        'Art. 30-bis. 10% off the quota, effective circa 5.4% on the standard 6%. maxPropertyValue includes annexes plus up to two garages and a storeroom. Clawback if the habitual-residence conditions are later breached (occupy within 12 months, reside 3 years). Incompatible with the art. 29 large-family 4% rate; both are exclusive so the engine takes the better one.',
+      status: 'verified',
     },
     {
       id: 'itp.madrid.depopulation-young-bonif',
@@ -1076,8 +1076,8 @@ module.exports = {
       },
       reviewBy: '2027-07-05',
       note:
-        'NO property-value cap and NO surface condition (aggregator-error trap: do not add a 250,000 EUR cap here). A prior owned habitual home must be sold within 2 years before or after (waived for a contiguous merge); modelled as priorHomeSaleWindow, satisfied only when the buyer owns no other home, unknown otherwise. A buyer still holding a prior home needs the lawyer to confirm the sale window.',
-      status: 'draft',
+        'NO property-value cap and NO surface condition (aggregator-error trap: do not add a 250,000 EUR cap here). Confirmed against Decreto Legislativo 1/2010 art. 29 (BOE consolidated, last mod 29 Dec 2025): only large-family + habitual + prior-home-sale conditions, no euro cap. A prior owned habitual home must be sold within 2 years before or after (waived for a contiguous merge); modelled as priorHomeSaleWindow, satisfied only when the buyer owns no other home, unknown otherwise. A buyer still holding a prior home needs the lawyer to confirm the sale window.',
+      status: 'verified',
     },
     {
       id: 'ajd.madrid.habitual-residence-bonif',
@@ -1100,8 +1100,8 @@ module.exports = {
       },
       reviewBy: '2027-07-05',
       note:
-        'Art. 38-bis. Applies to the AJD quota after the value-graduated base rate. Incompatible with the 95% large-family AJD bonification.',
-      status: 'draft',
+        'Art. 38-bis. 10% off the AJD quota, value cap 250,000 EUR, confirmed against DLeg 1/2010 art. 38 bis. Applies to the AJD quota after the value-graduated base rate. Incompatible with the 95% large-family AJD bonification.',
+      status: 'verified',
     },
     {
       id: 'ajd.madrid.depopulation-young-bonif',
@@ -1150,8 +1150,8 @@ module.exports = {
       },
       reviewBy: '2027-07-05',
       note:
-        'No value cap (aggregator-error trap, same as the resale large-family rate). Prior-home-sale-within-2-years condition, modelled as priorHomeSaleWindow. Incompatible with the 10% AJD bonification.',
-      status: 'draft',
+        'No value cap (aggregator-error trap, same as the resale large-family rate); confirmed against DLeg 1/2010 art. 38 ter (95% bonification, no euro cap). Prior-home-sale-within-2-years condition, modelled as priorHomeSaleWindow. Incompatible with the 10% AJD bonification.',
+      status: 'verified',
     },
     {
       id: 'ajd.madrid.newbuild-value-graduated-rate',
@@ -1166,6 +1166,7 @@ module.exports = {
           { upTo: null, rate: 0.75 },
         ],
         bandType: 'whole',
+        errorDeSalto: true,
       },
       conditions: [{ type: 'habitualResidence', value: true }],
       combinesWith: 'exclusive',
@@ -1177,8 +1178,8 @@ module.exports = {
       },
       reviewBy: '2027-07-05',
       note:
-        'BASE rate schedule for a new build bought by a private individual as their habitual residence; the 10/95/100% bonificaciones then apply on the resulting quota (see stacksOn on each). Modelled as base-rate lookup then bonificacion. combinesWith is exclusive because a rate-type result is a base option in its own right; the engine treats any qualifying rate rule as a legitimate base regardless of its own combinesWith value, so this does not stop the three bonificaciones stacking on top via stacksOn.',
-      status: 'draft',
+        'BASE rate schedule for a new build bought by a private individual as their habitual residence; the 10/95/100% bonificaciones then apply on the resulting quota (see stacksOn on each). Modelled as base-rate lookup then bonificacion. combinesWith is exclusive because a rate-type result is a base option in its own right; the engine treats any qualifying rate rule as a legitimate base regardless of its own combinesWith value, so this does not stop the three bonificaciones stacking on top via stacksOn. Rates and thresholds confirmed against DLeg 1/2010 art. 32 (whole-value brackets 0.4/0.5/0.75% at 120,000/180,000 EUR). Art. 37 error-de-salto smoothing is modelled (errorDeSalto: true): just above each threshold the quota rises by no more than the value did, so 120,001 EUR pays 481.00 not 600.01 and 180,001 EUR pays 901.00 not 1,350.01 (smoothing zones 120,000 to 120,121 and 180,000 to 180,453 EUR).',
+      status: 'verified',
     },
     {
       id: 'ajd.madrid.vpo-rate',

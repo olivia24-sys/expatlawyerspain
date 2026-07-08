@@ -383,6 +383,9 @@ for (const r of reliefs) {
     if (hasBands) {
       if ('bandCap' in res) bad(r, 'bandCap and bands cannot combine.');
       checkBands(r, res.bands, res.bandType);
+      if ('errorDeSalto' in res && (res.errorDeSalto !== true || res.bandType !== 'whole')) {
+        bad(r, 'errorDeSalto, if present, must be true and only on a whole-value banded result.');
+      }
     }
   } else {
     if (res.type === 'deduction') pctCap(r, res.value, 'deduction result value');

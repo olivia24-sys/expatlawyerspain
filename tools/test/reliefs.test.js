@@ -622,10 +622,12 @@ test('spine pins: transcribed structural encodings hold', () => {
     assert.equal(condOf(r, 'mortgageLtvMin').value, 60, `${id} mortgage gate`);
   }
 
-  // Madrid: graduated base is a whole-value cliff, bonifs stack on it by id,
-  // the 10%/95% pair is mutually incompatible, large-family has NO value cap
+  // Madrid: graduated base is a whole-value bracket with art. 37 smoothing,
+  // bonifs stack on it by id, the 10%/95% pair is mutually incompatible,
+  // large-family has NO value cap
   const grad = get('ajd.madrid.newbuild-value-graduated-rate');
   assert.equal(grad.result.bandType, 'whole');
+  assert.equal(grad.result.errorDeSalto, true); // art. 37 anti-cliff smoothing, Madrid only
   assert.deepEqual(grad.result.bands, [
     { upTo: 120000, rate: 0.4 },
     { upTo: 180000, rate: 0.5 },

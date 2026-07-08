@@ -66,6 +66,26 @@ test('applyBands whole: boundary value takes the lower band', () => {
   assert.equal(ELSCalc.applyBands(bands, 'whole', 100).total, 10);
 });
 
+test('applyBands whole with errorDeSalto: smooths the cliff at each threshold', () => {
+  // Madrid AJD graduated base: 0.4% <=120k, 0.5% <=180k, 0.75% >180k, whole value.
+  const bands = [
+    { upTo: 120000, rate: 0.4 },
+    { upTo: 180000, rate: 0.5 },
+    { upTo: null, rate: 0.75 },
+  ];
+  // At each threshold the quota is unchanged...
+  assert.equal(ELSCalc.applyBands(bands, 'whole', 120000, true).total, 480); // 0.4% x 120,000
+  assert.equal(ELSCalc.applyBands(bands, 'whole', 180000, true).total, 900); // 0.5% x 180,000
+  // ...and just above it the quota rises by no more than the value did: the raw
+  // whole-value cliff (600.01 / 1350.01) is capped at 481.00 / 901.00.
+  assert.equal(ELSCalc.applyBands(bands, 'whole', 120001, true).total, 481.0);
+  assert.equal(ELSCalc.applyBands(bands, 'whole', 180001, true).total, 901.0);
+  // Past the smoothing zone the plain whole-value rate resumes.
+  assert.equal(ELSCalc.applyBands(bands, 'whole', 300000, true).total, 2250); // 0.75% x 300,000
+  // Opt-in: without the flag the cliff stands (correct for Valencia's genuine cliff).
+  assert.equal(ELSCalc.applyBands(bands, 'whole', 180001).total, 1350.01);
+});
+
 test('applyFlatRate', () => {
   const r = ELSCalc.applyFlatRate(6, 500000);
   assert.equal(r.total, 30000);

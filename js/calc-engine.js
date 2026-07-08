@@ -67,7 +67,7 @@
    *                         applied to the whole amount
    * Returns { total, effectiveRate, steps: [{ from, to, rate, taxableBase, tax }] }
    */
-  function applyBands(bands, bandType, amount) {
+  function applyBands(bands, bandType, amount, errorDeSalto) {
     assertData(Array.isArray(bands) && bands.length >= 2, 'bands must be an array of 2+.');
     assertData(bands[bands.length - 1].upTo === null, 'last band must be open (upTo null).');
     assertData(bandType === 'marginal' || bandType === 'whole', 'bandType must be marginal or whole.');
@@ -77,10 +77,22 @@
     var totalCents = 0;
 
     if (bandType === 'whole') {
-      var band = bands.find(function (b) {
+      var idx = bands.findIndex(function (b) {
         return b.upTo === null || amount <= b.upTo;
       });
+      var band = bands[idx];
       totalCents = taxCents(amountCents, band.rate);
+      // Error de salto (e.g. Madrid TR art. 37): opt-in per rule. A whole-value
+      // bracket must never let the quota rise by more than the base did across
+      // the previous threshold, so just above each boundary the quota is capped
+      // at (quota at that threshold) + (the amount over it). Off by default, so
+      // Valencia's genuine whole-value cliff and every other caller are unchanged.
+      if (errorDeSalto && idx > 0) {
+        var prev = bands[idx - 1];
+        var thresholdCents = toCents(prev.upTo);
+        var capCents = taxCents(thresholdCents, prev.rate) + (amountCents - thresholdCents);
+        if (capCents < totalCents) totalCents = capCents;
+      }
       steps.push({ from: 0, to: band.upTo, rate: band.rate, taxableBase: amount, tax: fromCents(totalCents) });
     } else {
       var prev = 0;
@@ -445,7 +457,7 @@
       return { cents: 0, lines: lines };
     }
     if (res.bands) {
-      var banded = applyBands(res.bands, res.bandType, price);
+      var banded = applyBands(res.bands, res.bandType, price, res.errorDeSalto);
       var one = banded.steps.length === 1;
       banded.steps.forEach(function (s) {
         lines.push({ label: bandLabel(taxName, s, one), rate: s.rate, base: s.taxableBase, amount: s.tax, figureId: rateRule.id });
