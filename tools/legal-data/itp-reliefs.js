@@ -340,7 +340,7 @@ module.exports = {
       },
       reviewBy: '2027-07-05',
       note: 'maxPropertyValue is the valor de referencia or declared value, not the price.',
-      status: 'draft',
+      status: 'verified',
     },
     {
       id: 'itp.andalucia.under35',
@@ -363,7 +363,7 @@ module.exports = {
       reviewBy: '2027-07-05',
       note:
         'Strictly under 35. Married or registered couple: at least one partner under 35, whole base gets the rate.',
-      status: 'draft',
+      status: 'verified',
     },
     {
       id: 'itp.andalucia.disability',
@@ -385,8 +385,8 @@ module.exports = {
       },
       reviewBy: '2027-07-05',
       note:
-        'Disability of the buyer or a family-unit member. 33% is a standard cross-reference (the page states only "discapacidad"): UNCONFIRMED on the page itself.',
-      status: 'draft',
+        'Disability of the buyer or a family-unit member. Degree 33%+ confirmed: Ley 5/2021 (BOE-A-2021-17915) art. 3 defines "persona con discapacidad" as grado igual o superior al 33 por ciento; the 3.5% rate and 250,000 EUR cap sit in art. 43.1.c, which is silent on the degree that art. 3 fixes.',
+      status: 'verified',
     },
     {
       id: 'itp.andalucia.large-family',
@@ -408,7 +408,7 @@ module.exports = {
       },
       reviewBy: '2027-07-05',
       note: 'Familia numerosa per Ley 40/2003.',
-      status: 'draft',
+      status: 'verified',
     },
     {
       id: 'itp.andalucia.domestic-violence',
@@ -499,7 +499,7 @@ module.exports = {
       },
       reviewBy: '2027-07-05',
       note: 'Couple: one partner must be under 35.',
-      status: 'draft',
+      status: 'verified',
     },
     {
       id: 'ajd.andalucia.general-over35',
@@ -520,7 +520,7 @@ module.exports = {
       },
       reviewBy: '2027-07-05',
       note: 'General 1% (versus the standard 1.2%) for a main home up to 150,000 EUR where no lower rate applies.',
-      status: 'draft',
+      status: 'verified',
     },
     {
       id: 'ajd.andalucia.disability',
@@ -541,8 +541,8 @@ module.exports = {
         accessed: '2026-07-05',
       },
       reviewBy: '2027-07-05',
-      note: '33% is the standard cross-reference, as on the resale disability rule.',
-      status: 'draft',
+      note: 'Degree 33%+ per Ley 5/2021 (BOE-A-2021-17915) art. 3 (grado igual o superior al 33 por ciento); the 0.1% rate and 250,000 EUR cap sit in art. 50.1.c. New-build mirror of the resale disability rule.',
+      status: 'verified',
     },
     {
       id: 'ajd.andalucia.large-family',
@@ -564,7 +564,7 @@ module.exports = {
       },
       reviewBy: '2027-07-05',
       note: 'Familia numerosa, new-build mirror of the resale relief. No note in the source beyond the rate itself.',
-      status: 'draft',
+      status: 'verified',
     },
     {
       id: 'ajd.andalucia.domestic-violence',
