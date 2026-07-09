@@ -66,10 +66,11 @@ module.exports = {
       lead:
         'Enter your region and declared price and see the property transfer tax on a Spanish home, resale or new build, with the working shown and every figure sourced.',
       intro: `
-  <p>ITP is the <em>Impuesto sobre Transmisiones Patrimoniales</em>, the tax you pay when you buy a second-hand home in Spain. It is set by each region, not by Madrid, so the same purchase can cost several thousand euros more or less depending on where the property sits. On a resale it is almost always the single biggest line in your closing costs, ahead of the notary, the registry and your lawyer combined.</p>
-  <p>New builds work differently. A first-time delivery from the developer carries IVA (Spanish VAT) at 10% instead of ITP, plus a smaller regional stamp duty. Whether your purchase is a resale or a new build decides which tax you pay, and this calculator handles both.</p>`,
+  <p>ITP, the <em>Impuesto sobre Transmisiones Patrimoniales</em>, is Spain's tax on buying a resale home, set by each region and usually the biggest line in your closing costs. A new build is taxed differently, at IVA (Spanish VAT) plus a smaller regional stamp duty, and the calculator below works out both.</p>`,
 
-      sectionsBefore: [
+      sectionsBefore: [],
+
+      sectionsAfter: [
         {
           heading: 'Resale or new build: which tax you actually pay',
           html: `
@@ -79,9 +80,6 @@ module.exports = {
   <p>On a resale you file and pay ITP yourself, usually within 30 working days of signing the deed at the notary. Miss that window and the tax office adds a surcharge, so this is a date to diarise, not a bill that waits for you.</p>
   <p>One thing the calculator flags but cannot decide for you: on a resale, the tax office can assess ITP on the <em>valor de referencia</em>, the official reference value it assigns to the property, if that figure is higher than the price you actually pay. When it is, your tax is worked out on the reference value, not on your price.</p>`,
         },
-      ],
-
-      sectionsAfter: [
         {
           heading: 'How the calculator works',
           html: `
