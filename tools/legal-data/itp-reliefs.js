@@ -1818,14 +1818,14 @@ module.exports = {
       combinesWith: 'exclusive',
       effectiveFrom: '2025-07-25',
       source: {
-        url: 'https://agenciatributaria.carm.es/documents/20632/1675724/TRIBUTOS+CEDIDOS+Y+PROPIOS.pdf/be1014f0-3bcb-4759-9cdf-f3a15d80c2be',
-        title: 'ATRM, cuadro-resumen medidas tributarias CARM (TPO parrafo 6)',
-        accessed: '2026-07-05',
+        url: 'https://www.boe.es/buscar/act.php?id=BOE-A-2011-10542',
+        title: 'DLeg 1/2010 Region de Murcia art. 6.6 (BOE consolidado, last mod 24 Jul 2025)',
+        accessed: '2026-07-09',
       },
       reviewBy: '2027-07-05',
       note:
-        'No property-value cap and no first-home or no-prior-ownership test in the current text (the old 150,000 EUR cap was removed): confirm against the live consolidated Article 6, this is the single most consequential Murcia flag.',
-      status: 'draft',
+        'No property-value cap and no first-home or prior-ownership test: confirmed verbatim against DLeg 1/2010 Region de Murcia art. 6.6 (BOE consolidado, last mod 24 Jul 2025), which reads "edad inferior o igual a 40 anos" with only conditions a (habitual home) and b (income). The age-under-35 / 150,000 EUR cap was the pre-July-2025 rule; the whole consolidated text has zero occurrences of 150.000 or 35 anos. Income under 40,000 EUR, savings base up to 1,800 EUR.',
+      status: 'verified',
     },
     {
       id: 'itp.murcia.large-family-resale',
@@ -1847,14 +1847,14 @@ module.exports = {
       combinesWith: 'exclusive',
       effectiveFrom: '2025-07-25',
       source: {
-        url: 'https://agenciatributaria.carm.es/en/faqs-itpajd',
-        title: 'ATRM, FAQs ITPAJD (Q25)',
-        accessed: '2026-07-05',
+        url: 'https://www.boe.es/buscar/act.php?id=BOE-A-2011-10542',
+        title: 'DLeg 1/2010 Region de Murcia art. 6.5 (BOE consolidado, last mod 24 Jul 2025)',
+        accessed: '2026-07-09',
       },
       reviewBy: '2027-07-05',
       note:
-        'A second habitual home is allowed if the prior home was sold within 2 years before or after AND the new useful area is more than 10% larger; must be stated in the deed (not separately modelled).',
-      status: 'draft',
+        'Income under 44,000 EUR (+6,000 per child above the large-family minimum), confirmed against DLeg 1/2010 Region de Murcia art. 6.5 (BOE consolidado, last mod 24 Jul 2025). A second habitual home is allowed if the prior home is sold within the window 2 years before to 2 years after the purchase AND the new useful area is more than 10% larger (or a contiguous property is physically joined); stated in the deed, not separately modelled.',
+      status: 'verified',
     },
     {
       id: 'itp.murcia.disability-65-resale',
@@ -1880,13 +1880,14 @@ module.exports = {
       combinesWith: 'exclusive',
       effectiveFrom: '2025-07-25',
       source: {
-        url: 'https://agenciatributaria.carm.es/en/faqs-itpajd',
-        title: 'ATRM, FAQs ITPAJD (Q24)',
-        accessed: '2026-07-05',
+        url: 'https://www.boe.es/buscar/act.php?id=BOE-A-2011-10542',
+        title: 'DLeg 1/2010 Region de Murcia art. 6.9 (BOE consolidado, last mod 24 Jul 2025)',
+        accessed: '2026-07-09',
       },
       reviewBy: '2027-07-05',
-      note: 'Disability degree 65% or more.',
-      status: 'draft',
+      note:
+        'Disability degree 65% or more, confirmed against DLeg 1/2010 Region de Murcia art. 6.9 (BOE consolidado, last mod 24 Jul 2025): income under 40,000 EUR, savings base up to 1,800 EUR, no value cap.',
+      status: 'verified',
     },
     {
       id: 'itp.murcia.vpo-regimen-especial-resale',
@@ -1930,14 +1931,14 @@ module.exports = {
       combinesWith: 'exclusive',
       effectiveFrom: '2025-07-25',
       source: {
-        url: 'https://agenciatributaria.carm.es/en/faqs-itpajd',
-        title: 'ATRM, FAQs ITPAJD (Q26)',
-        accessed: '2026-07-05',
+        url: 'https://www.boe.es/buscar/act.php?id=BOE-A-2011-10542',
+        title: 'DLeg 1/2010 Region de Murcia art. 7.4 (BOE consolidado)',
+        accessed: '2026-07-09',
       },
       reviewBy: '2027-07-05',
       note:
-        'First-copy deed of a dwelling acquisition (AJD cuota gradual). The cuadro-resumen prints the savings cap as "up to 18,000 EUR"; treated as a typo for 1,800 EUR, matching the FAQ and the sibling reliefs.',
-      status: 'draft',
+        'First-copy deed of a dwelling acquisition (AJD cuota gradual). Confirmed against DLeg 1/2010 Region de Murcia art. 7.4 (BOE consolidado): age up to 40, income under 40,000 EUR, savings base up to 1,800 EUR, no value cap. The cuadro-resumen prints the savings cap as "up to 18,000 EUR", a typo for 1,800 EUR per the consolidated article.',
+      status: 'verified',
     },
     {
       id: 'itp.murcia.large-family-newbuild-ajd',
@@ -1959,13 +1960,14 @@ module.exports = {
       combinesWith: 'exclusive',
       effectiveFrom: '2025-07-25',
       source: {
-        url: 'https://agenciatributaria.carm.es/en/faqs-itpajd',
-        title: 'ATRM, FAQs ITPAJD (Q28)',
-        accessed: '2026-07-05',
+        url: 'https://www.boe.es/buscar/act.php?id=BOE-A-2011-10542',
+        title: 'DLeg 1/2010 Region de Murcia art. 7.5 (BOE consolidado)',
+        accessed: '2026-07-09',
       },
       reviewBy: '2027-07-05',
-      note: 'Second-habitual-home rule identical to the resale large-family relief.',
-      status: 'draft',
+      note:
+        'Confirmed against DLeg 1/2010 Region de Murcia art. 7.5 (BOE consolidado): income under 44,000 EUR (+6,000 per child), second-habitual-home rule identical to the resale large-family relief (sold 2 years before to 2 years after, area >10% larger).',
+      status: 'verified',
     },
     {
       id: 'itp.murcia.disability-65-newbuild-ajd',
@@ -1991,13 +1993,14 @@ module.exports = {
       combinesWith: 'exclusive',
       effectiveFrom: '2025-07-25',
       source: {
-        url: 'https://agenciatributaria.carm.es/en/faqs-itpajd',
-        title: 'ATRM, FAQs ITPAJD (Q27)',
-        accessed: '2026-07-05',
+        url: 'https://www.boe.es/buscar/act.php?id=BOE-A-2011-10542',
+        title: 'DLeg 1/2010 Region de Murcia art. 7.6 (BOE consolidado)',
+        accessed: '2026-07-09',
       },
       reviewBy: '2027-07-05',
-      note: 'Disability degree 65% or more.',
-      status: 'draft',
+      note:
+        'Disability degree 65% or more, confirmed against DLeg 1/2010 Region de Murcia art. 7.6 (BOE consolidado): income under 40,000 EUR, savings base up to 1,800 EUR, no value cap.',
+      status: 'verified',
     },
     {
       id: 'itp.murcia.plan-vivienda-joven-newbuild-ajd',

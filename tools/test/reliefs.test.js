@@ -575,20 +575,19 @@ test('spine pins: transcribed structural encodings hold', () => {
   const anyOfGroups = (r) => r.conditions.filter((c) => Array.isArray(c.anyOf));
 
   // the rule count and the never-transcribed exclusions are fixed. Verification
-  // flips rules draft -> verified one region at a time, but the known-conflict
-  // rules (table verdict: hold) must NEVER ship verified while their official
-  // texts are unresolved - this tripwire fails if one is ever flipped by mistake.
+  // flips rules draft -> verified one region at a time, but rules Olivia is
+  // deliberately holding must NEVER ship verified by mistake - this tripwire
+  // fails if one is flipped. (Murcia young/disability were on this list until
+  // the consolidated Article 6 confirmed age <=40 and no cap; they are now
+  // verified. The Balears byIsland caps are confirmed correct too but stay held
+  // pending Olivia's read of the Ley 4/2026 floor mechanism.)
   assert.equal(all.length, 73, 'expected 73 rules (8 Catalunya + 65 transcribed)');
   for (const held of [
-    'itp.murcia.young-under40-resale',
-    'itp.murcia.disability-65-resale',
-    'itp.murcia.young-under40-newbuild-ajd',
-    'itp.murcia.disability-65-newbuild-ajd',
     'itp.balears.habitual-4pc',
     'itp.balears.under36-first-home-2pc',
     'itp.balears.disability-2pc',
   ]) {
-    assert.equal(get(held).status, 'draft', `${held} must stay draft (unresolved conflict, must not ship)`);
+    assert.equal(get(held).status, 'draft', `${held} must stay draft (held pending review, must not ship)`);
   }
   for (const banned of [
     'itp.andalucia.professional-reseller',
