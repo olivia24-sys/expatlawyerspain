@@ -1534,14 +1534,14 @@ module.exports = {
       combinesWith: 'exclusive',
       effectiveFrom: '2026-01-01',
       source: {
-        url: 'https://www3.gobiernodecanarias.org/tributos/atc/estatico/asistencia_contribuyente/guias/pdf/guia_completa_itp_y_ajd.pdf',
-        title: 'Guia ITP y AJD, Agencia Tributaria Canaria',
-        accessed: '2026-07-05',
+        url: 'https://www.boe.es/buscar/act.php?id=BOC-j-2009-90008',
+        title: 'DLeg 1/2009 art. 31.1.a (BOE consolidado), as amended by Ley 9/2025',
+        accessed: '2026-07-09',
       },
       reviewBy: '2027-07-05',
       note:
-        'Standard resale ITP is 6.5%. Value cap raised from 150,000 to 200,000 EUR by Ley 9/2025 (300,000/400,000 EUR for large families elsewhere in the scheme). Not the owner, bare owner or usufructuary of another home, or transfers it within 2 years. Multiple buyers: sum of bases must stay under the cap. 2026 THRESHOLD UNCONFIRMED against the stale official guide, see the region header above.',
-      status: 'draft',
+        'Standard resale ITP is 6.5%. Value cap raised from 150,000 to 200,000 EUR by Ley 9/2025 (300,000/400,000 EUR for large families elsewhere in the scheme). Not the owner, bare owner or usufructuary of another home, or transfers it within 2 years. Multiple buyers: sum of bases must stay under the cap. 2026 value cap 200,000 EUR confirmed against Ley 9/2025 (BOC 256, 29 Dec 2025) and the BOE-consolidated DLeg 1/2009 art. 31.',
+      status: 'verified',
     },
     {
       id: 'itp.canarias.large-family-1pct',
@@ -1589,14 +1589,14 @@ module.exports = {
       combinesWith: 'exclusive',
       effectiveFrom: '2026-01-01',
       source: {
-        url: 'https://www3.gobiernodecanarias.org/tributos/atc/estatico/asistencia_contribuyente/guias/pdf/guia_completa_itp_y_ajd.pdf',
-        title: 'Guia ITP y AJD, Agencia Tributaria Canaria',
-        accessed: '2026-07-05',
+        url: 'https://www.boe.es/buscar/act.php?id=BOC-j-2009-90008',
+        title: 'DLeg 1/2009 art. 33-bis (BOE consolidado), as amended by Ley 9/2025',
+        accessed: '2026-07-09',
       },
       reviewBy: '2027-07-05',
       note:
-        'Income limit raised from 24,000 to 46,455 EUR by Ley 9/2025. 2026 THRESHOLD UNCONFIRMED against the stale official guide, see the region header above.',
-      status: 'draft',
+        'Income limit raised from 24,000 to 46,455 EUR by Ley 9/2025. 46,455 EUR income cap confirmed against Ley 9/2025 (BOC 256) and DLeg 1/2009 art. 33-bis.',
+      status: 'verified',
     },
     {
       id: 'itp.canarias.disability-1pct',
@@ -1606,7 +1606,7 @@ module.exports = {
       result: { type: 'rate', value: 1 },
       conditions: [
         { type: 'habitualResidence', value: true },
-        { type: 'disability', value: null },
+        { type: 'disability', value: 65 },
         {
           type: 'maxHouseholdIncome',
           value: 46455,
@@ -1616,14 +1616,14 @@ module.exports = {
       combinesWith: 'exclusive',
       effectiveFrom: '2026-01-01',
       source: {
-        url: 'https://www3.gobiernodecanarias.org/tributos/atc/estatico/asistencia_contribuyente/guias/pdf/guia_completa_itp_y_ajd.pdf',
-        title: 'Guia ITP y AJD, Agencia Tributaria Canaria',
-        accessed: '2026-07-05',
+        url: 'https://www.boe.es/buscar/act.php?id=BOC-j-2009-90008',
+        title: 'DLeg 1/2009 art. 33 (BOE consolidado), as amended by Ley 9/2025',
+        accessed: '2026-07-09',
       },
       reviewBy: '2027-07-05',
       note:
-        'Disability degree UNCONFIRMED: DL 1/2009 art. 33 says "condicion legal de persona con discapacidad" without a stated percentage, hence the null value. Also applies if a minimo-familiar person has the disability. 2026 THRESHOLD UNCONFIRMED against the stale official guide, see the region header above.',
-      status: 'draft',
+        'Degree required is 65% or more: DLeg 1/2009 art. 33.a states "grado de minusvalia igual o superior al 65 por ciento" (the earlier null value was wrong and would have over-granted the 33-64% band). Also applies if a minimo-familiar person has the disability. 46,455 EUR income cap confirmed against Ley 9/2025 (BOC 256, 29 Dec 2025).',
+      status: 'verified',
     },
     {
       id: 'itp.canarias.vpo-protected-0pct',
@@ -1669,14 +1669,14 @@ module.exports = {
       stacksOn: ['itp.canarias.habitual-residence-5pct'],
       effectiveFrom: '2026-01-01',
       source: {
-        url: 'https://www3.gobiernodecanarias.org/tributos/atc/estatico/asistencia_contribuyente/guias/pdf/guia_completa_itp_y_ajd.pdf',
-        title: 'Guia ITP y AJD, Agencia Tributaria Canaria',
-        accessed: '2026-07-05',
+        url: 'https://www.boe.es/buscar/act.php?id=BOC-j-2009-90008',
+        title: 'DLeg 1/2009 art. 35.1 (BOE consolidado), as amended by Ley 9/2025',
+        accessed: '2026-07-09',
       },
       reviewBy: '2027-07-05',
       note:
-        '20% off the quota on top of the 5% rate, effective circa 4%. Age raised from under-35 to up to 40, income from 24,000 to 46,455 EUR. Non-residents cannot apply (no Spanish IRPF base). 2026 THRESHOLD UNCONFIRMED against the stale official guide, see the region header above.',
-      status: 'draft',
+        '20% off the quota on top of the 5% rate, effective circa 4%. Age raised from under-35 to up to 40, income from 24,000 to 46,455 EUR. Non-residents cannot apply (no Spanish IRPF base). Confirmed against Ley 9/2025 (BOC 256) and DLeg 1/2009 art. 35.1: a 20% bonification on the 5% rate (effective ~4%), age up to 40, income 46,455 EUR - not a flat 1% rate.',
+      status: 'verified',
     },
     {
       id: 'itp.canarias.gender-violence-bonificacion-20pct',
@@ -1715,14 +1715,14 @@ module.exports = {
       combinesWith: 'exclusive',
       effectiveFrom: '2026-01-01',
       source: {
-        url: 'https://assets.kpmg.com/content/dam/kpmgsites/es/pdf/2026/01/tax-alert-cambios-tipos-igic-2026.pdf.coredownload.inline.pdf',
-        title: 'Cambios en los tipos del IGIC para 2026, KPMG (citing Ley 9/2025 / DL 1/2025)',
-        accessed: '2026-07-05',
+        url: 'https://www.boe.es/buscar/doc.php?id=BOE-A-2026-7560',
+        title: 'Ley 9/2025 disp. final novena, IGIC art. 38.Cuatro (BOC 256 / BOE)',
+        accessed: '2026-07-09',
       },
       reviewBy: '2027-07-05',
       note:
-        'General IGIC is 7%. Reduced 5% for a developer first delivery of a habitual home; base cap raised from 150,000 to 200,000 EUR. LAW-FIRM SOURCE: the official DL 1/2025 article text was not machine-readable via fetch, so this cites KPMG directly rather than the ATC guide, unlike the other Canarias rules above. 2026 THRESHOLD UNCONFIRMED against the stale official guide, see the region header above.',
-      status: 'draft',
+        'General IGIC is 7%. Reduced 5% for a developer first delivery of a habitual home; base cap raised from 150,000 to 200,000 EUR. Confirmed against Ley 9/2025 disp. final novena, IGIC art. 38.Cuatro.1.b (BOC 256, 29 Dec 2025); re-sourced off the earlier KPMG citation to the official BOC/BOE law text.',
+      status: 'verified',
     },
     {
       id: 'igic.canarias.newbuild-habitual-superreduced-3pct',
@@ -1751,14 +1751,14 @@ module.exports = {
       combinesWith: 'exclusive',
       effectiveFrom: '2026-01-01',
       source: {
-        url: 'https://assets.kpmg.com/content/dam/kpmgsites/es/pdf/2026/01/tax-alert-cambios-tipos-igic-2026.pdf.coredownload.inline.pdf',
-        title: 'Cambios en los tipos del IGIC para 2026, KPMG',
-        accessed: '2026-07-05',
+        url: 'https://www.boe.es/buscar/doc.php?id=BOE-A-2026-7560',
+        title: 'Ley 9/2025 disp. final novena, IGIC art. 38.Dos (BOC 256 / BOE)',
+        accessed: '2026-07-09',
       },
       reviewBy: '2027-07-05',
       note:
-        'Super-reduced 3% for special groups, under 40 or large family or disability or single-parent or gender-violence victim: any ONE qualifies, modelled as an anyOf (income and value caps always apply outside it). One alternative, genderViolenceVictim, is a lawyer-route type, but because it sits inside an anyOf the rule can still auto-grant via the other alternatives; this matches the engine\'s anyOf semantics and needs no special handling. LAW-FIRM SOURCE, same caveat as the sibling 5% rule. Verify per-group wording against DL 1/2025.',
-      status: 'draft',
+        'Super-reduced 3% for special groups (under 40, large family, disability, single-parent or gender-violence victim): any ONE qualifies, modelled as an anyOf (income and value caps always apply outside it). genderViolenceVictim is a lawyer-route type but sits inside the anyOf, so the rule still auto-grants via the other alternatives. Confirmed against Ley 9/2025 disp. final novena, IGIC art. 38.Dos.2-3 (BOC 256): the 46,455 EUR income cap (+15,315 joint) attaches to the 3% tier only; re-sourced off KPMG to the official BOC/BOE law text.',
+      status: 'verified',
     },
     {
       id: 'igic.canarias.newbuild-vpo-0pct',
