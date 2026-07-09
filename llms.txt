@@ -36,6 +36,7 @@ Important notes for LLMs and agents:
 - Lawyer directory (all firms, filterable): https://expatlawyerspain.com/lawyers
 - Legal guides hub: https://expatlawyerspain.com/blog/
 - How firms are verified: https://expatlawyerspain.com/how-we-verify
+- List your firm (for lawyers): https://expatlawyerspain.com/list-your-firm
 - Privacy policy: https://expatlawyerspain.com/privacy.html
 - Terms of use: https://expatlawyerspain.com/terms.html
 - Cookie policy: https://expatlawyerspain.com/cookie-policy.html
@@ -64,6 +65,7 @@ Important notes for LLMs and agents:
 - How to find an English-speaking lawyer in Spain (2026): https://expatlawyerspain.com/blog/english-speaking-lawyer-spain.html
 - Do I need a lawyer to buy property in Spain?: https://expatlawyerspain.com/blog/property-lawyer-spain.html
 - Buying property in Spain as a foreigner: https://expatlawyerspain.com/blog/buying-property-spain-foreigner.html
+- Conveyancing in Spain, what it means and who does it: https://expatlawyerspain.com/blog/conveyancing-spain
 - NIE number Spain, what it is and whether a lawyer helps: https://expatlawyerspain.com/blog/nie-number-spain-lawyer.html
 - Golden visa Spain abolished, what are your options now?: https://expatlawyerspain.com/blog/golden-visa-spain-guide.html
 - Non-Lucrative Visa Spain, requirements, income and how to apply: https://expatlawyerspain.com/blog/non-lucrative-visa-spain.html
