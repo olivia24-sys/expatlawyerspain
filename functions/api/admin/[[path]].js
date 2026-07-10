@@ -479,7 +479,7 @@ const PAGE_HTML = `<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>ELS Leads — Admin</title>
+<title>ELS Leads - Admin</title>
 <style>
   :root{
     --navy:#133356; --terracotta:#C94F1A; --cream:#FAF5ED; --sand:#F0E6DB;
@@ -637,7 +637,7 @@ const PAGE_HTML = `<!doctype html>
 </head>
 <body>
 <header>
-  <h1>ELS Leads <span>— Admin</span></h1>
+  <h1>ELS Leads <span>- Admin</span></h1>
   <button id="signout" class="btn ghost hidden">Sign out</button>
 </header>
 <main>
@@ -712,7 +712,7 @@ const PAGE_HTML = `<!doctype html>
   'use strict';
   var TOKEN_KEY = 'els_admin_token';
   var COLUMNS = ['#','Date','Name','Email','Region','Specialty','Firm requested','1st firm','2nd firm','3rd firm','Status','How heard','Message','Flag','Actions'];
-  var LAUNCH_MONTH = '2026-05';
+  var LAUNCH_MONTH = '2026-04';
   var ARCHIVE_REASON_LABELS = { out_of_scope:'out of scope', duplicate:'duplicate',
     specialty_paused:'specialty paused', other:'other' };
   var FLAG_CLASSES = { none:'chip-none', duplicate:'chip-duplicate',
