@@ -22,6 +22,10 @@ export const FLAGS = ['none', 'duplicate', 'suspected_spam', 'not_relevant'];
 
 export const ROUTING_OUTCOMES = ['pending', 'responded', 'silent', 'declined'];
 
+// Why a lead was archived (manual soft-hide; see 0005_archive.sql). Validated
+// server-side — no other value ever reaches the archive_reason column.
+export const ARCHIVE_REASONS = ['out_of_scope', 'duplicate', 'specialty_paused', 'other'];
+
 // Fields Olivia may edit directly: identity backfill for the oldest blank leads,
 // ongoing notes, and the triage flag (flag-instead-of-delete).
 export const EDITABLE_FIELDS = ['name', 'email', 'phone', 'message', 'notes', 'flag', 'flag_reason'];
@@ -137,6 +141,21 @@ export function responseLeadPatch(lead, now) {
   if (!lead.firm_first_response_at) patch.firm_first_response_at = now;
   if (lead.status === 'new' || lead.status === 'routed') patch.status = 'firm_responded';
   return patch;
+}
+
+/**
+ * Column patch to archive a lead (manual soft-hide, always reversible).
+ * Deliberately orthogonal to the funnel: status, the routing ledger and
+ * closed_at are never touched, so unarchiving restores the row exactly.
+ * `reason` must already be validated against ARCHIVE_REASONS by the caller.
+ */
+export function archivePatch(now, reason) {
+  return { archived_at: now, archive_reason: reason, updated_at: now };
+}
+
+/** Column patch to unarchive a lead: clears both archive columns. */
+export function unarchivePatch(now) {
+  return { archived_at: null, archive_reason: null, updated_at: now };
 }
 
 // --- Principal / scope seams (firm view bolts on here) ----------------------
