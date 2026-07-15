@@ -425,6 +425,27 @@
     return rule.conditions.some(isLawyerRoute);
   }
 
+  // True when this rule is blocked SOLELY by a property-value cap: its
+  // maxPropertyValue condition fails (the price is above the cap) and no other
+  // condition fails. Unknowns are not failures, so a rule the buyer has not yet
+  // answered is never reported as cap-blocked. Lets the UI say "above the value
+  // limit, so the standard rate applies" instead of silently showing the
+  // standard rate with no reason.
+  function valueCapBlocks(rule, ctx) {
+    var capFailed = false;
+    var otherFailed = false;
+    for (var i = 0; i < rule.conditions.length; i++) {
+      var c = rule.conditions[i];
+      var r = evaluateCondition(c, ctx);
+      if (!c.anyOf && c.type === 'maxPropertyValue') {
+        if (r === 'no') capFailed = true;
+      } else if (r === 'no') {
+        otherFailed = true;
+      }
+    }
+    return capFailed && !otherFailed;
+  }
+
   function reliefRef(rule) {
     return {
       id: rule.id,
@@ -644,6 +665,7 @@
       reliefStatus: 'standard-only',
       missingInputs: [],
       otherSituationHint: relevant.some(hasLawyerRouteCondition),
+      aboveValueCap: false,
     };
     if (relevant.length === 0) return out;
 
@@ -654,6 +676,15 @@
       out.reliefStatus = 'reliefs-unavailable';
       return out;
     }
+
+    // Is a reduced rate out of reach only because the price is above its value
+    // cap? (Every relevant reducing rule that fails, fails on the cap alone.)
+    // The UI uses this to explain the value limit rather than show a bare
+    // standard rate. Only tax-reducing rules count; lawyer-route hints do not.
+    out.aboveValueCap = relevant.some(function (r) {
+      var t = r.result && r.result.type;
+      return (t === 'rate' || t === 'deduction' || t === 'exempt') && valueCapBlocks(r, ctx);
+    });
 
     var totalCents = 0;
     var lines = [];

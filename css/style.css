@@ -1490,6 +1490,10 @@ html{ scroll-behavior:smooth; }
 
 /* ---- Refine for your situation (relief personalisation, v2) ---- */
 .itp-refine{ margin:6px 0 6px; }
+/* The refine UI toggles the `hidden` attribute to show questions/panels only
+   when the engine asks for them. The grid/flex display rules below would beat
+   the UA `[hidden]{display:none}`, so make hidden authoritative here. */
+.itp-refine [hidden]{ display:none !important; }
 .itp-refine-details{ background:var(--card-bg); border:1px solid var(--sand); border-radius:16px; padding:0; }
 .itp-refine-summary{ list-style:none; cursor:pointer; padding:18px 24px; font-weight:600; color:var(--navy); display:flex; align-items:center; justify-content:space-between; gap:12px; }
 .itp-refine-summary::-webkit-details-marker{ display:none; }

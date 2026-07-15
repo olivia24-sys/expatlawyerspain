@@ -535,3 +535,59 @@ test('Murcia Mu3: savings-cap boundary, exactly 1,800 still qualifies, 1,801 fai
   assert.equal(overCap.reliefStatus, 'standard-only');
   assert.equal(overCap.standard.total, 15500);
 });
+
+// --- aboveValueCap: honest "above the value limit" signal ---------------------
+// Built exactly like the shipped page: VERIFIED rules only, region-available.
+// Drives the UI's "above this region's value limit, so the standard rate
+// applies" message so an over-cap main-home buyer is not left with a bare
+// standard rate and no reason.
+const verifiedData = (function () {
+  const figs = spine.allFigures().filter((f) => f.status === 'verified');
+  const rel = spine.allReliefs().filter((r) => r.status === 'verified');
+  const ar = Object.keys(spine.regions).filter((r) => figs.find((f) => f.id === `itp.${r}.resale`));
+  const regions = {};
+  ar.forEach((r) => (regions[r] = spine.regions[r]));
+  return {
+    regions,
+    figures: figs.filter((f) => f.region === 'national' || ar.includes(f.region)),
+    reliefs: rel.filter((r) => ar.includes(r.region)),
+  };
+})();
+
+function calcV(inputs) {
+  const r = ELSCalc.calculatePersonalisedITP(verifiedData, inputs);
+  assert.equal(r.ok, true, `expected ok, got ${JSON.stringify(r)}`);
+  return r;
+}
+
+test('aboveValueCap: Andalucia main home over the 150k/250k caps flags the value limit', () => {
+  const r = calcV({
+    region: 'andalucia', price: 350000, propertyType: 'resale',
+    buyer: { mainHome: true, age: 30, firstHome: true, ownsOtherHome: false, income: 20000, disability: 'none', largeFamily: false, singleParentFamily: false },
+  });
+  assert.equal(r.reliefStatus, 'standard-only');
+  assert.equal(r.aboveValueCap, true);
+});
+
+test('aboveValueCap: Andalucia under the cap applies a relief, no cap flag', () => {
+  const r = calcV({
+    region: 'andalucia', price: 140000, propertyType: 'resale',
+    buyer: { mainHome: true, age: 30, firstHome: true, ownsOtherHome: false, income: 20000, disability: 'none', largeFamily: false, singleParentFamily: false },
+  });
+  assert.equal(r.reliefStatus, 'relief-applied');
+  assert.equal(r.aboveValueCap, false);
+});
+
+test('aboveValueCap: Catalunya (no property-value cap) never flags the value limit', () => {
+  const r = calcV({
+    region: 'catalunya', price: 900000, propertyType: 'resale',
+    buyer: { mainHome: true, age: 50, firstHome: false, ownsOtherHome: true, income: 90000, disability: 'none', largeFamily: false, singleParentFamily: false },
+  });
+  assert.equal(r.aboveValueCap, false);
+});
+
+test('aboveValueCap: a not-main-home purchase stays unavailable and sets no cap flag', () => {
+  const r = calcV({ region: 'andalucia', price: 350000, propertyType: 'resale', buyer: { mainHome: false } });
+  assert.equal(r.reliefStatus, 'reliefs-unavailable');
+  assert.equal(r.aboveValueCap, false);
+});

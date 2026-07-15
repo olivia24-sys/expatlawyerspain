@@ -196,6 +196,7 @@
   function buildRefine() {
     refineBox.textContent = '';
     var refs = { questions: [] };
+    var regionLabel = (current && data.regions[current.region]) || '';
 
     var details = el('details', 'itp-refine-details');
     var summary = el('summary', 'itp-refine-summary', copy.heading);
@@ -422,6 +423,20 @@
     refs.noIrpf.hidden = true;
     body.appendChild(refs.noIrpf);
 
+    // Above-the-value-cap callout: reduced rates exist for the region but this
+    // price is over their value limit, so only the standard rate applies.
+    refs.aboveCap = el('div', 'callout itp-refine-abovecap');
+    refs.aboveCap.appendChild(el('p', null, tpl(copy.aboveValueCap || '', { region: regionLabel })));
+    refs.aboveCap.hidden = true;
+    body.appendChild(refs.aboveCap);
+
+    // No-relief callout: the buyer answered everything, no reduced rate applies,
+    // and it is not a value-cap case. Gives feedback instead of a silent result.
+    refs.noRelief = el('div', 'callout itp-refine-norelief');
+    refs.noRelief.appendChild(el('p', null, tpl(copy.noRelief || '', { region: regionLabel })));
+    refs.noRelief.hidden = true;
+    body.appendChild(refs.noRelief);
+
     // Personalised panel (filled by applyRefineState).
     refs.panel = el('div', 'itp-refine-panel');
     refs.panel.hidden = true;
@@ -578,6 +593,8 @@
       refine.qwrap.hidden = true;
       refine.unavailable.hidden = false;
       refine.noIrpf.hidden = true;
+      refine.aboveCap.hidden = true;
+      refine.noRelief.hidden = true;
       refine.panel.hidden = true;
       refine.other.hidden = !r.otherSituationHint;
       return;
@@ -602,12 +619,21 @@
       r.reliefStatus === 'standard-only' && incomeOnly);
 
     // Applied panel.
-    if (r.reliefStatus === 'relief-applied' && r.personalised) {
+    var applied = r.reliefStatus === 'relief-applied' && r.personalised;
+    if (applied) {
       fillPanel(r);
       refine.panel.hidden = false;
     } else {
       refine.panel.hidden = true;
     }
+
+    // Verdict once the buyer has said "main home", no relief applied and there
+    // is nothing left to ask: explain WHY the standard rate stands rather than
+    // leave the result blank. Value-cap case first, generic no-relief otherwise.
+    var settled = buyer.mainHome === true && !applied && missing.length === 0 &&
+      r.reliefStatus === 'standard-only';
+    refine.aboveCap.hidden = !(settled && r.aboveValueCap === true && !!copy.aboveValueCap);
+    refine.noRelief.hidden = !(settled && r.aboveValueCap !== true && !!copy.noRelief);
 
     // Other-situation quiet line.
     refine.other.hidden = !r.otherSituationHint;
@@ -665,6 +691,7 @@
       var show = copy && refineBox && (
         (r.missingInputs && r.missingInputs.length) ||
         r.otherSituationHint ||
+        r.aboveValueCap ||
         r.reliefStatus === 'relief-applied' ||
         r.reliefStatus === 'reliefs-unavailable'
       );
