@@ -35,6 +35,12 @@ ExpatLawyerSpain is a directory and enquiry-routing service for English-speaking
 - Description: Compare verified English-speaking inheritance lawyers in Spain. Spanish wills, forced heirship, regional inheritance tax and probate. One free enquiry.
 - Contains: a live list of every verified English-speaking firm listed for wills & inheritance work (location, specialties, languages, Google rating), specific legal facts, a "when do you actually need a lawyer" section, and links to the related guides.
 <!-- money-pages:end -->
+<!-- tool-pages:start (managed by tools/build-tool-pages.js — do not hand-edit) -->
+### ITP Calculator Spain: Property Transfer Tax | ExpatLawyerSpain
+- URL: https://expatlawyerspain.com/itp-calculator-spain
+- Description: Work out ITP property transfer tax on a Spanish resale by region, or IVA plus stamp duty on a new build. Sourced figures, banded breakdown, one free enquiry.
+- Contains: an interactive calculator that computes ITP on a resale purchase or IVA plus AJD on a new build, reading only verified figures with official tax-authority sources; a per-region rate table with source links and effective dates; a worked banded example; a "when do you actually need a property lawyer" section; and links to the related buying guides.
+<!-- tool-pages:end -->
 
 ### Admin Guides for Expats in Spain | ExpatLawyerSpain
 - URL: https://expatlawyerspain.com/blog/admin/
@@ -389,6 +395,43 @@ ExpatLawyerSpain is a directory and enquiry-routing service for English-speaking
 - Main topics:
   - Family Law Guides for Expats in Spain
   - Getting Married in Spain as a Foreigner: The Legal Guide (2026)
+
+### Conveyancing in Spain: What It Means and Who Does It | ExpatLawyerSpain
+- URL: https://expatlawyerspain.com/blog/conveyancing-spain
+- Description: Conveyancing in Spain means something different from the UK. What the notario does, what an independent property lawyer does, and why you need both.
+- Main topics:
+  - Spain does not have conveyancing: it has something different
+  - What the notario actually does
+  - What an independent property lawyer does
+  - NIE number: you need one before you can complete
+  - What the Spanish property purchase process looks like
+  - What a property lawyer costs in Spain
+
+### How We Verify Firms | ExpatLawyerSpain
+- URL: https://expatlawyerspain.com/how-we-verify
+- Description: What 'verified' means on ExpatLawyerSpain: how firms are checked before listing, how ratings are shown, and how enquiry routing works.
+- Main topics:
+  - What we check before a firm is listed
+  - How enquiry routing works
+  - What we are not
+
+### Browse English-Speaking Lawyers in Spain | ExpatLawyerSpain
+- URL: https://expatlawyerspain.com/lawyers
+- Description: Compare verified English-speaking law firms across Spain. Filter by city, legal area and language, then send one free enquiry with no hidden fees.
+- Main topics:
+  - Filter lawyers by city, legal area and language
+  - Compare verified English-speaking firms
+  - Send one free enquiry
+  - Prefer not to browse: let us route your enquiry
+
+### List Your Firm | ExpatLawyerSpain
+- URL: https://expatlawyerspain.com/list-your-firm
+- Description: Get your law firm in front of English-speaking expats searching for legal help in Spain. Featured listings, qualified leads, flexible packages.
+- Main topics:
+  - Featured listing with full profile, bio and photo
+  - Qualified leads to your inbox
+  - Flexible packages
+  - Get in touch
 
 ## Contact
 - Email: hello@expatlawyerspain.com

@@ -12,6 +12,8 @@
 //   POST /api/admin/leads/:id/status          -> auth; funnel status transition
 //   POST /api/admin/leads/:id/route           -> auth; route/re-route (appends a ledger row)
 //   POST /api/admin/routings/:id/outcome      -> auth; record a routing attempt's outcome
+//   POST /api/admin/leads/:id/archive         -> auth; soft-archive with a validated reason
+//   POST /api/admin/leads/:id/unarchive       -> auth; clear the archive (fully reversible)
 //   anything else                             -> 404
 //
 // Auth: Authorization: Bearer <token>, compared constant-time to env.ADMIN_TOKEN.
@@ -22,9 +24,10 @@
 
 import { tokensMatch, adminHeaders, clip } from '../../_lib/util.js';
 import {
-  STATUSES, FLAGS, ROUTING_OUTCOMES, EDITABLE_FIELDS,
+  STATUSES, FLAGS, ROUTING_OUTCOMES, EDITABLE_FIELDS, ARCHIVE_REASONS,
   validateTransition, looksLikeEmail,
   statusSideEffects, routeSideEffects, routingOutcomePatch, responseLeadPatch,
+  archivePatch, unarchivePatch,
   resolvePrincipal, applyScope,
   readLead, readOpenRouting, readRouting, attachRoutings,
 } from '../../_lib/leads.js';
@@ -77,6 +80,8 @@ export async function onRequest(context) {
     if (action === 'fields') return withAuth(request, env, () => updateFields(request, env, id));
     if (action === 'status') return withAuth(request, env, () => updateStatus(request, env, id));
     if (action === 'route')  return withAuth(request, env, () => routeLead(request, env, id));
+    if (action === 'archive')   return withAuth(request, env, () => archiveLead(request, env, id));
+    if (action === 'unarchive') return withAuth(request, env, () => unarchiveLead(request, env, id));
   }
   if (segments.length === 3 && segments[0] === 'routings' && segments[2] === 'outcome') {
     if (method !== 'POST') return json({ error: 'method not allowed' }, 405, { Allow: 'POST' });
@@ -124,7 +129,7 @@ function buildQuery(url) {
            f.name AS assigned_firm_name, l.heard_about_us, l.message, l.flag, l.flag_reason,
            l.status, l.routed_at, l.firm_first_response_at, l.escalation_due_at,
            l.escalated, l.closed_at, l.notes, l.source, l.page_url, l.updated_at,
-           l.anonymised_at
+           l.anonymised_at, l.archived_at, l.archive_reason
     FROM leads l
     LEFT JOIN firms f ON f.id = l.assigned_firm_id
     WHERE l.environment IN (${placeholders})
@@ -177,6 +182,8 @@ const CSV_COLUMNS = [
   ['1st outcome', r => nthOutcome(r, 0)],
   ['2nd firm', r => nthFirm(r, 1)],
   ['2nd outcome', r => nthOutcome(r, 1)],
+  ['3rd firm', r => nthFirm(r, 2)],
+  ['3rd outcome', r => nthOutcome(r, 2)],
   ['Current firm', r => r.assigned_firm_name],
   ['Status', r => r.status],
   ['Flag', r => r.flag],
@@ -186,6 +193,10 @@ const CSV_COLUMNS = [
   ['Source', r => r.source],
   ['Heard about us', r => r.heard_about_us],
   ['Page URL', r => r.page_url],
+  // Archived rows stay in the export (it is the full backstop); these two
+  // columns are how you tell them apart.
+  ['Archived at', r => r.archived_at],
+  ['Archive reason', r => r.archive_reason],
 ];
 
 // CSV-quote a cell and guard against spreadsheet formula injection.
@@ -407,6 +418,47 @@ async function updateRoutingOutcome(request, env, routingId) {
   return json({ ok: true, lead: updated }, 200);
 }
 
+// POST /leads/:id/archive — manual soft-hide with a validated reason. Never a
+// delete: status, closed_at and the routing ledger are untouched, so unarchive
+// restores the lead exactly as it was.
+async function archiveLead(request, env, id) {
+  const got = await requireLead(request, env, id);
+  if (got.response) return got.response;
+  const lead = got.lead;
+
+  const { body, error } = await readBody(request);
+  if (error) return json({ error }, 400);
+
+  if (!ARCHIVE_REASONS.includes(body.reason)) return json({ error: 'invalid archive reason' }, 422);
+  if (lead.archived_at) return json({ ok: true, lead: await withRoutings(env, lead) }, 200); // already archived — no-op
+
+  const res = await buildUpdate(env, 'leads', archivePatch(new Date().toISOString(), body.reason), { id }).run();
+  if (!res.meta || res.meta.changes !== 1) return json({ error: 'conflict' }, 409);
+  return json({ ok: true, lead: await withRoutings(env, await readLead(env, id)) }, 200);
+}
+
+// POST /leads/:id/unarchive — clear the archive columns (reversal of the above).
+async function unarchiveLead(request, env, id) {
+  const got = await requireLead(request, env, id);
+  if (got.response) return got.response;
+  const lead = got.lead;
+
+  const { error } = await readBody(request); // body is unused but still size-guarded
+  if (error) return json({ error }, 400);
+
+  if (!lead.archived_at) return json({ ok: true, lead: await withRoutings(env, lead) }, 200); // not archived — no-op
+
+  const res = await buildUpdate(env, 'leads', unarchivePatch(new Date().toISOString()), { id }).run();
+  if (!res.meta || res.meta.changes !== 1) return json({ error: 'conflict' }, 409);
+  return json({ ok: true, lead: await withRoutings(env, await readLead(env, id)) }, 200);
+}
+
+// Attach routings to a single lead and return it (response-shape helper).
+async function withRoutings(env, lead) {
+  await attachRoutings(env, [lead]);
+  return lead;
+}
+
 // --- Helpers ---------------------------------------------------------------
 
 function json(payload, status = 200, extra = {}) {
@@ -427,7 +479,7 @@ const PAGE_HTML = `<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>ELS Leads — Admin</title>
+<title>ELS Leads - Admin</title>
 <style>
   :root{
     --navy:#133356; --terracotta:#C94F1A; --cream:#FAF5ED; --sand:#F0E6DB;
@@ -470,14 +522,56 @@ const PAGE_HTML = `<!doctype html>
   .adv{display:none;gap:10px;flex-wrap:wrap;margin-top:10px;padding:12px;
     background:var(--sand);border-radius:8px}
   .adv.open{display:flex}
-  .count{margin-left:auto;color:var(--clay);font-size:13px;align-self:center;white-space:nowrap}
+  .count{color:var(--clay);font-size:13px;align-self:center;white-space:nowrap}
   .count b{color:var(--navy)}
+  .count-wrap{margin-left:auto;display:flex;align-items:center;gap:10px}
   .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
   .fchip{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--border);
     border-radius:999px;padding:3px 6px 3px 10px;font-size:12px;color:var(--navy)}
   .fchip button{border:none;background:var(--sand);color:var(--clay);border-radius:999px;
     width:18px;height:18px;line-height:1;cursor:pointer;font-size:12px}
   .fchip.clear{cursor:pointer;background:var(--sand)}
+
+  /* Tabs */
+  .tabs{display:flex;gap:6px;margin-bottom:14px}
+  .tab-btn{background:#fff;border:1px solid var(--border);color:var(--navy);border-radius:8px;
+    padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+  .tab-btn:hover{background:var(--sand)}
+  .tab-btn.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+  /* Summary strip + trend cards share the metric-card look */
+  .summary-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}
+  .trend-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+  .metric-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+  .metric-card .num{font-size:24px;font-weight:700;color:var(--navy);line-height:1.15}
+  .metric-card .label{font-size:12px;color:var(--clay);margin-top:4px}
+  .metric-card .sub{font-size:11px;color:var(--clay);margin-top:2px}
+  @media (max-width:900px){ .summary-strip{grid-template-columns:repeat(2,1fr)} .trend-cards{grid-template-columns:1fr} }
+  @media (max-width:520px){ .summary-strip{grid-template-columns:1fr} }
+
+  /* Actions cell */
+  td.actions-cell{white-space:nowrap}
+  .actions-row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+  .icon-btn{background:var(--sand);border:1px solid var(--border);color:var(--navy);border-radius:6px;
+    width:26px;height:26px;line-height:1;cursor:pointer;font-size:13px;padding:0}
+  .icon-btn:hover{background:var(--border)}
+  .archive-select{padding:5px 6px;border:1px solid var(--border);border-radius:6px;font-size:12px;background:#fff}
+
+  /* Archived rows */
+  tr.archived-row{opacity:.55}
+  .chip-archived{background:#E5E1D8;color:var(--clay)}
+
+  /* Trends view */
+  .chart-wrap{background:#fff;border:1px solid var(--border);border-radius:10px;padding:20px 20px 10px;overflow-x:auto}
+  .chart{display:flex;align-items:flex-end;gap:14px;min-height:220px;border-bottom:2px solid var(--border)}
+  .chart-col{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;min-width:44px}
+  .chart-count{font-size:12px;font-weight:700;color:var(--navy)}
+  .chart-delta{font-size:11px;min-height:14px;margin-top:2px}
+  .chart-delta.up{color:var(--green)}
+  .chart-delta.down{color:var(--terracotta)}
+  .bar{width:28px;background:var(--navy);border-radius:4px 4px 0 0;margin-top:4px}
+  .chart-label{font-size:11px;color:var(--clay);margin-top:8px;white-space:nowrap}
+  .chart-note{margin-top:14px;font-size:12px;color:var(--clay)}
 
   .table-wrap{overflow:auto;background:#fff;border:1px solid var(--border);border-radius:10px}
   table{border-collapse:collapse;width:100%;font-size:13px}
@@ -543,7 +637,7 @@ const PAGE_HTML = `<!doctype html>
 </head>
 <body>
 <header>
-  <h1>ELS Leads <span>— Admin</span></h1>
+  <h1>ELS Leads <span>- Admin</span></h1>
   <button id="signout" class="btn ghost hidden">Sign out</button>
 </header>
 <main>
@@ -555,6 +649,12 @@ const PAGE_HTML = `<!doctype html>
   </section>
 
   <section id="console" class="hidden">
+    <div class="tabs" id="tabs">
+      <button class="tab-btn" type="button" data-tab="all">All time</button>
+      <button class="tab-btn" type="button" data-tab="month">This month</button>
+      <button class="tab-btn" type="button" data-tab="trends">Trends</button>
+    </div>
+    <div class="summary-strip" id="summary-strip"></div>
     <div class="controls" id="controls">
       <div class="toolbar">
         <label>Search name / email
@@ -569,7 +669,10 @@ const PAGE_HTML = `<!doctype html>
         <button id="more" class="btn subtle" type="button">More filters ▾</button>
         <button id="refresh" class="btn subtle">Refresh</button>
         <button id="download" class="btn subtle">Download CSV</button>
-        <span id="count" class="count"></span>
+        <div class="count-wrap">
+          <button id="archived-toggle" class="btn subtle sm" type="button">View archived (0)</button>
+          <span id="count" class="count"></span>
+        </div>
       </div>
       <div class="adv" id="adv">
         <label>Region <select id="f-region"><option value="">All</option></select></label>
@@ -601,13 +704,17 @@ const PAGE_HTML = `<!doctype html>
         <tbody id="body"></tbody>
       </table>
     </div>
+    <div id="trends-view" class="trends-view hidden"></div>
   </section>
 </main>
 <script>
 (function () {
   'use strict';
   var TOKEN_KEY = 'els_admin_token';
-  var COLUMNS = ['#','Date','Name','Email','Region','Specialty','Firm requested','1st firm','2nd firm','How heard','Message','Flag','Status'];
+  var COLUMNS = ['#','Date','Name','Email','Region','Specialty','Firm requested','1st firm','2nd firm','3rd firm','Status','How heard','Message','Flag','Actions'];
+  var LAUNCH_MONTH = '2026-04';
+  var ARCHIVE_REASON_LABELS = { out_of_scope:'out of scope', duplicate:'duplicate',
+    specialty_paused:'specialty paused', other:'other' };
   var FLAG_CLASSES = { none:'chip-none', duplicate:'chip-duplicate',
     suspected_spam:'chip-suspected_spam', not_relevant:'chip-not_relevant' };
   var STATUS_CLASSES = { new:'chip-new', routed:'chip-routed', firm_responded:'chip-firm_responded',
@@ -635,6 +742,9 @@ const PAGE_HTML = `<!doctype html>
   var allLeads = [];   // last fetched set (env-scoped)
   var firms = [];      // firm registry for the routing dropdown
   var openId = null;   // currently expanded lead id
+  var activeTab = 'all';       // 'all' | 'month' | 'trends'
+  var showArchived = false;    // archived rows hidden by default
+  var archiveEditId = null;    // lead id whose Actions cell is showing the archive-reason picker
 
   function getToken() { try { return localStorage.getItem(TOKEN_KEY); } catch (e) { return null; } }
   function setToken(t) { try { localStorage.setItem(TOKEN_KEY, t); } catch (e) {} }
@@ -670,6 +780,19 @@ const PAGE_HTML = `<!doctype html>
     ['search','f-status','f-firm','f-region','f-specialty','f-heard','f-flag'].forEach(function (id) {
       var ev = id === 'search' ? 'input' : 'change';
       el(id).addEventListener(ev, render);
+    });
+    el('tabs').addEventListener('click', function (e) {
+      var target = e.target;
+      if (target.tagName !== 'BUTTON') return;
+      var tab = target.getAttribute('data-tab');
+      if (!tab || tab === activeTab) return;
+      activeTab = tab;
+      archiveEditId = null;
+      render();
+    });
+    el('archived-toggle').addEventListener('click', function () {
+      showArchived = !showArchived;
+      render();
     });
     window.addEventListener('resize', syncTableHeight);
 
@@ -816,12 +939,87 @@ const PAGE_HTML = `<!doctype html>
     });
   }
 
+  // Which calendar month ("This month" tab) or full set ("All time" / "Trends" base).
+  function tabScope(leads) {
+    if (activeTab !== 'month') return leads;
+    var ym = new Date().toISOString().slice(0, 7);
+    return leads.filter(function (l) { return (l.submitted_at || '').slice(0, 7) === ym; });
+  }
+
+  function updateTabsUI() {
+    var btns = el('tabs').querySelectorAll('.tab-btn');
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].className = (btns[i].getAttribute('data-tab') === activeTab) ? 'tab-btn active' : 'tab-btn';
+    }
+  }
+
+  function metricCard(bigText, label, subText) {
+    var card = document.createElement('div'); card.className = 'metric-card';
+    var num = document.createElement('div'); num.className = 'num'; num.textContent = bigText;
+    var lbl = document.createElement('div'); lbl.className = 'label'; lbl.textContent = label;
+    card.appendChild(num); card.appendChild(lbl);
+    if (subText) {
+      var sub = document.createElement('div'); sub.className = 'sub'; sub.textContent = subText;
+      card.appendChild(sub);
+    }
+    return card;
+  }
+
+  // Summary strip is computed from the active tab's scope only, ignoring the
+  // ad-hoc search/status/firm filters. Returns the archived count (reused by
+  // the "View archived" toggle so the two numbers stay consistent).
+  function renderSummaryStrip(scoped) {
+    var box = el('summary-strip');
+    box.textContent = '';
+    var nonArchived = scoped.filter(function (l) { return !l.archived_at; });
+    var unique = nonArchived.filter(function (l) { return l.flag !== 'duplicate'; }).length;
+    var total = nonArchived.length;
+    var awaiting = nonArchived.filter(function (l) { return l.status === 'routed' && !l.firm_first_response_at; }).length;
+    var overdue = nonArchived.filter(function (l) { return l.overdue; }).length;
+    var closedWon = nonArchived.filter(function (l) { return l.status === 'closed_won'; }).length;
+    var archived = scoped.filter(function (l) { return !!l.archived_at; }).length;
+
+    box.appendChild(metricCard(String(unique), 'Unique leads', unique + ' unique · ' + total + ' total'));
+    box.appendChild(metricCard(String(awaiting), 'Awaiting firm', null));
+    box.appendChild(metricCard(String(overdue), 'Overdue', null));
+    box.appendChild(metricCard(String(closedWon), 'Closed won', null));
+    box.appendChild(metricCard(String(archived), 'Archived', null));
+    return archived;
+  }
+
+  function updateArchivedToggle(n) {
+    var btn = el('archived-toggle');
+    btn.textContent = (showArchived ? 'Hide archived (' : 'View archived (') + n + ')';
+  }
+
   function render() {
+    updateTabsUI();
+
+    if (activeTab === 'trends') {
+      el('summary-strip').classList.add('hidden');
+      el('controls').classList.add('hidden');
+      el('state').classList.add('hidden');
+      el('table-wrap').classList.add('hidden');
+      renderTrendsView();
+      syncTableHeight();
+      return;
+    }
+
+    el('trends-view').classList.add('hidden');
+    el('summary-strip').classList.remove('hidden');
+    el('controls').classList.remove('hidden');
+
+    var scoped = tabScope(allLeads);
+    var archivedInScope = renderSummaryStrip(scoped);
+    updateArchivedToggle(archivedInScope);
+
     var f = currentFilters();
-    var rows = applyClientFilters(allLeads, f);
+    var filtered = applyClientFilters(scoped, f);
+    var rows = showArchived ? filtered : filtered.filter(function (l) { return !l.archived_at; });
     renderChips(f);
     renderTable(rows);
-    var unique = rows.filter(function (l) { return l.flag !== 'duplicate'; }).length;
+    // Archived rows never count as unique, even when "View archived" shows them.
+    var unique = rows.filter(function (l) { return l.flag !== 'duplicate' && !l.archived_at; }).length;
     el('count').innerHTML = '';
     var b1 = document.createElement('b'); b1.textContent = unique;
     var b2 = document.createElement('b'); b2.textContent = rows.length;
@@ -830,6 +1028,111 @@ const PAGE_HTML = `<!doctype html>
     el('count').appendChild(b2);
     el('count').appendChild(document.createTextNode(' shown'));
     syncTableHeight();
+  }
+
+  // --- Trends tab ------------------------------------------------------------
+
+  function monthsSinceLaunch() {
+    var now = new Date();
+    var curY = now.getUTCFullYear(), curM = now.getUTCMonth() + 1;
+    var parts = LAUNCH_MONTH.split('-');
+    var y = parseInt(parts[0], 10), m = parseInt(parts[1], 10);
+    var months = [];
+    while (y < curY || (y === curY && m <= curM)) {
+      months.push(y + '-' + (m < 10 ? '0' + m : String(m)));
+      m++;
+      if (m > 12) { m = 1; y++; }
+    }
+    return months;
+  }
+
+  var MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  function monthLabel(ym, prevYear) {
+    var parts = ym.split('-');
+    var y = parts[0], mIdx = parseInt(parts[1], 10) - 1;
+    var name = MONTH_NAMES[mIdx];
+    if (mIdx === 0 || y !== prevYear) return name + ' ' + y;
+    return name;
+  }
+
+  // "+18%" / "−7%" — a plain "0%" when there is no change.
+  function formatPct(x) {
+    var pct = Math.round(x * 100);
+    if (pct === 0) return '0%';
+    return (pct > 0 ? '+' : '−') + Math.abs(pct) + '%';
+  }
+
+  function renderTrendsView() {
+    var container = el('trends-view');
+    container.classList.remove('hidden');
+    container.textContent = '';
+
+    var months = monthsSinceLaunch();
+    var counts = months.map(function (ym) {
+      return allLeads.filter(function (l) {
+        return !l.archived_at && l.flag !== 'duplicate' && (l.submitted_at || '').slice(0, 7) === ym;
+      }).length;
+    });
+
+    var totalUnique = counts.reduce(function (a, b) { return a + b; }, 0);
+    var deltas = [];
+    for (var i = 1; i < counts.length; i++) {
+      if (counts[i - 1] > 0) deltas.push((counts[i] - counts[i - 1]) / counts[i - 1]);
+    }
+    var avgGrowthText = '—';
+    if (deltas.length >= 2) {
+      var sum = 0;
+      for (var di = 0; di < deltas.length; di++) sum += deltas[di];
+      avgGrowthText = formatPct(sum / deltas.length);
+    }
+
+    var bestIdx = 0;
+    for (var j = 1; j < counts.length; j++) { if (counts[j] > counts[bestIdx]) bestIdx = j; }
+    var bestText = counts.length ? (monthLabel(months[bestIdx], null) + ' · ' + counts[bestIdx]) : '—';
+
+    var cardsWrap = document.createElement('div'); cardsWrap.className = 'trend-cards';
+    cardsWrap.appendChild(metricCard(String(totalUnique), 'Leads since launch', null));
+    cardsWrap.appendChild(metricCard(avgGrowthText, 'Average monthly growth', null));
+    cardsWrap.appendChild(metricCard(bestText, 'Best month', null));
+    container.appendChild(cardsWrap);
+
+    var chartWrap = document.createElement('div'); chartWrap.className = 'chart-wrap';
+    var chart = document.createElement('div'); chart.className = 'chart';
+    var maxCount = counts.reduce(function (a, b) { return Math.max(a, b); }, 0);
+    var prevYear = null;
+    months.forEach(function (ym, idx) {
+      var col = document.createElement('div'); col.className = 'chart-col';
+
+      var countLbl = document.createElement('div'); countLbl.className = 'chart-count';
+      countLbl.textContent = String(counts[idx]);
+      col.appendChild(countLbl);
+
+      var deltaLbl = document.createElement('div'); deltaLbl.className = 'chart-delta';
+      if (idx > 0 && counts[idx - 1] > 0) {
+        var pct = (counts[idx] - counts[idx - 1]) / counts[idx - 1];
+        deltaLbl.textContent = formatPct(pct);
+        deltaLbl.className += (pct >= 0 ? ' up' : ' down');
+      }
+      col.appendChild(deltaLbl);
+
+      var bar = document.createElement('div'); bar.className = 'bar';
+      var h = maxCount > 0 ? Math.round((counts[idx] / maxCount) * 160) : 0;
+      bar.style.height = Math.max(2, h) + 'px';
+      col.appendChild(bar);
+
+      var lbl = document.createElement('div'); lbl.className = 'chart-label';
+      lbl.textContent = monthLabel(ym, prevYear);
+      prevYear = ym.split('-')[0];
+      col.appendChild(lbl);
+
+      chart.appendChild(col);
+    });
+    chartWrap.appendChild(chart);
+    container.appendChild(chartWrap);
+
+    var note = document.createElement('div'); note.className = 'chart-note';
+    note.textContent = 'Unique leads per month. The picture fills out as more months of data arrive.';
+    container.appendChild(note);
   }
 
   var ENV_LABELS = { 'production,backfill':'Real leads', 'preview':'Preview/test', 'production,preview,backfill':'All environments' };
@@ -896,7 +1199,8 @@ const PAGE_HTML = `<!doctype html>
   // textContent / setAttribute ONLY. No lead field is ever concatenated into HTML.
   function renderRow(lead, num) {
     var tr = document.createElement('tr');
-    tr.className = 'lead-row' + (lead.id === openId ? ' open' : '') + (lead.overdue ? ' overdue' : '');
+    tr.className = 'lead-row' + (lead.id === openId ? ' open' : '') + (lead.overdue ? ' overdue' : '')
+      + (lead.archived_at ? ' archived-row' : '');
     tr.addEventListener('click', function () { toggleDrawer(lead.id); });
 
     var numTd = document.createElement('td');
@@ -912,10 +1216,12 @@ const PAGE_HTML = `<!doctype html>
     firmRequestedCell(tr, lead);
     routingCell(tr, lead, 0);
     routingCell(tr, lead, 1);
+    routingCell(tr, lead, 2);
+    statusCell(tr, lead);
     textCell(tr, lead.heard_about_us);
     truncCell(tr, lead.message);
     chipCell(tr, lead.flag, FLAG_CLASSES);
-    statusCell(tr, lead);
+    actionsCell(tr, lead);
     return tr;
   }
 
@@ -967,6 +1273,12 @@ const PAGE_HTML = `<!doctype html>
       var od = document.createElement('span'); od.className = 'tag-overdue'; od.textContent = 'overdue';
       td.appendChild(od);
     }
+    if (lead.archived_at) {
+      var ac = document.createElement('span'); ac.className = 'chip chip-archived';
+      ac.style.marginLeft = '6px';
+      ac.textContent = 'archived: ' + (ARCHIVE_REASON_LABELS[lead.archive_reason] || lead.archive_reason || 'unknown');
+      td.appendChild(ac);
+    }
     tr.appendChild(td);
   }
   function truncCell(tr, value) {
@@ -976,6 +1288,96 @@ const PAGE_HTML = `<!doctype html>
     td.textContent = full;
     if (full) td.setAttribute('title', full);
     tr.appendChild(td);
+  }
+
+  // Always-visible row actions: route/edit open the drawer, archive/unarchive
+  // mutate the lead. The cell swallows clicks so they never toggle the row's drawer.
+  function actionsCell(tr, lead) {
+    var td = document.createElement('td');
+    td.className = 'actions-cell';
+    td.addEventListener('click', function (e) { e.stopPropagation(); });
+    if (archiveEditId === lead.id) td.appendChild(buildArchiveConfirm(lead));
+    else td.appendChild(buildActionButtons(lead));
+    tr.appendChild(td);
+  }
+
+  function buildActionButtons(lead) {
+    var wrap = document.createElement('div'); wrap.className = 'actions-row';
+
+    var routeBtn = document.createElement('button'); routeBtn.type = 'button'; routeBtn.className = 'icon-btn';
+    routeBtn.textContent = '→';
+    routeBtn.setAttribute('aria-label', 'Route to firm'); routeBtn.setAttribute('title', 'Route to firm');
+    routeBtn.addEventListener('click', function (e) { e.stopPropagation(); openId = lead.id; render(); });
+    wrap.appendChild(routeBtn);
+
+    var editBtn = document.createElement('button'); editBtn.type = 'button'; editBtn.className = 'icon-btn';
+    editBtn.textContent = '✎';
+    editBtn.setAttribute('aria-label', 'Edit lead'); editBtn.setAttribute('title', 'Edit lead');
+    editBtn.addEventListener('click', function (e) { e.stopPropagation(); openId = lead.id; render(); });
+    wrap.appendChild(editBtn);
+
+    if (lead.archived_at) {
+      var unBtn = document.createElement('button'); unBtn.type = 'button'; unBtn.className = 'icon-btn';
+      unBtn.textContent = '↩';
+      unBtn.setAttribute('aria-label', 'Unarchive'); unBtn.setAttribute('title', 'Unarchive');
+      unBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        if (!window.confirm('Unarchive this lead?')) return;
+        postJson('/api/admin/leads/' + encodeURIComponent(lead.id) + '/unarchive', {}).then(function (r) {
+          if (r.ok) { loadLeads(); return; }
+          window.alert((r.data && r.data.error) ? r.data.error : ('Failed (' + r.status + ')'));
+        });
+      });
+      wrap.appendChild(unBtn);
+    } else {
+      var arcBtn = document.createElement('button'); arcBtn.type = 'button'; arcBtn.className = 'icon-btn';
+      arcBtn.textContent = '⨯';
+      arcBtn.setAttribute('aria-label', 'Archive'); arcBtn.setAttribute('title', 'Archive');
+      arcBtn.addEventListener('click', function (e) { e.stopPropagation(); archiveEditId = lead.id; render(); });
+      wrap.appendChild(arcBtn);
+    }
+    return wrap;
+  }
+
+  var ARCHIVE_REASON_OPTIONS = [
+    ['out_of_scope', 'out of scope'],
+    ['duplicate', 'duplicate'],
+    ['specialty_paused', 'specialty paused'],
+    ['other', 'other']
+  ];
+  function buildArchiveConfirm(lead) {
+    var wrap = document.createElement('div'); wrap.className = 'actions-row';
+    var sel = document.createElement('select'); sel.className = 'archive-select';
+    ARCHIVE_REASON_OPTIONS.forEach(function (pair) {
+      var o = document.createElement('option'); o.value = pair[0]; o.textContent = pair[1];
+      sel.appendChild(o);
+    });
+    var note = document.createElement('span'); note.className = 'savenote';
+
+    var confirmBtn = document.createElement('button'); confirmBtn.type = 'button'; confirmBtn.className = 'btn sm';
+    confirmBtn.textContent = 'Confirm';
+    confirmBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      confirmBtn.disabled = true; note.className = 'savenote'; note.textContent = 'Saving…';
+      postJson('/api/admin/leads/' + encodeURIComponent(lead.id) + '/archive', { reason: sel.value })
+        .then(function (r) {
+          if (r.ok) { archiveEditId = null; loadLeads(); return; }
+          confirmBtn.disabled = false;
+          note.className = 'savenote err';
+          note.textContent = (r.data && r.data.error) ? r.data.error : ('Failed (' + r.status + ')');
+        });
+    });
+
+    var cancelBtn = document.createElement('button'); cancelBtn.type = 'button'; cancelBtn.className = 'btn sm subtle';
+    cancelBtn.textContent = 'Cancel';
+    cancelBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      archiveEditId = null;
+      render();
+    });
+
+    wrap.appendChild(sel); wrap.appendChild(confirmBtn); wrap.appendChild(cancelBtn); wrap.appendChild(note);
+    return wrap;
   }
 
   function toggleDrawer(id) { openId = (openId === id) ? null : id; render(); }

@@ -1280,6 +1280,7 @@ header nav a:not(.btn-nav):hover{ color:#FBF7EF; }
 .post .faq-q{ padding:16px 20px; font-weight:600; cursor:pointer; background:var(--bg); display:flex; justify-content:space-between; align-items:center; font-size:0.98rem; color:var(--navy); user-select:none; }
 .post .faq-q::after{ content:'+'; font-size:1.2rem; color:var(--primary); flex-shrink:0; }
 .post .faq-q.open::after{ content:'\2013'; }
+.post .faq-q:focus-visible{ outline:2px solid var(--primary); outline-offset:2px; }
 .post .faq-a{ display:none; padding:14px 20px 16px; font-size:0.98rem; color:var(--text); border-top:1px solid var(--border); }
 .post .faq-a.open{ display:block; }
 
@@ -1456,3 +1457,67 @@ html{ scroll-behavior:smooth; }
 
 /* QA: explicit accessible placeholder colour (clay on white = 6.06:1, opacity:1 stops Firefox lightening it). */
 ::placeholder{ color:#705F57; opacity:1; }
+
+/* ---- Calculator tool pages (/itp-calculator-spain) — added 2026-07-05 ---- */
+.itp-form{ background:var(--card-bg); border:1px solid var(--sand); border-radius:16px; padding:26px 28px; margin:18px 0 10px; display:grid; gap:18px; }
+.itp-field label, .itp-field legend{ display:block; font-weight:600; color:var(--navy); margin-bottom:6px; font-size:0.95rem; }
+.itp-field select, .itp-field input[type="text"]{ width:100%; max-width:420px; padding:11px 14px; border:1px solid #D8CCBE; border-radius:10px; background:#fff; font:inherit; color:inherit; }
+.itp-type{ border:0; padding:0; margin:0; }
+.itp-type label{ display:inline-flex; align-items:center; gap:7px; font-weight:400; margin:0 22px 0 0; color:inherit; }
+.itp-calc-btn{ justify-self:start; background:var(--primary); color:#fff; border:0; border-radius:999px; padding:12px 26px; font:inherit; font-weight:500; cursor:pointer; }
+.itp-calc-btn:hover{ background:var(--primary-dark); }
+.itp-result{ margin:14px 0 6px; }
+.itp-total{ background:var(--navy); color:#fff; border-radius:16px; padding:22px 26px; margin-bottom:16px; }
+.itp-total-label{ font-size:0.9rem; opacity:0.85; }
+.itp-total-amount{ font-family:'Fraunces',Georgia,serif; font-size:2.1rem; font-weight:500; margin:2px 0; }
+.itp-total-rate{ font-size:0.9rem; opacity:0.85; }
+.itp-breakdown-total th, .itp-breakdown-total td{ font-weight:600; border-top:2px solid var(--sand); }
+.itp-error{ background:#FBEDE6; border:1px solid var(--primary-light); border-radius:12px; padding:14px 18px; color:var(--navy); }
+.itp-sources{ font-size:0.9rem; margin-top:14px; }
+.itp-sources ul{ margin:8px 0 0 18px; }
+.itp-verified-line{ font-size:0.9rem; color:#705F57; margin-top:14px; }
+.itp-base-note{ font-size:0.9rem; color:#705F57; }
+.itp-type{ min-inline-size:0; }
+.itp-form > *{ min-width:0; }
+/* Calc pages: give the article a definite width so wide tables scroll inside it
+   instead of forcing the page wider (article-wrap is otherwise shrink-to-fit). */
+.calc-page .post-layout .article-wrap{ min-width:0; width:100%; }
+.post .cost-table.itp-rate-table, .post .cost-table.itp-breakdown, .post .cost-table.itp-worked{ display:block; overflow-x:auto; }
+@media (max-width:640px){
+  .itp-form{ padding:20px 18px; }
+  .itp-type label{ display:flex; margin:0 0 8px; }
+}
+
+/* ---- Refine for your situation (relief personalisation, v2) ---- */
+.itp-refine{ margin:6px 0 6px; }
+/* The refine UI toggles the `hidden` attribute to show questions/panels only
+   when the engine asks for them. The grid/flex display rules below would beat
+   the UA `[hidden]{display:none}`, so make hidden authoritative here. */
+.itp-refine [hidden]{ display:none !important; }
+.itp-refine-details{ background:var(--card-bg); border:1px solid var(--sand); border-radius:16px; padding:0; }
+.itp-refine-summary{ list-style:none; cursor:pointer; padding:18px 24px; font-weight:600; color:var(--navy); display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.itp-refine-summary::-webkit-details-marker{ display:none; }
+.itp-refine-summary::after{ content:'+'; font-size:1.3rem; color:var(--primary); flex-shrink:0; }
+.itp-refine-details[open] > .itp-refine-summary::after{ content:'\2013'; }
+.itp-refine-body{ padding:0 24px 22px; display:grid; gap:18px; }
+.itp-refine-intro{ font-size:0.95rem; color:#705F57; margin:0; }
+.itp-refine-q{ border:0; padding:0; margin:0; display:grid; gap:8px; }
+.itp-refine-q label, .itp-refine-q legend{ display:block; font-weight:600; color:var(--navy); font-size:0.95rem; margin-bottom:2px; }
+.itp-refine-q .itp-field-input{ width:100%; max-width:420px; padding:11px 14px; border:1px solid #D8CCBE; border-radius:10px; background:#fff; font:inherit; color:inherit; }
+.itp-refine-opts{ display:flex; flex-wrap:wrap; gap:8px 22px; }
+.itp-refine-opts label{ display:inline-flex; align-items:center; gap:7px; font-weight:400; color:inherit; margin:0; }
+.itp-refine-check{ display:inline-flex; align-items:center; gap:7px; font-weight:400 !important; color:inherit; margin-top:4px; }
+.itp-refine-questions{ display:grid; gap:18px; }
+.itp-refine-headline{ background:var(--navy); color:#fff; border-radius:16px; padding:20px 24px; margin-bottom:14px; }
+.itp-refine-headline p{ margin:0; }
+.itp-refine-depends{ font-size:0.95rem; margin-top:12px; }
+.itp-refine-depends ul{ margin:8px 0 6px 18px; }
+.itp-refine-depends-label{ font-weight:600; color:var(--navy); margin-top:8px; }
+.itp-refine-close{ font-size:0.9rem; color:#705F57; margin:12px 0 12px; }
+.itp-refine-other{ font-size:0.9rem; color:#705F57; }
+.itp-refine a.cta-btn{ display:inline-block; background:var(--primary); color:#fff !important; padding:12px 26px; border-radius:999px; text-decoration:none !important; border:0 !important; font-weight:500; font-size:0.95rem; box-shadow:0 8px 20px -6px rgba(201,79,26,0.5); transition:background .15s; }
+.itp-refine a.cta-btn:hover{ background:var(--primary-dark); color:#fff !important; }
+@media (max-width:640px){
+  .itp-refine-summary{ padding:16px 18px; }
+  .itp-refine-body{ padding:0 18px 20px; }
+}
