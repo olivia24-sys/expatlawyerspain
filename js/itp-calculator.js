@@ -424,16 +424,21 @@
     body.appendChild(refs.noIrpf);
 
     // Above-the-value-cap callout: reduced rates exist for the region but this
-    // price is over their value limit, so only the standard rate applies.
+    // price is over their value limit. The line (with the cap) is set per
+    // result in applyRefineState, since the cap depends on the buyer's answers.
     refs.aboveCap = el('div', 'callout itp-refine-abovecap');
-    refs.aboveCap.appendChild(el('p', null, tpl(copy.aboveValueCap || '', { region: regionLabel })));
+    refs.aboveCapP = el('p', null, '');
+    refs.aboveCap.appendChild(refs.aboveCapP);
     refs.aboveCap.hidden = true;
     body.appendChild(refs.aboveCap);
 
     // No-relief callout: the buyer answered everything, no reduced rate applies,
-    // and it is not a value-cap case. Gives feedback instead of a silent result.
+    // and it is not a value-cap case. A lead line plus a per-relief "why" list
+    // (filled per result) so the buyer sees which conditions were not met.
     refs.noRelief = el('div', 'callout itp-refine-norelief');
     refs.noRelief.appendChild(el('p', null, tpl(copy.noRelief || '', { region: regionLabel })));
+    refs.noReliefWhy = el('div', 'itp-refine-depends itp-refine-blocked');
+    refs.noRelief.appendChild(refs.noReliefWhy);
     refs.noRelief.hidden = true;
     body.appendChild(refs.noRelief);
 
@@ -585,6 +590,23 @@
     panel.appendChild(ctaAnchor(copy.ctaBtn));
   }
 
+  // "Why no reduced rate applies": each blocked reduced rate and the conditions
+  // the buyer's answers did not meet (rendered from the engine's blockedReliefs).
+  function fillBlocked(blocked) {
+    var wrap = refine.noReliefWhy;
+    wrap.textContent = '';
+    if (!blocked || !blocked.length || !copy.blockedHeading) return;
+    wrap.appendChild(el('strong', null, copy.blockedHeading));
+    blocked.forEach(function (b) {
+      wrap.appendChild(el('div', 'itp-refine-depends-label', b.label));
+      var ul = el('ul');
+      (b.conditions || []).forEach(function (c) {
+        ul.appendChild(el('li', null, condText(c)));
+      });
+      wrap.appendChild(ul);
+    });
+  }
+
   // Show/hide questions and panels from the latest engine result.
   function applyRefineState(r) {
     var missing = r.missingInputs || [];
@@ -604,10 +626,13 @@
     refine.unavailable.hidden = true;
     refine.qwrap.hidden = !(buyer.mainHome === true);
 
-    // Per-question visibility: answered already, or its type is being asked.
+    // Per-question visibility: once a question has been asked it STAYS visible
+    // (with its answer) rather than vanishing when it leaves the unknown set,
+    // which read as glitchy. Questions never relevant to the region stay hidden.
     refine.questions.forEach(function (q) {
       var asked = q.types.some(function (t) { return missing.indexOf(t) !== -1; });
-      q.node.hidden = !asked;
+      if (asked) q.revealed = true;
+      q.node.hidden = !q.revealed;
     });
 
     // No-IRPF message: only when income caps are the sole thing left unknown
@@ -632,8 +657,19 @@
     // leave the result blank. Value-cap case first, generic no-relief otherwise.
     var settled = buyer.mainHome === true && !applied && missing.length === 0 &&
       r.reliefStatus === 'standard-only';
-    refine.aboveCap.hidden = !(settled && r.aboveValueCap === true && !!copy.aboveValueCap);
-    refine.noRelief.hidden = !(settled && r.aboveValueCap !== true && !!copy.noRelief);
+    var showAboveCap = settled && r.aboveValueCap === true && !!copy.aboveValueCap;
+    var showNoRelief = settled && r.aboveValueCap !== true && !!copy.noRelief;
+
+    refine.aboveCap.hidden = !showAboveCap;
+    if (showAboveCap) {
+      refine.aboveCapP.textContent = tpl(copy.aboveValueCap, {
+        region: (current && data.regions[current.region]) || '',
+        cap: r.valueCapAmount != null ? fmtEUR(r.valueCapAmount) : '',
+      });
+    }
+
+    refine.noRelief.hidden = !showNoRelief;
+    if (showNoRelief) fillBlocked(r.blockedReliefs);
 
     // Other-situation quiet line.
     refine.other.hidden = !r.otherSituationHint;

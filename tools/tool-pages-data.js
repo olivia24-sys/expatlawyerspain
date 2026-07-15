@@ -19,7 +19,7 @@ module.exports = {
   // Bump when the site CSS cache-buster changes.
   cssVersion: 'redesign-20260715-20',
   // Bump when js/calc-engine.js or js/itp-calculator.js change.
-  jsVersion: 'itp-20260715-1',
+  jsVersion: 'itp-20260715-3',
 
   // Shown in the page hero and used as sitemap <lastmod>. Change together.
   updatedLabel: 'Updated July 2026',
@@ -171,8 +171,9 @@ module.exports = {
         sourcesHeading: 'Where these rules come from',
         appliedClose: 'A lawyer confirms you qualify and files the reduced rate. Getting a relief wrong means a top-up assessment later, with interest.',
         unavailable: "For a holiday home or a property you won't live in, the reduced rates don't apply. Nearly every regional relief requires the home to be your habitual residence in Spain, and most also need Spanish income-tax history.",
-        aboveValueCap: 'This home is above the value limit {region} sets for its reduced rates, so the standard rate applies. These limits sit well below typical coastal prices, which is why higher-value purchases rarely qualify.',
-        noRelief: 'Based on what you told us, none of the reduced rates in {region} apply to this purchase, so the standard rate is the one to use.',
+        aboveValueCap: 'The reduced rates in {region} apply up to a property value of {cap}, and this home is above that, so the standard rate applies. These limits sit well below typical coastal prices, which is why higher-value purchases rarely qualify.',
+        noRelief: 'Based on what you told us, none of the reduced rates in {region} apply to this purchase, so the standard rate is the one to use. Here is what each one needs that your answers did not meet.',
+        blockedHeading: 'Why no reduced rate applies',
         otherSituation: 'Something else about your situation, for example protected housing or another special category? A lawyer can check every relief your region offers.',
         otherSituationLink: 'Compare verified property lawyers in Spain',
         noIrpf: 'Most of these reliefs are checked against your Spanish IRPF return, so they generally need Spanish tax residency first. A lawyer can confirm what applies in your case.',

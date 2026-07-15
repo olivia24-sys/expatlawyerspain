@@ -567,6 +567,20 @@ test('aboveValueCap: Andalucia main home over the 150k/250k caps flags the value
   });
   assert.equal(r.reliefStatus, 'standard-only');
   assert.equal(r.aboveValueCap, true);
+  // The reliefs this buyer would otherwise reach (general + under-35) cap at
+  // 150,000; disability/large-family fail on their own conditions, not the cap.
+  assert.equal(r.valueCapAmount, 150000);
+});
+
+test('blockedReliefs: Baleares no-relief lists the reduced rates and their unmet conditions', () => {
+  const r = calcV({
+    region: 'baleares', price: 250000, propertyType: 'resale',
+    buyer: { mainHome: true, age: 40, firstHome: false, ownsOtherHome: true, income: 100000, savingsIncome: 0, disability: 'none', largeFamily: false, singleParentFamily: false, priorRegionResidenceYears: 0, mortgageLtvPercent: 0 },
+  });
+  assert.equal(r.reliefStatus, 'standard-only');
+  assert.equal(r.aboveValueCap, false); // 250,000 is under the 270,151.20 cap
+  assert.ok(r.blockedReliefs.length >= 1, 'expected blocked reduced rates to be listed');
+  assert.ok(r.blockedReliefs.every((b) => b.label && b.conditions.length > 0), 'each blocked relief names unmet conditions');
 });
 
 test('aboveValueCap: Andalucia under the cap applies a relief, no cap flag', () => {

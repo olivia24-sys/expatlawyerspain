@@ -425,25 +425,41 @@
     return rule.conditions.some(isLawyerRoute);
   }
 
-  // True when this rule is blocked SOLELY by a property-value cap: its
-  // maxPropertyValue condition fails (the price is above the cap) and no other
-  // condition fails. Unknowns are not failures, so a rule the buyer has not yet
-  // answered is never reported as cap-blocked. Lets the UI say "above the value
-  // limit, so the standard rate applies" instead of silently showing the
-  // standard rate with no reason.
-  function valueCapBlocks(rule, ctx) {
+  // If this rule is blocked SOLELY by a property-value cap (its maxPropertyValue
+  // condition fails and nothing else does), return that cap in euros; otherwise
+  // null. Unknowns are not failures, so a rule the buyer has not yet answered is
+  // never reported as cap-blocked. Lets the UI say how far under the limit the
+  // price needs to be, instead of a bare standard rate with no reason.
+  function valueCapBlockedCap(rule, ctx) {
+    var capValue = null;
     var capFailed = false;
     var otherFailed = false;
     for (var i = 0; i < rule.conditions.length; i++) {
       var c = rule.conditions[i];
       var r = evaluateCondition(c, ctx);
       if (!c.anyOf && c.type === 'maxPropertyValue') {
-        if (r === 'no') capFailed = true;
+        if (r === 'no') {
+          capFailed = true;
+          var cap = c.byIsland ? (ctx.island != null ? c.byIsland[ctx.island] : undefined) : c.value;
+          if (typeof cap === 'number') capValue = cap;
+        }
       } else if (r === 'no') {
         otherFailed = true;
       }
     }
-    return capFailed && !otherFailed;
+    return capFailed && !otherFailed ? capValue : null;
+  }
+
+  // The conditions a buyer explicitly FAILS on this rule (the ones that
+  // evaluate 'no'), so the UI can say why a reduced rate does not apply rather
+  // than only that it does not. Unknowns are excluded (still askable, not a
+  // reason). Returns the raw condition objects for the UI to render.
+  function failedConditions(rule, ctx) {
+    var out = [];
+    for (var i = 0; i < rule.conditions.length; i++) {
+      if (evaluateCondition(rule.conditions[i], ctx) === 'no') out.push(rule.conditions[i]);
+    }
+    return out;
   }
 
   function reliefRef(rule) {
@@ -666,6 +682,8 @@
       missingInputs: [],
       otherSituationHint: relevant.some(hasLawyerRouteCondition),
       aboveValueCap: false,
+      valueCapAmount: null,
+      blockedReliefs: [],
     };
     if (relevant.length === 0) return out;
 
@@ -677,14 +695,34 @@
       return out;
     }
 
-    // Is a reduced rate out of reach only because the price is above its value
-    // cap? (Every relevant reducing rule that fails, fails on the cap alone.)
-    // The UI uses this to explain the value limit rather than show a bare
-    // standard rate. Only tax-reducing rules count; lawyer-route hints do not.
-    out.aboveValueCap = relevant.some(function (r) {
+    // Only tax-reducing rules explain a "why"; lawyer-route hints do not.
+    var reducing = relevant.filter(function (r) {
       var t = r.result && r.result.type;
-      return (t === 'rate' || t === 'deduction' || t === 'exempt') && valueCapBlocks(r, ctx);
+      return t === 'rate' || t === 'deduction' || t === 'exempt';
     });
+    // A reduced rate that is out of reach ONLY because the price is over its
+    // value cap: record the highest such cap so the UI can name it ("up to
+    // EUR X"). The highest is the ceiling of the best relief they would
+    // otherwise reach.
+    var caps = [];
+    reducing.forEach(function (r) {
+      var cap = valueCapBlockedCap(r, ctx);
+      if (cap !== null) caps.push(cap);
+    });
+    if (caps.length) {
+      out.aboveValueCap = true;
+      out.valueCapAmount = Math.max.apply(null, caps);
+    }
+    // Each reduced rate the buyer's answers rule out, with the specific
+    // conditions not met, so the UI can say why rather than just "none apply".
+    // Lawyer-route reliefs are left out (the buyer cannot self-qualify for
+    // them); they surface through otherSituationHint instead.
+    out.blockedReliefs = reducing
+      .filter(function (r) { return !hasLawyerRouteCondition(r); })
+      .map(function (r) {
+        return { label: r.label, conditions: failedConditions(r, ctx) };
+      })
+      .filter(function (b) { return b.conditions.length > 0; });
 
     var totalCents = 0;
     var lines = [];
