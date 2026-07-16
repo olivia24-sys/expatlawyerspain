@@ -26,11 +26,13 @@
   // one place; none of this is a legal claim, it is marketing copy only.
   var ENQUIRY_URL = 'https://expatlawyerspain.com/#contact-form';
   var OTHER_SITUATION_URL = 'https://expatlawyerspain.com/property-lawyers-spain';
-  var CTA_REFINE_URL = 'https://expatlawyerspain.com/itp-calculator-spain';
   var CTA_LAWYER_URL = 'https://expatlawyerspain.com/lawyers';
-  var CTA_HEADING = 'You may qualify - here’s how to confirm and claim it';
-  var CTA_REFINE_LABEL = 'Refine your result on the full ExpatLawyerSpain calculator';
   var CTA_LAWYER_LABEL = 'Find an English-speaking lawyer to claim it';
+
+  // The relief flow is the primary post-calculation action, so its heading acts
+  // as the primary CTA. Local to the frame (not from the byte-identity-tested
+  // copy module) so the widget can word it for a partner surface.
+  var RELIEF_PRIMARY_HEADING = 'See if you qualify for a lower rate';
 
   // Frame plumbing state.
   var partnerValue = '';
@@ -43,6 +45,8 @@
   var data = null;
   var copy = null;
   var refineBox = null;
+  var secondaryCta = null;
+  var sourcesBox = null;
   var fmtEUR = null;
   var previewOpts;
 
@@ -77,15 +81,44 @@
     }
   }
 
+  // True laid-out content height. document.documentElement.scrollHeight is
+  // bounded below by the iframe's own height (the frame's viewport), so it both
+  // reads 0 before the first layout (the load-time undershoot) and cannot shrink
+  // back to the real content height once the frame is oversized (the residual
+  // scrollbar). The body's bounding rect is the content height regardless of the
+  // frame's current height; ceil avoids a sub-pixel under-report leaving a 1px
+  // scrollbar. body margin is 0 and padding 12px, so this is exact.
+  function contentHeight() {
+    return Math.ceil(document.body.getBoundingClientRect().height);
+  }
+
   function postResize() {
-    postToParent({ els: 1, type: 'els:resize', height: document.documentElement.scrollHeight });
+    // A pre-layout measure reads 0; posting it would collapse the frame to the
+    // loader's 100px floor and then jump back (the size flash). Never send a
+    // zero - hold the loader's default until a real height is available.
+    var height = contentHeight();
+    if (height > 0) {
+      postToParent({ els: 1, type: 'els:resize', height: height });
+    }
+  }
+
+  // Measure after the browser has laid out at least once. A synchronous post at
+  // boot runs before first layout and undersizes (the load-time size jump).
+  function postResizeAfterLayout() {
+    if (typeof window.requestAnimationFrame === 'function') {
+      window.requestAnimationFrame(function () {
+        window.requestAnimationFrame(postResize);
+      });
+    } else {
+      postResize();
+    }
   }
 
   function postReadyOnce() {
     if (firstRenderDone) return;
     firstRenderDone = true;
     postToParent({ els: 1, type: 'els:ready' });
-    postResize();
+    postResizeAfterLayout();
   }
 
   function onResize() {
@@ -96,7 +129,7 @@
   // Idempotent: a link that already carries the widget UTM set is left alone,
   // so repeated calls can never stack duplicate params.
   function applyUtmToStaticLinks() {
-    ['els-header-link', 'els-footer-link'].forEach(function (id) {
+    ['els-footer-link', 'els-powered-link'].forEach(function (id) {
       var link = document.getElementById(id);
       if (!link) return;
       var href = link.getAttribute('href') || '';
@@ -158,25 +191,18 @@
     result.hidden = false;
   }
 
-  // The mandatory dual "confirm/claim" CTA appended to every result. Marketing
-  // copy only - no legal facts are authored here, everything legal comes from
-  // window.ELS_ITP_COPY / the engine.
-  function confirmClaimCta() {
+  // The secondary CTA shown once per result, below the relief flow: the single
+  // "find a lawyer" funnel-back link. Marketing copy only - no legal facts are
+  // authored here, everything legal comes from window.ELS_ITP_COPY / the engine.
+  // The refine flow above it is the primary CTA; the "Powered by" footer and the
+  // directory footer link preserve the referral links lost with the header logo.
+  function lawyerCta() {
     var wrap = el('div', 'itp-widget-cta');
-    wrap.appendChild(el('p', 'itp-widget-cta-heading', CTA_HEADING));
-
-    var refineLink = el('a', 'itp-widget-cta-link', CTA_REFINE_LABEL);
-    refineLink.setAttribute('href', appendUtm(CTA_REFINE_URL));
-    refineLink.setAttribute('target', '_blank');
-    refineLink.setAttribute('rel', 'noopener');
-    wrap.appendChild(refineLink);
-
     var lawyerLink = el('a', 'itp-widget-cta-link', CTA_LAWYER_LABEL);
     lawyerLink.setAttribute('href', appendUtm(CTA_LAWYER_URL));
     lawyerLink.setAttribute('target', '_blank');
     lawyerLink.setAttribute('rel', 'noopener');
     wrap.appendChild(lawyerLink);
-
     return wrap;
   }
 
@@ -233,8 +259,16 @@
       result.appendChild(box);
     });
 
-    // Sources: every figure used, linked. Official tax-authority sources -
-    // left bare, no UTM, they are not ELS outbound links.
+    result.hidden = false;
+  }
+
+  // Sources: every figure used, linked. Official tax-authority sources - left
+  // bare, no UTM, they are not ELS outbound links. Rendered into its own bottom
+  // container (below the relief flow and the secondary CTA), where a "where the
+  // figures come from" footnote belongs rather than interrupting the result.
+  function renderSources(r) {
+    if (!sourcesBox) return;
+    sourcesBox.textContent = '';
     var src = el('div', 'itp-sources');
     src.appendChild(el('strong', null, 'Where these figures come from'));
     var ul = el('ul');
@@ -250,12 +284,8 @@
       ul.appendChild(li);
     });
     src.appendChild(ul);
-    result.appendChild(src);
-
-    // Mandatory funnel-back CTA on every standard result.
-    result.appendChild(confirmClaimCta());
-
-    result.hidden = false;
+    sourcesBox.appendChild(src);
+    sourcesBox.hidden = false;
   }
 
   // --- refine (relief personalisation) ---------------------------------------
@@ -305,12 +335,12 @@
     var refs = { questions: [] };
     var regionLabel = (current && data.regions[current.region]) || '';
 
-    var details = el('details', 'itp-refine-details');
-    var summary = el('summary', 'itp-refine-summary', copy.heading);
-    details.appendChild(summary);
-    // The <details> disclosure changes page height when opened/closed - the
-    // parent loader needs to know so it can resize the iframe.
-    details.addEventListener('toggle', postResize);
+    // The relief flow is the primary post-calculation action, so it is an
+    // always-expanded card (not a collapsed accordion). Its heading reads as
+    // the primary CTA. Height changes as questions reveal are covered by
+    // refresh() -> postResize and the boot-time ResizeObserver.
+    var section = el('section', 'itp-refine-details');
+    section.appendChild(el('div', 'itp-refine-primary-heading', RELIEF_PRIMARY_HEADING));
 
     var body = el('div', 'itp-refine-body');
     body.appendChild(el('p', 'itp-refine-intro', copy.intro));
@@ -568,8 +598,8 @@
     refs.other.hidden = true;
     body.appendChild(refs.other);
 
-    details.appendChild(body);
-    refineBox.appendChild(details);
+    section.appendChild(body);
+    refineBox.appendChild(section);
     return refs;
   }
 
@@ -698,13 +728,11 @@
     src.appendChild(ul);
     panel.appendChild(src);
 
-    // Close + enquiry CTA.
+    // Close + enquiry CTA. The single funnel-back "find a lawyer" CTA lives
+    // once below the whole relief flow (#itp-secondary-cta), so it is not
+    // repeated inside the panel.
     panel.appendChild(el('p', 'itp-refine-close', copy.appliedClose));
     panel.appendChild(ctaAnchor(copy.ctaBtn));
-
-    // Mandatory funnel-back CTA - relief-applied panel is the highest-intent
-    // moment in the whole widget, so this is where it matters most.
-    panel.appendChild(confirmClaimCta());
   }
 
   // "Why no reduced rate applies": each blocked reduced rate and the conditions
@@ -818,6 +846,14 @@
       refineBox.textContent = '';
       refineBox.hidden = true;
     }
+    if (secondaryCta) {
+      secondaryCta.textContent = '';
+      secondaryCta.hidden = true;
+    }
+    if (sourcesBox) {
+      sourcesBox.textContent = '';
+      sourcesBox.hidden = true;
+    }
 
     var region = form.querySelector('#itp-region').value;
     var typeInput = form.querySelector('input[name="itp-type"]:checked');
@@ -855,6 +891,16 @@
         applyRefineState(r);
         refineBox.hidden = false;
       }
+
+      // Secondary funnel-back CTA, once, below the relief flow.
+      if (secondaryCta) {
+        secondaryCta.appendChild(lawyerCta());
+        secondaryCta.hidden = false;
+      }
+
+      // Source footnote, at the very bottom.
+      renderSources(r.standard);
+
       postResize();
       return;
     }
@@ -897,10 +943,12 @@
     previewOpts = data.draftPreview === true ? { includeDrafts: true } : undefined;
     copy = window.ELS_ITP_COPY || null;
     refineBox = document.getElementById('itp-refine');
+    secondaryCta = document.getElementById('itp-secondary-cta');
+    sourcesBox = document.getElementById('itp-sources');
     fmtEUR = window.ELSCalc.fmtEUR;
 
-    // partnerValue must be set BEFORE any UTM is applied, or the header and
-    // footer links would be tagged 'unattributed'.
+    // partnerValue must be set BEFORE any UTM is applied, or the footer links
+    // would be tagged 'unattributed'.
     var params = new URLSearchParams(window.location.search);
     partnerValue = params.get('partner') || '';
 
@@ -909,6 +957,34 @@
 
     form.addEventListener('submit', onSubmit);
     window.addEventListener('resize', onResize, false);
+
+    // Resize correctness. The height the loader first receives must be the true
+    // content height, or the embed shows the load-time size jump / residual
+    // scrollbar. Two independent problems to cover:
+    //   1. Timing: in a sandboxed cross-origin frame the first layout can land
+    //      AFTER boot's rAF measure (which then reads 0), and the frame's own
+    //      load / ResizeObserver timing is not dependable across engines. So we
+    //      also re-post on a short unconditional schedule - by the later ticks
+    //      the frame is laid out and postResize reads the real height. This is
+    //      what firm-directory.js gets for free from its async /v1 fetch.
+    //   2. Later growth/shrink (a result, a revealed relief question): the
+    //      ResizeObserver on the body reflows the host iframe. It reuses the
+    //      debounced onResize so it never spams the parent, and body height is
+    //      driven by frame content (not the parent iframe's CSS height), so
+    //      there is no resize loop.
+    // Every post is idempotent - the loader just sets the height - so the extra
+    // posts are cheap and safe.
+    window.addEventListener('load', postResize, false);
+    [80, 250, 600, 1200].forEach(function (ms) {
+      window.setTimeout(postResize, ms);
+    });
+    if (typeof window.ResizeObserver === 'function') {
+      try {
+        new window.ResizeObserver(onResize).observe(document.body);
+      } catch (e) {
+        /* never throw */
+      }
+    }
 
     postReadyOnce();
   }

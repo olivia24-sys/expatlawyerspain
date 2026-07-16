@@ -493,6 +493,19 @@ test('itp-calculator frame HTML: no inline script/style/handlers, noindexed', ()
     'no third-party URLs in the frame HTML');
 });
 
+test('itp-calculator frame HTML: functional H1, both referral links live', () => {
+  const html = read('widgets/v1/itp-calculator.html');
+  // The header logo/wordmark was replaced by a functional title.
+  assert.match(html, /<h1 class="itp-title">/, 'functional H1 present');
+  assert.ok(!/els-header/.test(html), 'no ELS logo header (moved brand to footer)');
+  // Both referral links must stay live: the directory link and the "Powered by"
+  // brand link that replaces the header backlink. Losing either is a regression.
+  assert.match(html, /id="els-footer-link"[^>]*href="https:\/\/expatlawyerspain\.com\/lawyers"/,
+    'directory footer link -> /lawyers');
+  assert.match(html, /id="els-powered-link"[^>]*href="https:\/\/expatlawyerspain\.com"/,
+    'Powered by footer link -> homepage');
+});
+
 test('itp-calculator frame JS: textContent-only rendering, no dangerous sinks', () => {
   const js = stripComments(read('widgets/v1/itp-calculator.js'));
   for (const sink of ['innerHTML', 'outerHTML', 'insertAdjacentHTML', 'document.write', 'eval(', 'new Function']) {
@@ -500,6 +513,9 @@ test('itp-calculator frame JS: textContent-only rendering, no dangerous sinks', 
   }
   assert.ok(js.includes('textContent'), 'rendering must use textContent');
   assert.ok(js.includes('els: 1'), 'postMessage payloads must carry the protocol version');
+  // Resize fix: the load-time re-post and the body observer must both be present.
+  assert.ok(/addEventListener\(\s*'load'\s*,\s*postResize/.test(js), 're-posts els:resize on window load');
+  assert.ok(js.includes('ResizeObserver'), 'observes body height for reflow');
 });
 
 test('itp-calculator data module: verified-only, no drafts, no draftPreview', () => {
