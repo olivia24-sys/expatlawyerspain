@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Spanish Property Transfer Tax (ITP) Calculator | ExpatLawyerSpain</title>
+<link rel="stylesheet" href="/widgets/v1/widget.css">
+<link rel="stylesheet" href="/widgets/v1/itp-calculator.css">
+<script defer src="/widgets/v1/itp-calculator-data.js"></script>
+<script defer src="/js/calc-engine.js"></script>
+<script defer src="/widgets/v1/itp-calculator.js"></script>
+</head>
+<body>
+<a class="els-header" id="els-header-link" href="https://expatlawyerspain.com/itp-calculator-spain" target="_blank" rel="noopener">
+  <img src="/images/logo-tree-44.png" width="28" height="28" alt="ExpatLawyerSpain">
+  <span class="els-wordmark">ExpatLawyerSpain</span>
+</a>
+<form id="itp-form" class="itp-form" novalidate>
+  <div class="itp-field">
+    <label for="itp-region">Where is the property?</label>
+    <select id="itp-region" required>
+      <option value="">Choose a region</option>
+    </select>
+  </div>
+  <fieldset class="itp-field itp-type">
+    <legend>What are you buying?</legend>
+    <label><input type="radio" name="itp-type" value="resale" checked> A resale property</label>
+    <label><input type="radio" name="itp-type" value="new-build"> A new build from a developer</label>
+  </fieldset>
+  <div class="itp-field">
+    <label for="itp-price">Declared purchase price</label>
+    <input id="itp-price" type="text" inputmode="decimal" placeholder="350,000" required>
+  </div>
+  <button type="submit">Calculate the tax</button>
+</form>
+<div id="itp-result" class="itp-result" hidden aria-live="polite"></div>
+<div id="itp-refine" class="itp-refine" hidden></div>
+<div class="els-footer">
+  <a id="els-footer-link" href="https://expatlawyerspain.com/lawyers" target="_blank" rel="noopener">Free directory of verified English-speaking lawyers across Spain.</a>
+</div>
+</body>
+</html>

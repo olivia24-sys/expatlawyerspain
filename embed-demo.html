@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>ELS Widget Demo | ExpatLawyerSpain</title>
+</head>
+<body style="font-family: system-ui, sans-serif; max-width: 720px; margin: 0 auto; padding: 24px; background: #fff;">
+  <h1>ELS embeddable widget demo</h1>
+  <p>Internal page (unlinked, noindexed). This is what a partner site sees after pasting the snippet below. Full docs: <code>tools/WIDGET-FRAMEWORK-NOTES.md</code>.</p>
+
+  <h2>The snippet partners paste</h2>
+  <pre style="background: #f5f2ec; padding: 12px; overflow-x: auto; font-size: 12px;">&lt;div class="els-widget" data-els-widget="firm-directory"
+     data-city="barcelona" data-specialty="property" data-partner="your-name"&gt;
+  &lt;a href="https://expatlawyerspain.com/lawyers"&gt;
+    Find English-speaking lawyers in Spain | ExpatLawyerSpain&lt;/a&gt;
+&lt;/div&gt;
+&lt;script async src="https://expatlawyerspain.com/embed/v1.js"&gt;&lt;/script&gt;</pre>
+
+  <h2>Live: Barcelona property firms</h2>
+  <div class="els-widget" data-els-widget="firm-directory" data-city="barcelona" data-specialty="property" data-partner="demo-page">
+    <a href="https://expatlawyerspain.com/lawyers">Find English-speaking lawyers in Spain | ExpatLawyerSpain</a>
+  </div>
+
+  <h2>Live: unfiltered (all firms, no partner attribute)</h2>
+  <div class="els-widget" data-els-widget="firm-directory">
+    <a href="https://expatlawyerspain.com/lawyers">Find English-speaking lawyers in Spain | ExpatLawyerSpain</a>
+  </div>
+
+  <!-- Relative on purpose: this page ships with the site, so the demo works
+       on production, branch previews and local dev alike. Partners use the
+       absolute URL shown in the snippet above. -->
+  <script async src="/embed/v1.js"></script>
+</body>
+</html>
