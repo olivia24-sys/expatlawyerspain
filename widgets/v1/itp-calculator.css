@@ -1,0 +1,426 @@
+/* ExpatLawyerSpain itp-calculator widget styles, v1.
+   Loads AFTER widget.css and reuses its custom properties (--primary,
+   --navy, --bg, --card-bg, --text, --text-light, --border, --verified,
+   --radius). Self-contained: system font stack only, no webfonts, no
+   external assets. Loaded inside a sandboxed cross-origin iframe under
+   strict CSP. */
+
+/* --- form --------------------------------------------------------------- */
+
+.itp-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  margin: 0;
+}
+
+.itp-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.itp-field label,
+.itp-field legend {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--navy);
+  padding: 0;
+}
+
+.itp-field select,
+.itp-field input[type="text"] {
+  font: inherit;
+  font-size: 14px;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+  width: 100%;
+}
+
+.itp-field select:focus,
+.itp-field input[type="text"]:focus,
+.itp-field-input:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 1px;
+}
+
+.itp-type {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.itp-type label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 400;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.itp-type input[type="radio"] {
+  accent-color: var(--primary);
+}
+
+.itp-form button[type="submit"] {
+  font: inherit;
+  font-weight: 600;
+  font-size: 14px;
+  color: #fff;
+  background: var(--primary);
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
+.itp-form button[type="submit"]:hover {
+  filter: brightness(0.94);
+}
+
+/* --- result --------------------------------------------------------------- */
+
+.itp-result {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.itp-total {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.itp-total-label {
+  font-size: 13px;
+  color: var(--text-light);
+  font-weight: 600;
+}
+
+.itp-total-amount {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.2;
+}
+
+.itp-total-rate {
+  font-size: 12px;
+  color: var(--text-light);
+}
+
+table.cost-table.itp-breakdown {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+table.cost-table.itp-breakdown th,
+table.cost-table.itp-breakdown td {
+  text-align: left;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+table.cost-table.itp-breakdown th {
+  color: var(--text-light);
+  font-weight: 600;
+  font-size: 12px;
+}
+
+table.cost-table.itp-breakdown td:nth-child(2),
+table.cost-table.itp-breakdown td:nth-child(3),
+table.cost-table.itp-breakdown th:nth-child(2),
+table.cost-table.itp-breakdown th:nth-child(3) {
+  text-align: right;
+}
+
+table.cost-table.itp-breakdown tr:last-child th,
+table.cost-table.itp-breakdown tr:last-child td {
+  border-bottom: 0;
+}
+
+.itp-breakdown-total {
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.callout {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--primary);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.callout p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.itp-note {
+  border-left-color: var(--verified);
+}
+
+.itp-error {
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.itp-sources {
+  font-size: 12px;
+  color: var(--text-light);
+}
+
+.itp-sources strong {
+  display: block;
+  color: var(--navy);
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.itp-sources ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.itp-sources a {
+  color: var(--primary);
+}
+
+/* --- refine --------------------------------------------------------------- */
+
+.itp-refine {
+  margin-top: 12px;
+}
+
+.itp-refine-details {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 4px 14px;
+}
+
+.itp-refine-summary {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--navy);
+  padding: 10px 0;
+}
+
+.itp-refine-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 12px;
+}
+
+.itp-refine-intro {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-light);
+}
+
+.itp-refine-q {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.itp-refine-q > label,
+.itp-refine-q > legend {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--navy);
+  padding: 0;
+}
+
+.itp-refine-opts {
+  display: flex;
+  gap: 16px;
+}
+
+.itp-refine-opts label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--text);
+  font-weight: 400;
+}
+
+.itp-refine-opts input {
+  accent-color: var(--primary);
+}
+
+.itp-field-input {
+  font: inherit;
+  font-size: 13px;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 7px 9px;
+  width: 100%;
+  max-width: 220px;
+}
+
+.itp-refine-check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-light);
+  font-weight: 400;
+  margin-top: 4px;
+}
+
+.itp-refine-check input {
+  accent-color: var(--primary);
+}
+
+.itp-refine-questions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.itp-refine-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--bg);
+  border: 1px solid var(--verified);
+  border-radius: var(--radius);
+  padding: 12px;
+}
+
+.itp-refine-headline p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.itp-refine-depends {
+  font-size: 12px;
+  color: var(--text-light);
+}
+
+.itp-refine-depends strong {
+  display: block;
+  color: var(--navy);
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.itp-refine-depends ul {
+  margin: 0 0 6px;
+  padding-left: 18px;
+}
+
+.itp-refine-depends-label {
+  font-weight: 600;
+  color: var(--text);
+  font-size: 12px;
+  margin-top: 6px;
+}
+
+.itp-refine-other {
+  font-size: 12px;
+  color: var(--text-light);
+  margin: 0;
+}
+
+.itp-refine-other a {
+  color: var(--primary);
+}
+
+.itp-refine-close {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-light);
+}
+
+.cta-btn {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--primary);
+  border-radius: 8px;
+  padding: 8px 14px;
+  text-decoration: none;
+  align-self: flex-start;
+}
+
+.cta-btn:hover {
+  filter: brightness(0.94);
+}
+
+/* --- mandatory confirm/claim CTA ------------------------------------------- */
+
+.itp-widget-cta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  margin-top: 4px;
+}
+
+.itp-widget-cta-heading {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+.itp-widget-cta-link {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--primary);
+  border-radius: 8px;
+  padding: 8px 12px;
+  text-decoration: none;
+  text-align: center;
+}
+
+.itp-widget-cta-link:hover {
+  filter: brightness(0.94);
+}
+
+.itp-widget-cta-link:last-child {
+  background: var(--navy);
+}
