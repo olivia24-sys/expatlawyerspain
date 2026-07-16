@@ -1,20 +1,59 @@
 /* ExpatLawyerSpain itp-calculator widget styles, v1.
-   Loads AFTER widget.css and reuses its custom properties (--primary,
-   --navy, --bg, --card-bg, --text, --text-light, --border, --verified,
-   --radius). Self-contained: system font stack only, no webfonts, no
-   external assets. Loaded inside a sandboxed cross-origin iframe under
-   strict CSP. */
+   Loads AFTER widget.css and reuses its custom properties (--primary, --navy,
+   --bg, --card-bg, --text, --text-light, --border, --sand, --verified,
+   --radius) and its first-party @font-face declarations (Fraunces, Libre
+   Franklin). First-party only: no webfonts loaded here, no inline anything, no
+   third-party URLs. Rendered inside a sandboxed cross-origin iframe under strict
+   CSP; the only non-'self' asset reference is a data: URI icon, allowed by the
+   frame CSP img-src 'self' data:. This file is a re-skin to the ELS brand
+   design: the embed contract, the DOM the JS builds, and every copy string are
+   unchanged - CSS only. */
 
-/* --- title -------------------------------------------------------------- */
+/* Type the widget in the ELS brand fonts. Scoped to this frame (firm-directory
+   does not load this stylesheet, so it keeps the system stack). */
+body {
+  font-family: 'Libre Franklin', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+/* The relief flow reveals questions progressively: the JS toggles the `hidden`
+   attribute on the questions wrapper, each individual question, and the result
+   callouts/panel. Several of those carry a layout `display` below (flex), which
+   would otherwise beat the UA [hidden] rule and reveal everything at once. Make
+   the hidden attribute authoritative so the JS stays in control of disclosure. */
+[hidden] {
+  display: none !important;
+}
+
+/* --- title: navy header bar ---------------------------------------------- */
 
 /* Functional H1 replacing the ELS logo/wordmark: on a partner site the tool,
-   not the ELS brand, is the headline. Brand attribution moves to the footer. */
+   not the ELS brand, is the headline. Rendered as a full-bleed navy header bar
+   (negative margins cancel the body's 12px padding) with the brand serif and a
+   small document icon, matching the mockup's .w-head. */
 .itp-title {
-  margin: 0 0 12px;
-  font-size: 17px;
-  line-height: 1.3;
-  font-weight: 700;
-  color: var(--navy);
+  margin: -12px -12px 14px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-family: 'Fraunces', Georgia, serif;
+  font-optical-sizing: auto;
+  font-size: 16px;
+  line-height: 1.25;
+  font-weight: 500;
+  color: var(--bg);
+  background: var(--navy);
+}
+
+/* Decorative document icon, cream stroke, as a data: URI background (no HTML
+   change, no third-party fetch; covered by the frame CSP img-src 'self' data:). */
+.itp-title::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  background: center / contain no-repeat
+    url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%23FAF5ED'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Crect%20x='4'%20y='2'%20width='16'%20height='20'%20rx='2'/%3E%3Cline%20x1='8'%20y1='6'%20x2='16'%20y2='6'/%3E%3Cline%20x1='8'%20y1='11'%20x2='8'%20y2='11'/%3E%3Cline%20x1='12'%20y1='11'%20x2='12'%20y2='11'/%3E%3Cline%20x1='16'%20y1='11'%20x2='16'%20y2='11'/%3E%3Cline%20x1='8'%20y1='15'%20x2='8'%20y2='15'/%3E%3C/svg%3E");
 }
 
 /* --- form --------------------------------------------------------------- */
@@ -22,18 +61,18 @@
 .itp-form {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 15px;
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 14px;
+  padding: 16px;
   margin: 0;
 }
 
 .itp-field {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
   border: 0;
   padding: 0;
   margin: 0;
@@ -50,62 +89,98 @@
 .itp-field select,
 .itp-field input[type="text"] {
   font: inherit;
-  font-size: 14px;
+  font-size: 14.5px;
   color: var(--text);
-  background: var(--bg);
+  background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: 8px;
-  padding: 8px 10px;
+  padding: 10px 12px;
   width: 100%;
 }
 
 .itp-field select:focus,
 .itp-field input[type="text"]:focus,
 .itp-field-input:focus {
-  outline: 2px solid var(--primary);
-  outline-offset: 1px;
+  outline: none;
+  border-color: var(--navy);
+  box-shadow: 0 0 0 3px rgba(19, 51, 86, 0.10);
 }
 
+/* Resale / new-build: a segmented toggle. The control is native radios inside
+   labels; :has(:checked) fills the active segment terracotta (mockup .toggle).
+   The radio itself is visually removed but stays in the a11y tree and focusable;
+   the focus ring moves to the label. Copy on the labels is unchanged. */
 .itp-type {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.itp-type legend {
+  width: 100%;
+  margin-bottom: 6px;
 }
 
 .itp-type label {
+  flex: 1 1 0;
+  min-width: 0;
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-weight: 400;
-  font-size: 14px;
-  color: var(--text);
+  justify-content: center;
+  text-align: center;
+  gap: 0;
+  font-weight: 500;
+  font-size: 13.5px;
+  color: var(--navy);
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 8px;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+
+.itp-type label:has(input[type="radio"]:checked) {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+.itp-type label:has(input[type="radio"]:focus-visible) {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
 }
 
 .itp-type input[type="radio"] {
-  accent-color: var(--primary);
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  margin: 0;
+  pointer-events: none;
 }
 
 .itp-form button[type="submit"] {
   font: inherit;
-  font-weight: 600;
-  font-size: 14px;
+  font-weight: 500;
+  font-size: 14.5px;
   color: #fff;
   background: var(--primary);
   border: 0;
   border-radius: 8px;
-  padding: 10px 16px;
+  padding: 11px 16px;
   cursor: pointer;
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
 .itp-form button[type="submit"]:hover {
   filter: brightness(0.94);
 }
 
-/* --- result --------------------------------------------------------------- */
+/* --- result ------------------------------------------------------------- */
 
 .itp-result {
-  margin-top: 14px;
+  margin-top: 15px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -115,27 +190,30 @@
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 14px;
+  padding: 17px;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
 }
 
 .itp-total-label {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--text-light);
   font-weight: 600;
 }
 
+/* The hero figure: brand serif, large, navy (mockup .result .total). */
 .itp-total-amount {
-  font-size: 26px;
-  font-weight: 700;
+  font-family: 'Fraunces', Georgia, serif;
+  font-optical-sizing: auto;
+  font-size: 34px;
+  font-weight: 500;
   color: var(--navy);
-  line-height: 1.2;
+  line-height: 1.15;
 }
 
 .itp-total-rate {
-  font-size: 12px;
+  font-size: 12.5px;
   color: var(--text-light);
 }
 
@@ -153,7 +231,7 @@ table.cost-table.itp-breakdown th,
 table.cost-table.itp-breakdown td {
   text-align: left;
   padding: 8px 10px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--sand);
 }
 
 table.cost-table.itp-breakdown th {
@@ -224,14 +302,14 @@ table.cost-table.itp-breakdown tr:last-child td {
   color: var(--primary);
 }
 
-/* --- refine --------------------------------------------------------------- */
+/* --- refine: the relief flow, promoted to the primary post-calc action ---- */
 
 .itp-refine {
   margin-top: 12px;
 }
 
-/* The relief flow is the primary post-calculation action: a prominent card
-   with a filled heading that reads as the primary CTA. */
+/* Prominent card with a filled terracotta heading that reads as the primary
+   CTA (mockup .refine + terracotta accent). */
 .itp-refine-details {
   background: var(--card-bg);
   border: 1px solid var(--primary);
@@ -241,7 +319,7 @@ table.cost-table.itp-breakdown tr:last-child td {
 }
 
 .itp-refine-primary-heading {
-  font-weight: 700;
+  font-weight: 600;
   font-size: 15px;
   color: #fff;
   background: var(--primary);
@@ -251,8 +329,8 @@ table.cost-table.itp-breakdown tr:last-child td {
 .itp-refine-body {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 12px 14px;
+  gap: 13px;
+  padding: 14px;
 }
 
 .itp-refine-intro {
@@ -278,32 +356,59 @@ table.cost-table.itp-breakdown tr:last-child td {
   padding: 0;
 }
 
+/* Yes/No pairs: small segmented buttons, navy when chosen (mockup .yn). */
 .itp-refine-opts {
   display: flex;
-  gap: 16px;
+  gap: 8px;
 }
 
 .itp-refine-opts label {
+  flex: 1 1 0;
+  min-width: 0;
   display: flex;
   align-items: center;
-  gap: 4px;
+  justify-content: center;
+  text-align: center;
+  gap: 0;
   font-size: 13px;
-  color: var(--text);
-  font-weight: 400;
+  font-weight: 500;
+  color: var(--navy);
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 8px;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+
+.itp-refine-opts label:has(input:checked) {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: #fff;
+}
+
+.itp-refine-opts label:has(input:focus-visible) {
+  outline: 2px solid var(--navy);
+  outline-offset: 2px;
 }
 
 .itp-refine-opts input {
-  accent-color: var(--primary);
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  margin: 0;
+  pointer-events: none;
 }
 
 .itp-field-input {
   font: inherit;
-  font-size: 13px;
+  font-size: 13.5px;
   color: var(--text);
-  background: var(--bg);
+  background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: 8px;
-  padding: 7px 9px;
+  padding: 8px 10px;
   width: 100%;
   max-width: 220px;
 }
@@ -325,22 +430,23 @@ table.cost-table.itp-breakdown tr:last-child td {
 .itp-refine-questions {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 13px;
 }
 
 .itp-refine-panel {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  background: var(--bg);
-  border: 1px solid var(--verified);
+  background: #EAF2ED;
+  border: 1px solid #C4DACB;
   border-radius: var(--radius);
-  padding: 12px;
+  padding: 13px;
 }
 
 .itp-refine-headline p {
   margin: 0;
-  font-size: 13px;
+  font-size: 13.5px;
+  line-height: 1.5;
   color: var(--text);
 }
 
@@ -386,55 +492,44 @@ table.cost-table.itp-breakdown tr:last-child td {
 
 .cta-btn {
   display: inline-block;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 13.5px;
+  font-weight: 500;
   color: #fff;
-  background: var(--primary);
+  background: var(--navy);
   border-radius: 8px;
-  padding: 8px 14px;
+  padding: 10px 14px;
   text-decoration: none;
-  align-self: flex-start;
+  text-align: center;
+  align-self: stretch;
 }
 
 .cta-btn:hover {
-  filter: brightness(0.94);
+  background: #0e2842;
 }
 
-/* --- secondary funnel-back CTA + bottom source footnote + footer ----------- */
+/* --- secondary funnel-back CTA + bottom source footnote + footer ---------- */
 
 .itp-secondary-cta {
   margin-top: 12px;
 }
 
-/* The "where these figures come from" footnote, moved to the very bottom so it
-   no longer interrupts the result. Reads as a quiet footnote above the footer. */
+/* The "where these figures come from" footnote, at the very bottom so it does
+   not interrupt the result. */
 .itp-sources-block {
   margin-top: 14px;
   padding-top: 12px;
   border-top: 1px solid var(--border);
 }
 
-/* Footer now stacks the directory link and the "Powered by" brand link (both
-   live referral links; the header logo they replace is gone). */
-.els-footer {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.els-powered {
-  font-weight: 600;
-  color: var(--navy);
-}
-
+/* Soft-sand CTA card holding the secondary lawyer link (mockup CTA card). */
 .itp-widget-cta {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  background: var(--bg);
+  background: var(--sand);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 12px 14px;
+  padding: 14px;
   margin-top: 4px;
 }
 
@@ -447,12 +542,12 @@ table.cost-table.itp-breakdown tr:last-child td {
 
 .itp-widget-cta-link {
   display: inline-block;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 500;
   color: #fff;
   background: var(--primary);
   border-radius: 8px;
-  padding: 8px 12px;
+  padding: 11px 12px;
   text-decoration: none;
   text-align: center;
 }
@@ -461,6 +556,43 @@ table.cost-table.itp-breakdown tr:last-child td {
   filter: brightness(0.94);
 }
 
+/* The lawyer CTA is the single (last) link in the card: navy, per the mockup's
+   primary button treatment. */
 .itp-widget-cta-link:last-child {
   background: var(--navy);
+}
+
+.itp-widget-cta-link:last-child:hover {
+  filter: none;
+  background: #0e2842;
+}
+
+/* Footer: a full-bleed bar (negative margins cancel the body padding) carrying
+   BOTH referral links kept from the UI/UX pass - the directory link and the
+   "Powered by" brand link - centered, matching the mockup's .w-foot. */
+.els-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  margin: 16px -12px -12px;
+  padding: 12px 16px;
+  background: var(--card-bg);
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+.els-footer a {
+  font-size: 11.5px;
+  color: var(--text-light);
+  text-decoration: none;
+}
+
+.els-footer a:hover {
+  text-decoration: underline;
+}
+
+.els-powered {
+  font-weight: 600;
+  color: var(--navy);
 }

@@ -28,7 +28,7 @@
 /widgets/*
   ! X-Frame-Options
   ! Content-Security-Policy-Report-Only
-  Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; frame-ancestors *; base-uri 'none'; form-action 'none'
+  Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors *; base-uri 'none'; form-action 'none'
   X-Robots-Tag: noindex
 
 # /embed/* is the loader partners <script src> from their own pages. Edge

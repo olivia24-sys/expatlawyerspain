@@ -1,6 +1,36 @@
 /* ExpatLawyerSpain embeddable widget styles, v1.
-   Self-contained: system font stack only, no webfonts, no external assets.
-   Loaded inside a sandboxed cross-origin iframe under strict CSP. */
+   First-party assets only: the brand webfonts are self-hosted at /fonts/ (same
+   origin as the frame), so font-src 'self' covers them. No third-party URLs, no
+   inline anything. Loaded inside a sandboxed cross-origin iframe under strict
+   CSP. The @font-face faces are declared here but only USED by the widgets that
+   opt in (the ITP calculator sets the font-family); firm-directory keeps the
+   system stack. */
+
+/* Brand fonts, self-hosted first-party (same files the main site uses, see
+   css/style.css). Variable faces, so one file covers the weight range.
+   font-display: swap keeps text visible during load; the ITP widget re-posts
+   its height on document.fonts.ready to absorb the swap reflow. */
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('/fonts/fraunces-var.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Fraunces';
+  font-style: italic;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('/fonts/fraunces-var-italic.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Libre Franklin';
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url('/fonts/libre-franklin-var.woff2') format('woff2');
+}
 
 :root {
   --primary: #C94F1A;
@@ -10,6 +40,7 @@
   --text: #190F0C;
   --text-light: #705F57;
   --border: #E2DCD2;
+  --sand: #F0E6DB;
   --verified: #386D50;
   --radius: 12px;
 }

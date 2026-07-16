@@ -423,6 +423,9 @@ test('_headers: global DENY intact; /widgets/* detaches it and adds a strict CSP
   assert.match(csp, /frame-ancestors \*/);
   assert.match(csp, /default-src 'none'/);
   assert.match(csp, /script-src 'self'/);
+  // The widget frame loads the self-hosted brand fonts from /fonts/; without an
+  // explicit font-src, default-src 'none' would block them.
+  assert.match(csp, /font-src 'self'/, 'widget CSP must allow first-party fonts');
   assert.ok(!csp.includes('unsafe-inline'), 'widget CSP must not allow inline script/style');
   assert.ok(w.some((l) => l.startsWith('X-Robots-Tag: noindex')), '/widgets/* must be noindexed');
 
@@ -516,6 +519,44 @@ test('itp-calculator frame JS: textContent-only rendering, no dangerous sinks', 
   // Resize fix: the load-time re-post and the body observer must both be present.
   assert.ok(/addEventListener\(\s*'load'\s*,\s*postResize/.test(js), 're-posts els:resize on window load');
   assert.ok(js.includes('ResizeObserver'), 'observes body height for reflow');
+  // Web-font reflow: the frame now loads Fraunces + Libre Franklin, so it must
+  // re-post its height once the faces settle (font-display: swap reflows late).
+  assert.ok(js.includes('document.fonts.ready'), 're-posts height once web fonts settle');
+});
+
+test('itp-calculator widget CSS: brand fonts self-hosted first-party, no third-party fetches', () => {
+  const css = read('widgets/v1/widget.css') + '\n' + read('widgets/v1/itp-calculator.css');
+  // The brand faces are declared and pulled ONLY from first-party /fonts/.
+  assert.match(css, /@font-face/, 'brand @font-face declared');
+  assert.match(css, /url\(\s*['"]?\/fonts\/[^)'"]*\.woff2/, 'fonts served first-party from /fonts/');
+  // No third-party stylesheet/font fetch. url() must never point at an http(s)
+  // origin; data: URIs are fine (the xmlns inside an SVG data URI is not a fetch
+  // and never sits directly after "url(").
+  assert.ok(!/url\(\s*['"]?https?:/i.test(css), 'no third-party url() in widget CSS');
+  assert.ok(!/@import/.test(css), 'no @import in widget CSS');
+});
+
+// ---------------------------------------------------------------------------
+// Partner-facing single-widget demo page (embed-itp.html). Additive: it shows
+// ONLY the ITP calculator as a partner would embed it. Must stay noindexed,
+// first-party, and use the frozen loader.
+// ---------------------------------------------------------------------------
+
+test('embed-itp demo page: noindex, ITP-only, first-party, frozen loader', () => {
+  const html = read('embed-itp.html');
+  assert.match(html, /<meta name="robots" content="noindex, nofollow">/, 'demo page noindexed');
+  // The live embed is present and is the ITP calculator.
+  assert.match(html, /<div class="els-widget" data-els-widget="itp-calculator"/, 'live ITP embed present');
+  // Every widget reference on the page (live embed + the snippet shown) is the
+  // ITP calculator: no firm-directory, no second widget.
+  const widgets = html.match(/data-els-widget="[^"]*"/g) || [];
+  assert.ok(widgets.length >= 1, 'has at least the ITP widget reference');
+  assert.ok(widgets.every((w) => w === 'data-els-widget="itp-calculator"'),
+    'every widget reference is the ITP calculator (no firm-directory)');
+  // Uses the frozen loader, and nothing third-party (ignoring comments).
+  assert.match(html, /src="\/embed\/v1\.js"/, 'loads the frozen /embed/v1.js loader');
+  assert.ok(!/https?:\/\/(?!expatlawyerspain\.com)/.test(html.replace(/<!--[\s\S]*?-->/g, '')),
+    'no third-party URLs on the demo page');
 });
 
 test('itp-calculator data module: verified-only, no drafts, no draftPreview', () => {

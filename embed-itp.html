@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>ITP calculator widget: partner preview | ExpatLawyerSpain</title>
+<style>
+  /* First-party brand fonts, self-hosted (same files the site and the widget
+     use). No third-party requests. */
+  @font-face { font-family:'Fraunces'; font-style:normal; font-weight:300 700; font-display:swap; src:url('/fonts/fraunces-var.woff2') format('woff2'); }
+  @font-face { font-family:'Fraunces'; font-style:italic; font-weight:300 700; font-display:swap; src:url('/fonts/fraunces-var-italic.woff2') format('woff2'); }
+  @font-face { font-family:'Libre Franklin'; font-style:normal; font-weight:400 600; font-display:swap; src:url('/fonts/libre-franklin-var.woff2') format('woff2'); }
+
+  :root { --navy:#133356; --terra:#C94F1A; --cream:#FAF5ED; --sand:#F0E6DB; --border:#E2DCD2; --ink:#190F0C; --clay:#705F57; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--cream); color:var(--ink); font-family:'Libre Franklin',system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; line-height:1.6; -webkit-font-smoothing:antialiased; }
+  .page { max-width:760px; margin:0 auto; padding:32px 20px 60px; }
+  .preview-tag { display:inline-flex; align-items:center; gap:7px; font-size:12.5px; color:var(--clay); background:#fff; border:1px solid var(--border); border-radius:100px; padding:5px 13px; margin-bottom:18px; }
+  .preview-tag b { color:var(--navy); font-weight:600; }
+  h1 { font-family:'Fraunces',Georgia,serif; font-optical-sizing:auto; font-weight:500; font-size:30px; line-height:1.2; color:var(--navy); margin:0 0 8px; }
+  h1 em { font-style:italic; color:var(--terra); }
+  .lede { font-size:16px; color:var(--clay); margin:0 0 30px; max-width:60ch; }
+  h2 { font-family:'Fraunces',Georgia,serif; font-optical-sizing:auto; font-weight:500; font-size:19px; color:var(--navy); margin:36px 0 10px; }
+  .embed-frame { max-width:440px; margin:0 auto; }
+  .embed-label { text-align:center; font-size:11.5px; color:var(--clay); text-transform:uppercase; letter-spacing:.06em; margin-bottom:10px; }
+  /* Round + clip the embed container so the widget's navy header bar meets the
+     card corners, matching the design. The loader injects the iframe and the
+     "Powered by" attribution link into this container. */
+  .els-widget { display:block; border:1px solid var(--border); border-radius:14px; overflow:hidden; box-shadow:0 1px 3px rgba(25,15,12,.05); background:var(--cream); }
+  /* The loader injects its "Powered by" attribution link (the crawlable backlink)
+     into this container, below the iframe. Style it as a tidy caption; do not
+     hide it. On a real partner site it inherits the partner's own styles. */
+  .els-widget > p { text-align:center; padding:0 12px 12px; }
+  .els-widget > p a { color:var(--clay); font-size:11.5px; }
+  .note { max-width:440px; margin:16px auto 0; font-size:12px; color:var(--clay); text-align:center; }
+  pre { background:#fff; border:1px solid var(--border); border-radius:10px; padding:14px; overflow-x:auto; font-size:12.5px; line-height:1.5; color:var(--ink); }
+  .paste-note { font-size:14px; color:var(--ink); margin:0 0 14px; }
+  .paste-note b { color:var(--navy); }
+  .terms { font-size:13px; color:var(--clay); margin:12px 0 0; }
+  code { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="preview-tag"><b>ExpatLawyerSpain</b> · embeddable widget preview</div>
+  <h1>Spanish property tax, worked out on <em>your page</em></h1>
+  <p class="lede">A calculator your readers use without leaving your site. They choose a region, resale or new build, and the price, and it returns the transfer tax on the official 2026 rates, then checks whether they qualify for a reduced rate. One line of code adds it.</p>
+
+  <div class="embed-frame">
+    <div class="embed-label">↓ This is the widget your site embeds</div>
+    <div class="els-widget" data-els-widget="itp-calculator" data-partner="demo-page">
+      <a href="https://expatlawyerspain.com/itp-calculator-spain">Calculate Spanish property transfer tax (ITP) | ExpatLawyerSpain</a>
+    </div>
+    <p class="note">This is the live widget, not a preview. It runs the same engine as our full calculator, applying all 49 verified reduced-rate reliefs on the official 2026 regional rates. Figures are estimates for guidance, and a lawyer confirms eligibility before filing.</p>
+  </div>
+
+  <h2>Add it to your site</h2>
+  <p class="paste-note">Paste this <b>one line of code</b> where you want the calculator to appear. It works in any HTML block, including the embed or custom-HTML boxes in WordPress, Wix and Squarespace.</p>
+  <pre>&lt;div class="els-widget" data-els-widget="itp-calculator" data-partner="your-name"&gt;
+  &lt;a href="https://expatlawyerspain.com/itp-calculator-spain"&gt;
+    Calculate Spanish property transfer tax (ITP) | ExpatLawyerSpain&lt;/a&gt;
+&lt;/div&gt;
+&lt;script async src="https://expatlawyerspain.com/embed/v1.js"&gt;&lt;/script&gt;</pre>
+  <p class="terms">Change <code>your-name</code> to a short label for your site so we can credit the referrals. Keep the embed code and the attribution link as provided.</p>
+</div>
+
+<!-- Relative loader on purpose: this page ships with the site, so the preview
+     works on production, branch previews and local dev alike. Partners paste
+     the absolute URL shown in the snippet above. -->
+<script async src="/embed/v1.js"></script>
+</body>
+</html>
