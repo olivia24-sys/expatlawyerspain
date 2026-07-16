@@ -986,6 +986,23 @@
       }
     }
 
+    //   3. Web fonts: this widget now loads Fraunces + Libre Franklin
+    //      (font-display: swap). The swap from the fallback metrics to the real
+    //      font reflows the content height AFTER boot - the same late reflow the
+    //      timeout ladder guards against, but font load can land past 1200 ms on
+    //      a cold cache. document.fonts.ready resolves once the used faces have
+    //      settled, so we re-post the true height then. Feature-guarded, and
+    //      postResize never posts 0, so this cannot collapse the frame.
+    try {
+      if (document.fonts && document.fonts.ready && typeof document.fonts.ready.then === 'function') {
+        document.fonts.ready.then(postResize).catch(function () {
+          /* never throw */
+        });
+      }
+    } catch (e) {
+      /* never throw */
+    }
+
     postReadyOnce();
   }
 
