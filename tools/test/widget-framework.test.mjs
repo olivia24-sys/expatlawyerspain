@@ -14,9 +14,11 @@ import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const read = (p) => fs.readFileSync(path.join(ROOT, p), 'utf8');
+const require = createRequire(import.meta.url);
 
 const { onRequest } = await import(path.join(ROOT, 'functions/v1/[[path]].js'));
 const { DATASET } = await import(path.join(ROOT, 'functions/_lib/widget-firms-data.js'));
@@ -471,4 +473,103 @@ test('loader JS: no dangerous sinks either', () => {
   for (const sink of ['innerHTML', 'outerHTML', 'insertAdjacentHTML', 'document.write', 'eval(']) {
     assert.ok(!js.includes(sink), `forbidden sink in embed/v1.js: ${sink}`);
   }
+});
+
+// ---------------------------------------------------------------------------
+// itp-calculator widget: static security review + data-parity + engine
+// contract. Same rules as firm-directory above, plus the parity guarantee
+// that the widget's data module is byte-identical to what the live
+// itp-calculator-spain.html page embeds (they must never drift).
+// ---------------------------------------------------------------------------
+
+test('itp-calculator frame HTML: no inline script/style/handlers, noindexed', () => {
+  const html = read('widgets/v1/itp-calculator.html');
+  assert.ok(!/<script(?![^>]*\bsrc=)/i.test(html), 'no inline <script> blocks');
+  assert.ok(!/<style[\s>]/i.test(html), 'no inline <style> blocks');
+  assert.ok(!/\son\w+\s*=/i.test(html), 'no inline event handlers');
+  assert.ok(!/style\s*=\s*"/i.test(html), 'no style= attributes (CSP style-src self)');
+  assert.match(html, /<meta name="robots" content="noindex">/);
+  assert.ok(!/https?:\/\/(?!expatlawyerspain\.com)/.test(html.replace(/<!--[\s\S]*?-->/g, '')),
+    'no third-party URLs in the frame HTML');
+});
+
+test('itp-calculator frame JS: textContent-only rendering, no dangerous sinks', () => {
+  const js = stripComments(read('widgets/v1/itp-calculator.js'));
+  for (const sink of ['innerHTML', 'outerHTML', 'insertAdjacentHTML', 'document.write', 'eval(', 'new Function']) {
+    assert.ok(!js.includes(sink), `forbidden sink in itp-calculator.js: ${sink}`);
+  }
+  assert.ok(js.includes('textContent'), 'rendering must use textContent');
+  assert.ok(js.includes('els: 1'), 'postMessage payloads must carry the protocol version');
+});
+
+test('itp-calculator data module: verified-only, no drafts, no draftPreview', () => {
+  const sandbox = { window: {} };
+  vm.runInNewContext(read('widgets/v1/itp-calculator-data.js'), sandbox);
+  const data = sandbox.window.ELS_LEGAL_DATA_ITP;
+
+  assert.ok(data && typeof data === 'object', 'ELS_LEGAL_DATA_ITP must be an object');
+  assert.ok(Array.isArray(data.figures), 'figures must be an array');
+  assert.ok(Array.isArray(data.reliefs), 'reliefs must be an array');
+  assert.ok(data.regions && typeof data.regions === 'object', 'regions must be an object');
+  assert.ok(data.figures.length > 0, 'figures must not be empty');
+  assert.ok(data.reliefs.length > 0, 'reliefs must not be empty');
+
+  for (const f of data.figures) {
+    assert.equal(f.status, 'verified', `figure ${f.id} has status ${JSON.stringify(f.status)}, expected 'verified'`);
+  }
+  for (const r of data.reliefs) {
+    assert.equal(r.status, 'verified', `relief ${r.id} has status ${JSON.stringify(r.status)}, expected 'verified'`);
+  }
+  assert.ok(!('draftPreview' in data), 'production data module must not carry draftPreview');
+
+  const copy = sandbox.window.ELS_ITP_COPY;
+  assert.ok(copy && typeof copy === 'object', 'ELS_ITP_COPY must be an object');
+  assert.ok(Object.keys(copy).length > 0, 'ELS_ITP_COPY must have at least one key');
+});
+
+test('itp-calculator data module is byte-identical to the live ITP page payload', () => {
+  const page = read('itp-calculator-spain.html');
+  const pageDataMatch = page.match(/window\.ELS_LEGAL_DATA_ITP = ([\s\S]*?);<\/script>/);
+  const pageCopyMatch = page.match(/window\.ELS_ITP_COPY = ([\s\S]*?);<\/script>/);
+  assert.ok(pageDataMatch, 'could not find window.ELS_LEGAL_DATA_ITP assignment in itp-calculator-spain.html');
+  assert.ok(pageCopyMatch, 'could not find window.ELS_ITP_COPY assignment in itp-calculator-spain.html');
+
+  const mod = read('widgets/v1/itp-calculator-data.js');
+  const modDataMatch = mod.match(/window\.ELS_LEGAL_DATA_ITP = ([\s\S]*?);\nwindow\.ELS_ITP_COPY/);
+  const modCopyMatch = mod.match(/window\.ELS_ITP_COPY = ([\s\S]*?);\n?$/);
+  assert.ok(modDataMatch, 'could not find window.ELS_LEGAL_DATA_ITP assignment in widgets/v1/itp-calculator-data.js');
+  assert.ok(modCopyMatch, 'could not find window.ELS_ITP_COPY assignment in widgets/v1/itp-calculator-data.js');
+
+  assert.equal(modDataMatch[1], pageDataMatch[1], 'widget data module has drifted from the live ITP page payload');
+  assert.equal(modCopyMatch[1], pageCopyMatch[1], 'widget copy has drifted from the live ITP page payload');
+});
+
+test('itp-calculator engine parity: the widget data drives the engine correctly', () => {
+  const engine = require(path.join(ROOT, 'js/calc-engine.js'));
+  const sandbox = { window: {} };
+  vm.runInNewContext(read('widgets/v1/itp-calculator-data.js'), sandbox);
+  const data = sandbox.window.ELS_LEGAL_DATA_ITP;
+
+  const region = data.regions.catalunya ? 'catalunya' : Object.keys(data.regions)[0];
+
+  const std = engine.calculateITP(data, { region, price: 350000, propertyType: 'resale' });
+  assert.equal(std.ok, true);
+  assert.ok(std.total > 0, 'standard total must be positive');
+  assert.ok(std.total < 350000 * 0.2, 'standard total should sanity-check under 20% of price');
+  assert.ok(std.effectiveRate > 0, 'effective rate must be positive');
+  assert.ok(Array.isArray(std.lines) && std.lines.length >= 1, 'must show at least one working line');
+  assert.ok(std.figuresUsed.length >= 1, 'must cite at least one figure used');
+
+  const pers = engine.calculatePersonalisedITP(data, {
+    region, price: 350000, propertyType: 'resale', island: null, buyer: {},
+  });
+  assert.equal(pers.ok, true);
+  assert.equal(pers.standard.total, std.total, 'personalised standard calc must match the plain calc');
+
+  // A holiday-home buyer (mainHome: false) never gets an auto-granted relief.
+  const holiday = engine.calculatePersonalisedITP(data, {
+    region, price: 350000, propertyType: 'resale', island: null, buyer: { mainHome: false },
+  });
+  assert.ok(['reliefs-unavailable', 'standard-only'].includes(holiday.reliefStatus),
+    `holiday-home buyer got unexpected reliefStatus ${JSON.stringify(holiday.reliefStatus)}`);
 });
