@@ -40,7 +40,10 @@
   # this rule existed.
   Cache-Control: public, max-age=0, must-revalidate
 
-# /embed/* is the loader partners <script src> from their own pages. Edge
-# cached, but short enough that a loader fix rolls out within the hour.
+# /embed/* is the loader partners <script src> from their own pages. Always
+# revalidate: the loader is the critical path, and a stale cached copy silently
+# breaks the embed (e.g. a sandbox-permission fix not taking effect). Same rule
+# as /widgets/* - cacheable but revalidated before reuse, so a fix rolls out on
+# the next request while unchanged bytes still return a cheap 304.
 /embed/*
-  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
+  Cache-Control: public, max-age=0, must-revalidate
