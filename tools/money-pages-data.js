@@ -79,7 +79,8 @@ module.exports = {
     </tbody>
   </table>
   <p>The DNV also opens the door to the <a href="/blog/beckham-law-spain">Beckham Law</a>, a flat 24% income tax rate on Spanish-source income up to €600,000 for up to six years. The application (Modelo 149) must be made within six months of the start-of-activity date on your Spanish Social Security registration, and missing that window forfeits it permanently. A lawyer handling your visa will normally bundle the Beckham application into the same instruction.</p>
-  <p>Beyond the headline visas, immigration lawyers in Spain handle family reunification, the <em>arraigo</em> regularisation routes for people already in Spain, work permits, student-visa conversions, visa refusals and appeals, and Spanish nationality applications.</p>`,
+  <p>Beyond the headline visas, immigration lawyers in Spain handle family reunification, the <em>arraigo</em> regularisation routes for people already in Spain, work permits, student-visa conversions, visa refusals and appeals, and Spanish nationality applications.</p>
+  <p>Not sure which of these fits your situation? Our <a href="/spain-visa-checker">visa checker</a> asks a few questions and shows which routes you appear to meet the requirements for, with every figure sourced.</p>`,
         },
         {
           heading: 'Residency paperwork: NIE, TIE and the queues',

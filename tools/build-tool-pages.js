@@ -38,6 +38,7 @@ const data = require('./tool-pages-data.js');
 const blogData = require('./blog-data.js');
 const spine = require('./legal-data/index.js');
 const engine = require('../js/calc-engine.js');
+const eligibilityEngine = require('../js/eligibility-engine.js');
 
 const ROOT = path.join(__dirname, '..');
 const SITE = 'https://expatlawyerspain.com';
@@ -95,6 +96,65 @@ function publicRelief(r) {
   const { note, domain, ...pub } = r;
   return pub;
 }
+
+// Strip the internal `note` from a criterion (plain or anyOf group), keeping
+// userNote/source/dates/status - same discipline as publicFigure/publicRelief.
+function publicCriterion(c) {
+  if (c && Array.isArray(c.anyOf)) {
+    return { ...c, anyOf: c.anyOf.map(publicCriterion) };
+  }
+  const { note, ...pub } = c;
+  return pub;
+}
+
+// Same for an eligibility rule: drop the internal `note` and `domain`, strip
+// each criterion's `note` too (anyOf leaves included), keep everything else.
+function publicEligibilityRule(r) {
+  const { note, domain, criteria, ...pub } = r;
+  return { ...pub, criteria: (criteria || []).map(publicCriterion) };
+}
+
+// --- 1b. visa eligibility rules (the checker page's data) -------------------
+// Same filtering discipline as the ITP figures/reliefs above: a rule ships
+// only via ELSEligibility.isRuleShippable (rule + every criterion + every
+// referenced figure verified), never reimplemented here. --allow-draft keeps
+// every rule for a local preview.
+const allIncomeRefFigures = spine.allFigures().filter((f) => f.domain === 'income-refs');
+const allVisaRules = spine.allEligibilityRules().filter((r) => r.domain === 'visa');
+
+const incomeRefsById = {};
+for (const f of allIncomeRefFigures) incomeRefsById[f.id] = f;
+
+const shippableVisaRules = allowDraft
+  ? allVisaRules
+  : allVisaRules.filter((r) => eligibilityEngine.isRuleShippable(r, incomeRefsById));
+
+// Only the income-reference figures actually used by a shippable visa's
+// criteria (anyOf leaves included) are embedded - never the whole domain.
+function visaLeafCriteria(rule) {
+  const out = [];
+  (rule.criteria || []).forEach((c) => {
+    if (c && Array.isArray(c.anyOf)) c.anyOf.forEach((l) => out.push(l));
+    else out.push(c);
+  });
+  return out;
+}
+
+const usedIncomeRefIds = new Set();
+for (const r of shippableVisaRules) {
+  for (const c of visaLeafCriteria(r)) {
+    if (c && c.figureId) usedIncomeRefIds.add(c.figureId);
+  }
+}
+const shippableIncomeRefFigures = allIncomeRefFigures.filter((f) => usedIncomeRefIds.has(f.id));
+
+const embeddedVisaData = {
+  rules: shippableVisaRules.map(publicEligibilityRule),
+  figures: shippableIncomeRefFigures.map(publicFigure),
+  conditionTypes: spine.eligibilityConditionTypes,
+  nationalityGroups: spine.nationalityGroups,
+};
+if (allowDraft) embeddedVisaData.draftPreview = true;
 
 function fig(id) {
   return shippable.find((f) => f.id === id) || null;
@@ -351,6 +411,131 @@ ${rows}
   <p>That is an effective rate of ${r.effectiveRate}% on the full price. Every result links the official source behind each rate it used.</p>`;
 }
 
+// --- 2b. checker-kind generated sections (visa page) -------------------------
+
+// The first minIncomeMultiple criterion in a rule, including one nested
+// inside an anyOf group - the "headline" income floor shown in the glance
+// table. Returns null when the rule has no income criterion at all.
+function firstIncomeCriterion(rule) {
+  for (const entry of rule.criteria || []) {
+    if (entry && Array.isArray(entry.anyOf)) {
+      const hit = entry.anyOf.find((c) => c && c.type === 'minIncomeMultiple');
+      if (hit) return hit;
+    } else if (entry && entry.type === 'minIncomeMultiple') {
+      return entry;
+    }
+  }
+  return null;
+}
+
+function singleApplicantFloorEUR(criterion) {
+  const t = eligibilityEngine.computeThreshold(criterion, incomeRefsById, 0);
+  return engine.fmtEUR('totalFloor' in t ? t.totalFloor : t.monthlyFloor);
+}
+
+function visaComparisonTableSection(rules) {
+  const rows = rules
+    .map((r) => {
+      const incomeCriterion = firstIncomeCriterion(r);
+      const floor = incomeCriterion ? singleApplicantFloorEUR(incomeCriterion) : 'No fixed floor';
+      return `      <tr>
+        <th scope="row">${esc(r.label)} <span class="visa-official-name">(${esc(r.officialName)})</span></th>
+        <td>${esc(r.summary)}</td>
+        <td>${esc(floor)}</td>
+      </tr>`;
+    })
+    .join('\n');
+
+  return `  <p>These are the routes we have verified against their official Spanish source. Every income floor below is computed for a single applicant with no dependants; family members raise the bar on routes that have one.</p>
+  <table class="cost-table visa-glance-table">
+    <thead>
+      <tr><th scope="col">Route</th><th scope="col">Who it suits</th><th scope="col">Income floor (single applicant)</th></tr>
+    </thead>
+    <tbody>
+${rows}
+    </tbody>
+  </table>`;
+}
+
+// One criterion's requirement line, income criteria followed by the computed
+// single-applicant euro floor in parentheses. anyOf leaves are joined with
+// the second leaf's own "Or..." wording, since the visa data writes anyOf
+// leaf labels to read as alternatives already.
+function criterionLabelLine(entry) {
+  if (entry && Array.isArray(entry.anyOf)) {
+    return entry.anyOf.map((leaf) => criterionLeafLine(leaf)).join(' ');
+  }
+  return criterionLeafLine(entry);
+}
+
+function criterionLeafLine(c) {
+  const label = esc(c.label);
+  if (c.type === 'minIncomeMultiple' || c.type === 'minSavingsMultiple') {
+    return `${label} (${esc(singleApplicantFloorEUR(c))})`;
+  }
+  return label;
+}
+
+function sourceLinksLine(rule) {
+  // Dedupe by source title across the rule and every leaf criterion.
+  const seen = new Map();
+  const add = (x) => {
+    if (x && x.source && !seen.has(x.source.title)) seen.set(x.source.title, x.source);
+  };
+  add(rule);
+  visaLeafCriteria(rule).forEach(add);
+  const links = Array.from(seen.values())
+    .map((s) => `<a href="${escAttr(s.url)}" rel="noopener" target="_blank">${esc(s.title)}</a>`)
+    .join(', ');
+  const accessed = Array.from(seen.values())
+    .map((s) => s.accessed)
+    .sort()
+    .pop();
+  // Next review = the EARLIEST reviewBy across the rule and its criteria
+  // (income criteria track the January IPREM/SMI revisions and come up
+  // sooner than the rule itself; showing the rule's later date would
+  // overstate freshness).
+  const nextReview = [rule.reviewBy]
+    .concat(visaLeafCriteria(rule).map((c) => c.reviewBy))
+    .filter(Boolean)
+    .sort()[0];
+  return `  <p class="visa-sources-line">Sources: ${links}. Checked ${esc(accessed)}, next review ${esc(nextReview)}.</p>`;
+}
+
+function visaRequirementsSection(rules) {
+  const blocks = rules
+    .map((r) => {
+      const items = (r.criteria || [])
+        .map((entry) => `      <li>${criterionLabelLine(entry)}</li>`)
+        .join('\n');
+      const userNote = r.userNote ? `\n  <p class="visa-user-note">${esc(r.userNote)}</p>` : '';
+      const nextSteps = (r.nextSteps || [])
+        .map((s) => `      <li>${esc(s)}</li>`)
+        .join('\n');
+      return `  <h3 id="${slugId(r.label)}">${esc(r.label)}</h3>
+  <p>${esc(r.summary)}</p>
+  <ul class="visa-requirements-list">
+${items}
+  </ul>${userNote}
+  <p>What applying involves:</p>
+  <ol class="visa-next-steps">
+${nextSteps}
+  </ol>
+${sourceLinksLine(r)}`;
+    })
+    .join('\n\n');
+  return blocks;
+}
+
+function checkerSection() {
+  return `  <div id="visa-checker-gate"></div>
+  <div id="visa-checker-questions"></div>
+  <div id="visa-checker-results" aria-live="polite" hidden></div>
+  <noscript>
+    <p>The checker needs JavaScript, but every requirement it uses is written out below, with sources, so you can check by hand too.</p>
+  </noscript>`;
+}
+
 function faqSection(faq) {
   const items = faq
     .map(
@@ -403,16 +588,39 @@ ${cards}
 // --- 3. page assembly ------------------------------------------------------------
 
 function buildPage(page) {
-  if (!page.refine) {
+  const kind = page.kind || 'calculator';
+  if (kind === 'calculator' && !page.refine) {
     die(`page "${page.slug}": missing the "refine" copy block in tool-pages-data.js.`);
+  }
+  if (kind === 'checker' && !page.checker) {
+    die(`page "${page.slug}": missing the "checker" copy block in tool-pages-data.js.`);
   }
   const canonical = `${SITE}/${page.slug}`;
 
+  const middleSections =
+    kind === 'checker'
+      ? [
+          { heading: page.calcHeading, tocLabel: 'The checker', html: checkerSection() },
+          {
+            heading: page.rateTableHeading,
+            tocLabel: 'Routes at a glance',
+            html: visaComparisonTableSection(page.shippableVisaRules),
+          },
+          {
+            heading: 'The requirements, route by route',
+            tocLabel: 'Requirements by route',
+            html: visaRequirementsSection(page.shippableVisaRules),
+          },
+        ]
+      : [
+          { heading: page.calcHeading, tocLabel: 'The calculator', html: calculatorSection(page) },
+          { heading: page.rateTableHeading, tocLabel: 'Rates by region', html: rateTableSection() },
+          { heading: 'A worked example', html: workedExampleSection() },
+        ];
+
   const sections = [
     ...page.sectionsBefore,
-    { heading: page.calcHeading, tocLabel: 'The calculator', html: calculatorSection(page) },
-    { heading: page.rateTableHeading, tocLabel: 'Rates by region', html: rateTableSection() },
-    { heading: 'A worked example', html: workedExampleSection() },
+    ...middleSections,
     ...page.sectionsAfter,
     { heading: page.when.heading, tocLabel: 'When you need a lawyer', html: page.when.html },
     { heading: 'Frequently Asked Questions', tocLabel: 'FAQs', html: faqSection(page.faq) },
@@ -441,23 +649,36 @@ ${s.html}${extra}`;
     '@type': 'WebApplication',
     name: page.h1,
     url: canonical,
-    applicationCategory: 'FinanceApplication',
+    applicationCategory: kind === 'checker' ? 'UtilitiesApplication' : 'FinanceApplication',
     operatingSystem: 'Web browser',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
     provider: { '@type': 'Organization', name: 'ExpatLawyerSpain', url: SITE },
   };
 
-  // The spine slice the browser calculates from. </ escaped so figure text
-  // can never terminate the script block.
-  const embedJson = JSON.stringify(embedded).replace(/</g, '\\u003c');
-  // The refine (relief) copy, embedded so every string stays in
-  // tool-pages-data.js. </ escaped for the same reason.
-  const refineJson = JSON.stringify(page.refine).replace(/</g, '\\u003c');
+  // The spine slice the browser calculates/evaluates from. </ escaped so
+  // figure or rule text can never terminate the script block.
+  const embedJson =
+    kind === 'checker'
+      ? JSON.stringify(embeddedVisaData).replace(/</g, '\\u003c')
+      : JSON.stringify(embedded).replace(/</g, '\\u003c');
+  // The refine (relief) copy, or the checker copy slice (js/visa-checker.js
+  // reads window.ELS_VISA_COPY.checker), embedded so every string stays in
+  // tool-pages-data.js / visa-checker-copy.js. Only the `checker` field is
+  // sent, never the whole page entry - the other fields are build-only
+  // wiring, not runtime copy the browser needs. </ escaped so copy text can
+  // never terminate the script block.
+  const refineJson =
+    kind === 'checker'
+      ? JSON.stringify({ checker: page.checker }).replace(/</g, '\\u003c')
+      : JSON.stringify(page.refine).replace(/</g, '\\u003c');
 
   const draftBanner = allowDraft
     ? `\n  <div class="itp-draft-banner" style="background:#b3261e;color:#fff;text-align:center;padding:10px 16px;font-weight:600;">PREVIEW BUILD with unverified draft figures. Not for production. Rebuild without --allow-draft before merging.</div>`
     : '';
-  const robots = allowDraft ? `\n  <meta name="robots" content="noindex" />` : '';
+  // noindex on any --allow-draft preview, AND permanently on any page entry
+  // carrying noindex: true (the kickoff rule: a new page ships noindex until
+  // Olivia explicitly requests indexing).
+  const robots = allowDraft || page.noindex ? `\n  <meta name="robots" content="noindex" />` : '';
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -539,10 +760,17 @@ ${FOOTER}
 
 ${FAQ_SCRIPT}
 
-<script>window.ELS_LEGAL_DATA_ITP = ${embedJson};</script>
+${
+    kind === 'checker'
+      ? `<script>window.ELS_ELIGIBILITY_VISA = ${embedJson};</script>
+<script>window.ELS_VISA_COPY = ${refineJson};</script>
+<script src="/js/eligibility-engine.js?v=${data.jsVersion}"></script>
+<script src="/js/visa-checker.js?v=${data.jsVersion}"></script>`
+      : `<script>window.ELS_LEGAL_DATA_ITP = ${embedJson};</script>
 <script>window.ELS_ITP_COPY = ${refineJson};</script>
 <script src="/js/calc-engine.js?v=${data.jsVersion}"></script>
-<script src="/js/itp-calculator.js?v=${data.jsVersion}"></script>
+<script src="/js/itp-calculator.js?v=${data.jsVersion}"></script>`
+  }
 ${CF_BEACON}
 <script src="/js/blog.js?v=20260626-b2"></script>
 </body>
@@ -610,24 +838,58 @@ function main() {
   console.log(
     `  reliefs: ${allItpReliefs.length} ITP relief rules, ${embedded.reliefs.length} shippable and region-available (embedded)`
   );
+  console.log(
+    `  visas: ${allVisaRules.length} visa rules, ${shippableVisaRules.length} shippable (${
+      allowDraft ? 'DRAFTS ALLOWED - preview build' : 'verified only'
+    })`
+  );
 
-  const pages = Object.values(data.pages);
+  const allPages = Object.values(data.pages);
   const writes = [];
+  const builtPages = [];
 
-  for (const page of pages) {
+  for (const page of allPages) {
     const file = path.join(ROOT, `${page.slug}.html`);
+    const prev = fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : null;
+
+    if (page.kind === 'checker' && shippableVisaRules.length === 0) {
+      // Ship gate: zero verified visas. A production build must never ship
+      // a checker with nothing behind it.
+      if (prev === null) {
+        console.log(`  !  ${page.slug}.html SKIPPED - visa checker: 0 verified visas, page not built`);
+        continue;
+      }
+      die(
+        `${page.slug}.html already exists on disk but the spine now has 0 shippable visa rules. ` +
+          'A previously shipped page must never silently rot - restore a verified rule or remove the file deliberately.'
+      );
+    }
+
+    // Attach the shippable rules the section builders need. Not stored on
+    // the data.js entry itself so tool-pages-data.js never carries build
+    // output.
+    const pageForBuild =
+      page.kind === 'checker' ? { ...page, shippableVisaRules: shippableVisaRules.map(publicEligibilityRule) } : page;
+
+    builtPages.push(page);
     writes.push({
       path: file,
       file: `${page.slug}.html`,
-      next: buildPage(page),
-      prev: fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : null,
+      next: buildPage(pageForBuild),
+      prev: prev,
     });
   }
 
   writes.push(
-    replaceBetween('sitemap.xml', '<!-- tool-pages:start', '<!-- tool-pages:end -->', sitemapBlock(pages), 'tool-pages'),
-    replaceBetween('llms.txt', '<!-- tool-pages:start', '<!-- tool-pages:end -->', llmsBlock(pages), 'tool-pages'),
-    replaceBetween('llms-full.txt', '<!-- tool-pages:start', '<!-- tool-pages:end -->', llmsFullBlock(pages), 'tool-pages')
+    replaceBetween('sitemap.xml', '<!-- tool-pages:start', '<!-- tool-pages:end -->', sitemapBlock(builtPages), 'tool-pages'),
+    replaceBetween('llms.txt', '<!-- tool-pages:start', '<!-- tool-pages:end -->', llmsBlock(builtPages), 'tool-pages'),
+    replaceBetween(
+      'llms-full.txt',
+      '<!-- tool-pages:start',
+      '<!-- tool-pages:end -->',
+      llmsFullBlock(builtPages),
+      'tool-pages'
+    )
   );
 
   let changed = 0;

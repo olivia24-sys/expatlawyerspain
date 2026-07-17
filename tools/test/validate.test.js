@@ -28,7 +28,7 @@ function goldenFigure() {
  * figures, by staging a copy of tools/ in a temp dir with itp.js replaced.
  * Returns { code, out }.
  */
-function runValidator(figures, args = [], reliefs = []) {
+function runValidator(figures, args = [], reliefs = [], visaRules = null) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'els-spine-test-'));
   const legalDir = path.join(dir, 'legal-data');
   fs.mkdirSync(legalDir);
@@ -45,6 +45,20 @@ function runValidator(figures, args = [], reliefs = []) {
     path.join(legalDir, 'itp-reliefs.js'),
     'module.exports = ' + JSON.stringify({ domain: 'itp', reliefs }, null, 2) + ';\n'
   );
+  // index.js also requires income-refs.js and visas.js (v3, the eligibility
+  // spine). Stage the real income-refs so threshold criteria can resolve
+  // their figureId; visas.js is the real file unless a mutation is passed in.
+  fs.copyFileSync(path.join(REPO, 'tools', 'legal-data', 'income-refs.js'), path.join(legalDir, 'income-refs.js'));
+  if (visaRules === null) {
+    fs.copyFileSync(path.join(REPO, 'tools', 'legal-data', 'visas.js'), path.join(legalDir, 'visas.js'));
+  } else {
+    fs.writeFileSync(
+      path.join(legalDir, 'visas.js'),
+      'module.exports = ' +
+        JSON.stringify({ domain: 'visa', domainLabel: 'test', rules: visaRules }, null, 2) +
+        ';\n'
+    );
+  }
   fs.copyFileSync(path.join(REPO, 'tools', 'validate-legal-data.js'), path.join(dir, 'validate-legal-data.js'));
   try {
     const out = execFileSync('node', [path.join(dir, 'validate-legal-data.js'), ...args], {

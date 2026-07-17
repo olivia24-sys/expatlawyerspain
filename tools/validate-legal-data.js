@@ -433,11 +433,246 @@ for (const r of reliefs) {
   if (isIsoDate(r.reviewBy) && r.reviewBy < today) stale.push(r);
 }
 
+// --- eligibility-rule checks (v3: the decision engine) --------------------------
+/*
+ * Eligibility domains (visas.js today) hold decision rules, not numbers.
+ * Same provenance discipline at TWO levels: the rule itself AND every
+ * criterion each carry source / dates / note / status, because the kickoff
+ * rule is that every criterion is individually verifiable. Shape rules are
+ * documented in the header of tools/legal-data/visas.js.
+ */
+
+const eligDomainKeys = spine.eligibilityDomains ? Object.keys(spine.eligibilityDomains) : [];
+for (const key of eligDomainKeys) {
+  const d = spine.eligibilityDomains[key];
+  if (!d || typeof d !== 'object') {
+    errors.push(`eligibility domain "${key}": does not export an object.`);
+    continue;
+  }
+  if (d.domain !== key) {
+    errors.push(`eligibility domain "${key}": its "domain" field is "${d.domain}" - they must match.`);
+  }
+  if (!d.domainLabel || typeof d.domainLabel !== 'string') {
+    errors.push(`eligibility domain "${key}": missing a domainLabel.`);
+  }
+  if (!Array.isArray(d.rules) || d.rules.length === 0) {
+    errors.push(`eligibility domain "${key}": has no rules array.`);
+  }
+}
+
+const eligibilityRules = typeof spine.allEligibilityRules === 'function' ? spine.allEligibilityRules() : [];
+const eligAskable = new Set((spine.eligibilityConditionTypes || {}).askable || []);
+const eligLawyerRoute = new Set((spine.eligibilityConditionTypes || {}).lawyerRoute || []);
+const nationalityKeys = Object.keys(spine.nationalityGroups || {});
+const eligDraftRules = [];
+const eligDraftCriteria = [];
+const eligVerifiedBlocked = []; // verified rules held back by a draft criterion/figure
+
+// Numeric askable criterion types and their value constraints.
+const ELIG_NUMERIC = new Set([
+  'employmentRelationshipMonths',
+  'professionalExperienceYears',
+  'yearsLivingInSpain',
+  'maxSpanishClientsSharePercent',
+]);
+const ELIG_THRESHOLD = new Set(['minIncomeMultiple', 'minSavingsMultiple']);
+
+function checkEligibilityCriterion(rule, c, seenCritIds) {
+  if (!c || typeof c !== 'object') return bad(rule, 'criterion is not an object.');
+
+  if (!c.id || typeof c.id !== 'string') return bad(rule, 'a criterion is missing its id.');
+  if (seenCritIds.has(c.id) || seenIds.has(c.id) || seenReliefIds.has(c.id)) {
+    bad(c, 'duplicate id - ids must be globally unique.');
+  }
+  seenCritIds.add(c.id);
+  if (!c.id.startsWith(rule.id + '.')) {
+    bad(c, `criterion ids must start with their rule's id ("${rule.id}.").`);
+  }
+
+  const t = c.type;
+  if (!eligAskable.has(t) && !eligLawyerRoute.has(t)) {
+    bad(c, `condition type "${t}" is not in the vocabulary (legal-data/index.js eligibilityConditionTypes).`);
+  }
+
+  if (ELIG_THRESHOLD.has(t)) {
+    if ('value' in c) bad(c, `${t} derives its threshold from a figure - it never carries a value of its own.`);
+    if (!c.figureId || typeof c.figureId !== 'string') {
+      bad(c, `${t} needs a figureId referencing a spine figure.`);
+    } else {
+      const fig = spine.getFigure(c.figureId);
+      if (!fig) bad(c, `figureId "${c.figureId}" does not resolve to any figure in the spine.`);
+      else if (fig.unit !== 'eur-per-month') bad(c, `figure "${c.figureId}" must be eur-per-month to anchor a threshold.`);
+    }
+    if (typeof c.multiple !== 'number' || !Number.isFinite(c.multiple) || c.multiple <= 0) {
+      bad(c, `${t} needs a positive numeric multiple.`);
+    }
+    if ('dependants' in c) {
+      const dep = c.dependants;
+      const okNum = (v) => typeof v === 'number' && Number.isFinite(v) && v >= 0;
+      if (!dep || typeof dep !== 'object' || !okNum(dep.first) || !okNum(dep.additional)) {
+        bad(c, 'dependants must be { first, additional } with non-negative numbers.');
+      }
+    }
+    if (t === 'minSavingsMultiple') {
+      if (typeof c.months !== 'number' || !Number.isFinite(c.months) || c.months <= 0) {
+        bad(c, 'minSavingsMultiple needs a positive months count (how long the lump sum must cover).');
+      }
+    } else if ('months' in c) {
+      bad(c, 'months only makes sense on minSavingsMultiple.');
+    }
+    if (!c.basis || typeof c.basis !== 'string' || !c.basis.trim()) {
+      bad(c, `${t} needs a basis string - a means requirement without its basis misleads.`);
+    }
+  } else if (ELIG_NUMERIC.has(t)) {
+    if (typeof c.value !== 'number' || !Number.isFinite(c.value) || c.value <= 0) {
+      bad(c, `${t} needs a positive numeric value.`);
+    } else if (t === 'maxSpanishClientsSharePercent' && c.value > 100) {
+      bad(c, 'maxSpanishClientsSharePercent must be 100 or less.');
+    }
+  } else if (eligAskable.has(t) || eligLawyerRoute.has(t)) {
+    // boolean types: a criterion never conditions on absence
+    if (c.value !== true) bad(c, `${t} value must be true.`);
+  }
+
+  if ('inclusive' in c && typeof c.inclusive !== 'boolean') {
+    bad(c, `${t}: inclusive, when present, must be a boolean.`);
+  }
+
+  // The user-facing label. Euro amounts are banned in labels: thresholds
+  // are computed from the referenced figure so they update themselves.
+  if (!c.label || typeof c.label !== 'string' || !c.label.trim()) {
+    bad(c, 'missing its user-facing label.');
+  } else if (/€|\bEUR\b/.test(c.label)) {
+    bad(c, 'labels must not contain euro amounts - the engine computes them from the figure.');
+  }
+
+  checkProvenance(c);
+  if (c.status === 'draft') eligDraftCriteria.push({ rule, criterion: c });
+}
+
+const seenEligRuleIds = new Set();
+for (const rule of eligibilityRules) {
+  if (!rule.id || typeof rule.id !== 'string') {
+    bad(rule, 'missing an id.');
+    continue;
+  }
+  if (seenEligRuleIds.has(rule.id) || seenIds.has(rule.id) || seenReliefIds.has(rule.id)) {
+    bad(rule, 'duplicate id - ids must be globally unique.');
+  }
+  seenEligRuleIds.add(rule.id);
+  if (!rule.id.startsWith(rule.domain + '.')) {
+    bad(rule, `id must start with its domain prefix "${rule.domain}.".`);
+  }
+
+  if (!rule.label || typeof rule.label !== 'string') bad(rule, 'missing a label.');
+  if (!rule.officialName || typeof rule.officialName !== 'string') bad(rule, 'missing its officialName.');
+  if (!rule.summary || typeof rule.summary !== 'string' || !rule.summary.trim()) {
+    bad(rule, 'missing its user-facing summary.');
+  }
+
+  // applicability: exactly the nationality groups, each with a known state,
+  // and at least one group the rule actually applies to.
+  const app = rule.applicability;
+  if (!app || typeof app !== 'object') {
+    bad(rule, 'missing its applicability map (per nationality group).');
+  } else {
+    for (const g of nationalityKeys) {
+      if (!(g in app)) bad(rule, `applicability is missing nationality group "${g}".`);
+      else if (!spine.applicabilityStates.includes(app[g])) {
+        bad(rule, `applicability["${g}"] must be one of ${spine.applicabilityStates.join(' / ')}, got "${app[g]}".`);
+      }
+    }
+    for (const g of Object.keys(app)) {
+      if (!nationalityKeys.includes(g)) bad(rule, `applicability names unknown nationality group "${g}".`);
+    }
+    if (!Object.values(app).some((v) => v === 'applies')) {
+      bad(rule, 'applies to no nationality group at all - a rule nobody can use is dead data.');
+    }
+  }
+  if ('applicabilityNotes' in rule) {
+    const notes = rule.applicabilityNotes;
+    if (!notes || typeof notes !== 'object') bad(rule, 'applicabilityNotes must be an object.');
+    else {
+      for (const g of Object.keys(notes)) {
+        if (!nationalityKeys.includes(g)) bad(rule, `applicabilityNotes names unknown nationality group "${g}".`);
+        if (!notes[g] || typeof notes[g] !== 'string' || !notes[g].trim()) {
+          bad(rule, `applicabilityNotes["${g}"] must be a non-empty string.`);
+        }
+      }
+    }
+  }
+
+  // criteria: non-empty AND-list; anyOf groups follow the relief rules
+  // (only anyOf, 2+, no nesting).
+  const seenCritIds = new Set();
+  if (!Array.isArray(rule.criteria) || rule.criteria.length === 0) {
+    bad(rule, 'needs a non-empty criteria array - a visa with no requirements is not a rule, it is a claim.');
+  } else {
+    for (const entry of rule.criteria) {
+      if (entry && Array.isArray(entry.anyOf)) {
+        if (entry.anyOf.length < 2) {
+          bad(rule, 'an anyOf group needs at least 2 alternatives.');
+          continue;
+        }
+        if (Object.keys(entry).length !== 1) {
+          bad(rule, 'an anyOf group must contain only anyOf.');
+          continue;
+        }
+        for (const inner of entry.anyOf) {
+          if (inner && Array.isArray(inner.anyOf)) bad(rule, 'anyOf groups cannot nest.');
+          else checkEligibilityCriterion(rule, inner, seenCritIds);
+        }
+      } else {
+        checkEligibilityCriterion(rule, entry, seenCritIds);
+      }
+    }
+  }
+
+  // nextSteps: the output contract's "what's required next".
+  if (!Array.isArray(rule.nextSteps) || rule.nextSteps.length === 0 || rule.nextSteps.some((s) => !s || typeof s !== 'string' || !s.trim())) {
+    bad(rule, 'needs a non-empty nextSteps array of non-empty strings.');
+  }
+
+  checkProvenance(rule);
+  if (rule.status === 'draft') eligDraftRules.push(rule);
+  if (isIsoDate(rule.reviewBy) && rule.reviewBy < today) stale.push(rule);
+
+  // criterion staleness rides the same stale list as everything else
+  for (const entry of Array.isArray(rule.criteria) ? rule.criteria : []) {
+    const leaves = entry && Array.isArray(entry.anyOf) ? entry.anyOf : [entry];
+    for (const c of leaves) {
+      if (c && isIsoDate(c.reviewBy) && c.reviewBy < today) stale.push(c);
+    }
+  }
+
+  // a verified rule held back by draft criteria or figures is worth naming:
+  // it will not ship, and the worklist should say why.
+  if (rule.status === 'verified') {
+    const leaves = [];
+    for (const entry of Array.isArray(rule.criteria) ? rule.criteria : []) {
+      if (entry && Array.isArray(entry.anyOf)) leaves.push(...entry.anyOf);
+      else leaves.push(entry);
+    }
+    const blockers = [];
+    for (const c of leaves) {
+      if (c && c.status !== 'verified') blockers.push(c.id);
+      if (c && c.figureId) {
+        const fig = spine.getFigure(c.figureId);
+        if (fig && fig.status !== 'verified') blockers.push(c.figureId);
+      }
+    }
+    if (blockers.length) eligVerifiedBlocked.push({ rule, blockers });
+  }
+}
+
 // --- report -------------------------------------------------------------------
 
 console.log(
   `\n  legal-data spine: ${figures.length} figures across ${domainKeys.length} domain(s) [${domainKeys.join(', ')}]` +
-    (reliefs.length ? ` + ${reliefs.length} relief rule(s)` : '')
+    (reliefs.length ? ` + ${reliefs.length} relief rule(s)` : '') +
+    (eligibilityRules.length
+      ? ` + ${eligibilityRules.length} eligibility rule(s) [${eligDomainKeys.join(', ')}]`
+      : '')
 );
 
 if (errors.length) {
@@ -492,6 +727,50 @@ if (reliefDrafts.length) {
       console.log(`     ${v}  effective ${r.effectiveFrom}`);
       console.log(`     ${r.source.url}\n`);
     }
+  }
+}
+
+if (eligDraftRules.length || eligDraftCriteria.length) {
+  const visaCount = new Set(eligDraftCriteria.map((x) => x.rule.id)).size;
+  console.log(
+    `\n  ${eligDraftCriteria.length} eligibility criterion/criteria across ${visaCount} rule(s) awaiting Olivia's verification (status: draft).` +
+      (eligDraftRules.length ? ` ${eligDraftRules.length} rule(s) also draft at rule level.` : '')
+  );
+  if (listMode) {
+    console.log(
+      "\n  Eligibility verification worklist - a rule only ships when the rule line AND every criterion AND every referenced figure are 'verified':\n"
+    );
+    for (const rule of eligibilityRules) {
+      const leaves = [];
+      for (const entry of Array.isArray(rule.criteria) ? rule.criteria : []) {
+        if (entry && Array.isArray(entry.anyOf)) leaves.push(...entry.anyOf);
+        else leaves.push(entry);
+      }
+      const draftLeaves = leaves.filter((c) => c && c.status === 'draft');
+      if (rule.status !== 'draft' && draftLeaves.length === 0) continue;
+      console.log(`   ${rule.status === 'draft' ? '□' : '✓'} ${rule.id}  [rule: ${rule.status}]`);
+      console.log(`     ${rule.source.url}`);
+      for (const c of leaves) {
+        if (!c) continue;
+        const box = c.status === 'verified' ? '✓' : '□';
+        const val =
+          c.figureId
+            ? `${c.multiple * 100}% of ${c.figureId}` + (c.months ? ` x ${c.months} months` : '')
+            : typeof c.value === 'number'
+              ? `${c.value}`
+              : '';
+        console.log(`       ${box} ${c.id}${val ? `  (${val})` : ''}`);
+        console.log(`         ${c.source.url}`);
+      }
+      console.log('');
+    }
+  }
+}
+
+if (eligVerifiedBlocked.length) {
+  console.log('\n  HELD BACK - these verified rules will NOT ship until every listed draft is verified too:\n');
+  for (const { rule, blockers } of eligVerifiedBlocked) {
+    console.log(`   ! ${rule.id}  blocked by: ${blockers.join(', ')}`);
   }
 }
 
