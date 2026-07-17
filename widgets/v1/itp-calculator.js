@@ -27,12 +27,13 @@
   var ENQUIRY_URL = 'https://expatlawyerspain.com/#contact-form';
   var OTHER_SITUATION_URL = 'https://expatlawyerspain.com/property-lawyers-spain';
   var CTA_LAWYER_URL = 'https://expatlawyerspain.com/lawyers';
-  var CTA_LAWYER_LABEL = 'Find an English-speaking lawyer to claim it';
+  var CTA_LAWYER_LABEL = 'Find an English-speaking lawyer';
 
-  // The relief flow is the primary post-calculation action, so its heading acts
-  // as the primary CTA. Local to the frame (not from the byte-identity-tested
-  // copy module) so the widget can word it for a partner surface.
-  var RELIEF_PRIMARY_HEADING = 'See if you qualify for a lower rate';
+  // The reduced-rate flow is collapsed behind this button and revealed only on
+  // click, so the default view stays a quick standard-rate answer. These strings
+  // are local to the frame (not the byte-identity-tested copy module).
+  var RELIEF_TOGGLE_LABEL = 'Could you pay less? Check reduced rates';
+  var REFINE_HEADING = 'A few quick questions';
 
   // Frame plumbing state.
   var partnerValue = '';
@@ -46,7 +47,6 @@
   var copy = null;
   var refineBox = null;
   var secondaryCta = null;
-  var sourcesBox = null;
   var fmtEUR = null;
   var previewOpts;
 
@@ -126,18 +126,6 @@
     resizeTimer = window.setTimeout(postResize, RESIZE_DEBOUNCE_MS);
   }
 
-  // Idempotent: a link that already carries the widget UTM set is left alone,
-  // so repeated calls can never stack duplicate params.
-  function applyUtmToStaticLinks() {
-    ['els-footer-link', 'els-powered-link'].forEach(function (id) {
-      var link = document.getElementById(id);
-      if (!link) return;
-      var href = link.getAttribute('href') || '';
-      if (!href || href.indexOf('utm_source=els-widget') !== -1) return;
-      link.setAttribute('href', appendUtm(href));
-    });
-  }
-
   // Fills #itp-region from data.regions ({key: label}), one <option> per
   // region, sorted by label.
   function populateRegions() {
@@ -191,101 +179,66 @@
     result.hidden = false;
   }
 
-  // The secondary CTA shown once per result, below the relief flow: the single
-  // "find a lawyer" funnel-back link. Marketing copy only - no legal facts are
-  // authored here, everything legal comes from window.ELS_ITP_COPY / the engine.
-  // The refine flow above it is the primary CTA; the "Powered by" footer and the
-  // directory footer link preserve the referral links lost with the header logo.
+  // The single "find a lawyer" CTA, shown once per result below the reduced-rate
+  // flow, as a full-width navy button (mockup .cta). Marketing copy only - no
+  // legal facts. The crawlable "Powered by ExpatLawyerSpain" backlink lives in
+  // the host page's own DOM (injected by embed/v1.js), not in this frame.
   function lawyerCta() {
-    var wrap = el('div', 'itp-widget-cta');
-    var lawyerLink = el('a', 'itp-widget-cta-link', CTA_LAWYER_LABEL);
-    lawyerLink.setAttribute('href', appendUtm(CTA_LAWYER_URL));
-    lawyerLink.setAttribute('target', '_blank');
-    lawyerLink.setAttribute('rel', 'noopener');
-    wrap.appendChild(lawyerLink);
-    return wrap;
+    var a = el('a', 'itp-cta-btn', CTA_LAWYER_LABEL + ' →');
+    a.setAttribute('href', appendUtm(CTA_LAWYER_URL));
+    a.setAttribute('target', '_blank');
+    a.setAttribute('rel', 'noopener');
+    return a;
   }
 
-  // The working table: one row per line, plus a total row. Shared by the
-  // standard render and the personalised render.
-  function breakdownTable(lines, total) {
-    var table = el('table', 'cost-table itp-breakdown');
-    var thead = el('thead');
-    var hrow = el('tr');
-    ['Step', 'Taxed amount', 'Tax'].forEach(function (h) {
-      var th = el('th', null, h);
-      th.setAttribute('scope', 'col');
-      hrow.appendChild(th);
-    });
-    thead.appendChild(hrow);
-    table.appendChild(thead);
-    var tbody = el('tbody');
+  // The working: one row per line (the label carries the rate/band, the value
+  // the tax). Shared by the standard render and the personalised panel. The
+  // hero figure above it is the total, so there is no separate total row.
+  function breakdownRows(lines) {
+    var box = el('div', 'itp-breakdown');
     lines.forEach(function (line) {
-      var tr = el('tr');
-      tr.appendChild(el('td', null, line.label));
-      tr.appendChild(el('td', null, fmtEUR(line.base)));
-      tr.appendChild(el('td', null, fmtEUR(line.amount)));
-      tbody.appendChild(tr);
+      var row = el('div', 'itp-breakdown-row');
+      row.appendChild(el('span', 'itp-breakdown-label', line.label));
+      row.appendChild(el('span', 'itp-breakdown-amount', fmtEUR(line.amount)));
+      box.appendChild(row);
     });
-    var totalRow = el('tr', 'itp-breakdown-total');
-    var totalLabel = el('th', null, 'Total');
-    totalLabel.setAttribute('scope', 'row');
-    totalRow.appendChild(totalLabel);
-    totalRow.appendChild(el('td', null, ''));
-    totalRow.appendChild(el('td', null, fmtEUR(total)));
-    tbody.appendChild(totalRow);
-    table.appendChild(tbody);
-    return table;
+    return box;
+  }
+
+  // Long regional caveats tucked behind a native <details> so the default view
+  // stays a quick figure; the buyer opens it for the full explanation. Native
+  // disclosure - no inline handler, CSP-safe.
+  function notesDisclosure(notes) {
+    if (!notes || !notes.length) return null;
+    var d = document.createElement('details');
+    d.className = 'itp-note-details';
+    var s = document.createElement('summary');
+    s.textContent = 'Why this figure?';
+    d.appendChild(s);
+    notes.forEach(function (note) {
+      d.appendChild(el('p', 'itp-note-text', note));
+    });
+    return d;
   }
 
   function renderResult(r) {
     result.textContent = '';
 
     var head = el('div', 'itp-total');
-    head.appendChild(el('div', 'itp-total-label',
-      (r.propertyType === 'resale' ? 'ITP due' : 'IVA + AJD due') + ' in ' + r.regionLabel));
+    head.appendChild(el('div', 'itp-total-label', 'Estimated transfer tax'));
     head.appendChild(el('div', 'itp-total-amount', fmtEUR(r.total)));
     head.appendChild(el('div', 'itp-total-rate',
-      'Effective rate ' + r.effectiveRate + '% on ' + fmtEUR(r.price)));
+      'Effective rate ' + Number(r.effectiveRate).toFixed(2) + '% on ' + fmtEUR(r.price)));
+
+    // The working: one row per line, inside the result card.
+    head.appendChild(breakdownRows(r.lines));
+
+    // Case-specific caveats, collapsed behind a disclosure.
+    var notes = notesDisclosure(r.notes);
+    if (notes) head.appendChild(notes);
+
     result.appendChild(head);
-
-    // The working: one row per line.
-    result.appendChild(breakdownTable(r.lines, r.total));
-
-    // Case-specific caveats carried by the figures used.
-    r.notes.forEach(function (note) {
-      var box = el('div', 'callout itp-note');
-      box.appendChild(el('p', null, note));
-      result.appendChild(box);
-    });
-
     result.hidden = false;
-  }
-
-  // Sources: every figure used, linked. Official tax-authority sources - left
-  // bare, no UTM, they are not ELS outbound links. Rendered into its own bottom
-  // container (below the relief flow and the secondary CTA), where a "where the
-  // figures come from" footnote belongs rather than interrupting the result.
-  function renderSources(r) {
-    if (!sourcesBox) return;
-    sourcesBox.textContent = '';
-    var src = el('div', 'itp-sources');
-    src.appendChild(el('strong', null, 'Where these figures come from'));
-    var ul = el('ul');
-    r.figuresUsed.forEach(function (f) {
-      var li = el('li');
-      var a = el('a', null, f.source.title);
-      a.href = f.source.url;
-      a.rel = 'noopener';
-      a.target = '_blank';
-      li.appendChild(a);
-      li.appendChild(document.createTextNode(
-        ' (' + f.label + ', in force since ' + f.effectiveFrom + ')'));
-      ul.appendChild(li);
-    });
-    src.appendChild(ul);
-    sourcesBox.appendChild(src);
-    sourcesBox.hidden = false;
   }
 
   // --- refine (relief personalisation) ---------------------------------------
@@ -335,15 +288,25 @@
     var refs = { questions: [] };
     var regionLabel = (current && data.regions[current.region]) || '';
 
-    // The relief flow is the primary post-calculation action, so it is an
-    // always-expanded card (not a collapsed accordion). Its heading reads as
-    // the primary CTA. Height changes as questions reveal are covered by
-    // refresh() -> postResize and the boot-time ResizeObserver.
+    // Collapsed by default: a sand toggle button reveals the questions only when
+    // the buyer opts in, so the standard-rate answer stays quick and simple
+    // (mockup .relief-btn). Height changes on reveal are covered by postResize.
+    var toggle = el('button', 'itp-relief-btn', RELIEF_TOGGLE_LABEL);
+    toggle.setAttribute('type', 'button');
+    refs.toggle = toggle;
+    refineBox.appendChild(toggle);
+
     var section = el('section', 'itp-refine-details');
-    section.appendChild(el('div', 'itp-refine-primary-heading', RELIEF_PRIMARY_HEADING));
+    section.hidden = true;
+    refs.section = section;
+    toggle.addEventListener('click', function () {
+      section.hidden = !section.hidden;
+      toggle.classList.toggle('itp-relief-btn-open', !section.hidden);
+      postResize();
+    });
 
     var body = el('div', 'itp-refine-body');
-    body.appendChild(el('p', 'itp-refine-intro', copy.intro));
+    body.appendChild(el('div', 'itp-refine-heading', REFINE_HEADING));
 
     // Gate: always first, always visible.
     var gate = el('fieldset', 'itp-refine-q itp-refine-gate');
@@ -682,8 +645,8 @@
     })));
     panel.appendChild(headline);
 
-    // Breakdown table (negative amounts render as reductions via fmtEUR minus).
-    panel.appendChild(breakdownTable(p.lines, p.total));
+    // Breakdown rows (negative amounts render as reductions via fmtEUR minus).
+    panel.appendChild(breakdownRows(p.lines));
 
     // Personalised notes as callouts.
     p.notes.forEach(function (note) {
@@ -705,28 +668,6 @@
       depends.appendChild(ul);
     });
     panel.appendChild(depends);
-
-    // Sources: every applied relief, deduped by URL. Official sources - left
-    // bare, no UTM.
-    var src = el('div', 'itp-sources');
-    src.appendChild(el('strong', null, copy.sourcesHeading));
-    var ul = el('ul');
-    var seen = {};
-    p.appliedReliefs.forEach(function (rel) {
-      if (!rel.source || seen[rel.source.url]) return;
-      seen[rel.source.url] = true;
-      var li = el('li');
-      var a = el('a', null, rel.source.title);
-      a.href = rel.source.url;
-      a.rel = 'noopener';
-      a.target = '_blank';
-      li.appendChild(a);
-      li.appendChild(document.createTextNode(
-        ' (' + rel.label + ', in force since ' + rel.effectiveFrom + ')'));
-      ul.appendChild(li);
-    });
-    src.appendChild(ul);
-    panel.appendChild(src);
 
     // Close + enquiry CTA. The single funnel-back "find a lawyer" CTA lives
     // once below the whole relief flow (#itp-secondary-cta), so it is not
@@ -850,10 +791,6 @@
       secondaryCta.textContent = '';
       secondaryCta.hidden = true;
     }
-    if (sourcesBox) {
-      sourcesBox.textContent = '';
-      sourcesBox.hidden = true;
-    }
 
     var region = form.querySelector('#itp-region').value;
     var typeInput = form.querySelector('input[name="itp-type"]:checked');
@@ -892,14 +829,11 @@
         refineBox.hidden = false;
       }
 
-      // Secondary funnel-back CTA, once, below the relief flow.
+      // Single funnel-back CTA, once, below the reduced-rate flow.
       if (secondaryCta) {
         secondaryCta.appendChild(lawyerCta());
         secondaryCta.hidden = false;
       }
-
-      // Source footnote, at the very bottom.
-      renderSources(r.standard);
 
       postResize();
       return;
@@ -944,16 +878,14 @@
     copy = window.ELS_ITP_COPY || null;
     refineBox = document.getElementById('itp-refine');
     secondaryCta = document.getElementById('itp-secondary-cta');
-    sourcesBox = document.getElementById('itp-sources');
     fmtEUR = window.ELSCalc.fmtEUR;
 
-    // partnerValue must be set BEFORE any UTM is applied, or the footer links
-    // would be tagged 'unattributed'.
+    // partnerValue must be set BEFORE any UTM is applied, or the CTA link would
+    // be tagged 'unattributed'.
     var params = new URLSearchParams(window.location.search);
     partnerValue = params.get('partner') || '';
 
     populateRegions();
-    applyUtmToStaticLinks();
 
     form.addEventListener('submit', onSubmit);
     window.addEventListener('resize', onResize, false);

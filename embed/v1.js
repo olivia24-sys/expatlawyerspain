@@ -100,20 +100,26 @@
     frame.setAttribute('title', 'ExpatLawyerSpain: English-speaking lawyers in Spain');
     frame.setAttribute('loading', 'lazy');
     // Isolation: sandboxed, and deliberately WITHOUT allow-same-origin.
-    frame.setAttribute('sandbox', 'allow-scripts allow-popups allow-popups-to-escape-sandbox');
+    // allow-forms is required: widgets that calculate on native form submission
+    // (the ITP calculator) never fire their submit handler without it, so
+    // Calculate does nothing when embedded. It is additive and safe - it only
+    // grants a capability, breaks no existing embedder, and the widget CSP still
+    // carries form-action 'none' so a submission cannot navigate or exfiltrate.
+    frame.setAttribute('sandbox', 'allow-scripts allow-popups allow-popups-to-escape-sandbox allow-forms');
     frame.style.width = '100%';
     frame.style.border = '0';
     frame.style.display = 'block';
     frame.style.height = DEFAULT_HEIGHT + 'px';
 
     // The visible attribution link stays in the HOST page's own DOM (it also
-    // replaces the snippet's fallback anchor as the crawlable link).
+    // replaces the snippet's fallback anchor as the crawlable link). It points
+    // at the homepage - the single "Powered by ExpatLawyerSpain" backlink.
     var attribution = doc.createElement('p');
     attribution.style.margin = '4px 0 0';
     attribution.style.fontSize = '12px';
     attribution.style.lineHeight = '1.4';
     var link = doc.createElement('a');
-    link.setAttribute('href', DEFAULT_ORIGIN + '/lawyers');
+    link.setAttribute('href', DEFAULT_ORIGIN);
     link.setAttribute('target', '_blank');
     link.setAttribute('rel', 'noopener');
     link.textContent = 'Powered by ExpatLawyerSpain';

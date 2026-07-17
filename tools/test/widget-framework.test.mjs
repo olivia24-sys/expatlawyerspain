@@ -330,13 +330,16 @@ test('loader mounts: sandbox without allow-same-origin, attribution link in host
   assert.equal(container.getAttribute('data-els-mounted'), '1');
   const iframe = container.children.find((c) => c.tagName === 'iframe');
   assert.ok(iframe, 'iframe mounted');
-  assert.equal(iframe.attributes.sandbox, 'allow-scripts allow-popups allow-popups-to-escape-sandbox');
+  assert.equal(iframe.attributes.sandbox, 'allow-scripts allow-popups allow-popups-to-escape-sandbox allow-forms');
+  // allow-forms is required so form-submission widgets (the ITP calculator) fire
+  // their submit handler when embedded; additive and safe.
+  assert.ok(iframe.attributes.sandbox.includes('allow-forms'), 'sandbox must include allow-forms');
   assert.ok(!iframe.attributes.sandbox.includes('allow-same-origin'), 'sandbox must NOT include allow-same-origin');
   assert.match(iframe.attributes.src, /^https:\/\/expatlawyerspain\.com\/widgets\/v1\/firm-directory\?city=barcelona$/);
   const attribution = container.children.find((c) => c.tagName === 'p');
   assert.ok(attribution, 'attribution stays in the host DOM');
   const link = attribution.children[0];
-  assert.equal(link.attributes.href, 'https://expatlawyerspain.com/lawyers');
+  assert.equal(link.attributes.href, 'https://expatlawyerspain.com');
   assert.equal(link.attributes.rel, 'noopener');
 });
 
@@ -429,6 +432,14 @@ test('_headers: global DENY intact; /widgets/* detaches it and adds a strict CSP
   assert.ok(!csp.includes('unsafe-inline'), 'widget CSP must not allow inline script/style');
   assert.ok(w.some((l) => l.startsWith('X-Robots-Tag: noindex')), '/widgets/* must be noindexed');
 
+  // Widget assets are unversioned, so they must always revalidate or a deploy
+  // gets stuck behind a stale edge/browser cache. Origin-authoritative, no
+  // version stamp to forget.
+  const widgetCache = w.find((l) => l.startsWith('Cache-Control:'));
+  assert.ok(widgetCache, '/widgets/* must set Cache-Control');
+  assert.match(widgetCache, /max-age=0/, '/widgets/* Cache-Control must be max-age=0');
+  assert.match(widgetCache, /must-revalidate/, '/widgets/* Cache-Control must require revalidation');
+
   assert.ok(blocks['/embed/*'], '/embed/* cache block must exist');
   assert.ok(blocks['/embed/*'].some((l) => l.startsWith('Cache-Control:')));
 
@@ -496,17 +507,20 @@ test('itp-calculator frame HTML: no inline script/style/handlers, noindexed', ()
     'no third-party URLs in the frame HTML');
 });
 
-test('itp-calculator frame HTML: functional H1, both referral links live', () => {
+test('itp-calculator frame HTML: functional H1, no in-frame attribution (loader supplies it)', () => {
   const html = read('widgets/v1/itp-calculator.html');
   // The header logo/wordmark was replaced by a functional title.
   assert.match(html, /<h1 class="itp-title">/, 'functional H1 present');
-  assert.ok(!/els-header/.test(html), 'no ELS logo header (moved brand to footer)');
-  // Both referral links must stay live: the directory link and the "Powered by"
-  // brand link that replaces the header backlink. Losing either is a regression.
-  assert.match(html, /id="els-footer-link"[^>]*href="https:\/\/expatlawyerspain\.com\/lawyers"/,
-    'directory footer link -> /lawyers');
-  assert.match(html, /id="els-powered-link"[^>]*href="https:\/\/expatlawyerspain\.com"/,
-    'Powered by footer link -> homepage');
+  assert.ok(!/els-header/.test(html), 'no ELS logo header');
+  // The frame carries NO attribution/footer link of its own: the single, crawlable
+  // "Powered by ExpatLawyerSpain" backlink is injected by the loader into the host
+  // page's DOM. A link inside this noindex sandboxed frame would not be crawlable,
+  // so it is not repeated here (and would otherwise duplicate on every embed).
+  assert.ok(!/els-footer-link/.test(html), 'no in-frame directory link');
+  assert.ok(!/els-powered-link/.test(html), 'no in-frame Powered by link');
+  const markup = html.replace(/<!--[\s\S]*?-->/g, '');
+  assert.ok(!/Powered by/i.test(markup), 'no visible "Powered by" text in the frame');
+  assert.ok(!/Free directory/i.test(markup), 'no in-frame directory line');
 });
 
 test('itp-calculator frame JS: textContent-only rendering, no dangerous sinks', () => {
