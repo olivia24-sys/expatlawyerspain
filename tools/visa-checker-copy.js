@@ -348,6 +348,12 @@ module.exports = {
       thresholdTotal: 'Works out at {amount} in total for your situation',
       thresholdMonthlyFloor: 'Works out at {amount} a month for a single applicant, more with family',
       thresholdTotalFloor: 'Works out at {amount} in total for a single applicant, more with family',
+      // Display-only computed floor for a lawyer-route criterion that references
+      // a spine figure (the Blue Card salary floor). {amount} and {multiple}
+      // are both computed from the spine, never authored here, so the figure
+      // self-updates. This never gates eligibility - the salary stays a
+      // lawyer-route - it only shows the applicant the current bar.
+      salaryFloorLine: 'Current threshold: about {amount} a year ({multiple}x the national average salary). Confirmed by your employer or lawyer.',
       // {from} is the requirement's in-force date, {accessed} the date we
       // last read the official source, {review} the next scheduled re-check.
       figuresChecked: 'In force since {from}. Checked against the official source {accessed}, next review {review}.',

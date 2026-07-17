@@ -343,3 +343,42 @@ test('relief: duplicate id against a figure is rejected', () => {
   r.id = 'itp.catalunya.resale'; // collides with the staged figure
   expectReliefRejected(r, 'duplicate id');
 });
+
+// --- Blue Card display-figure rules (2026-07-18) ---------------------------
+// The salary criterion carries figureId + displayMultiple for DISPLAY only
+// (a lawyer-route criterion that shows a computed floor). The validator must
+// keep those honest: figureId must resolve, displayMultiple must be positive.
+const realVisaRules = require('../legal-data/visas.js').rules;
+function visaRulesWith(mutate) {
+  const rules = JSON.parse(JSON.stringify(realVisaRules));
+  const bc = rules.find((r) => r.id === 'visa.blue-card');
+  const sal = bc.criteria.find((c) => c.id === 'visa.blue-card.salary-threshold');
+  mutate(sal);
+  return rules;
+}
+
+test('the real visa rules validate clean (incl. the Blue Card display figure)', () => {
+  const { code } = runValidator(spine.domains.itp.figures, [], spine.allReliefs(), realVisaRules);
+  assert.equal(code, 0);
+});
+
+test('display: displayMultiple without a figureId is rejected', () => {
+  const rules = visaRulesWith((sal) => { delete sal.figureId; });
+  const { code, out } = runValidator(spine.domains.itp.figures, [], spine.allReliefs(), rules);
+  assert.equal(code, 1);
+  assert.match(out, /displayMultiple needs a figureId/);
+});
+
+test('display: a dangling display figureId is rejected', () => {
+  const rules = visaRulesWith((sal) => { sal.figureId = 'income-refs.does-not-exist'; });
+  const { code, out } = runValidator(spine.domains.itp.figures, [], spine.allReliefs(), rules);
+  assert.equal(code, 1);
+  assert.match(out, /display figureId .* does not resolve/);
+});
+
+test('display: a non-positive displayMultiple is rejected', () => {
+  const rules = visaRulesWith((sal) => { sal.displayMultiple = 0; });
+  const { code, out } = runValidator(spine.domains.itp.figures, [], spine.allReliefs(), rules);
+  assert.equal(code, 1);
+  assert.match(out, /positive numeric displayMultiple/);
+});

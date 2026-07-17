@@ -56,5 +56,22 @@ module.exports = {
         'EUR 1,221/month in 14 payments (EUR 40.70/day, EUR 17,094/year), fixed by RD 126/2026 with effect for all of 2026. OPEN QUESTION for verification: the digital nomad visa income floor is 200% of the SMI, and UGE practice has varied between 200% of this 14-payment monthly figure and 200% of the annualised monthly average (17,094 / 12 = EUR 1,424.50, a higher bar). The spine carries the 14-payment monthly figure; the DNV criterion note flags the ambiguity and its userNote warns the applicant the higher reading may be applied. Settle against the current UGE FAQ when verifying. Re-check every January/February: the SMI is revised annually by Real Decreto.',
       status: 'draft',
     },
+    {
+      id: 'income-refs.ine-average-annual',
+      label: 'INE average gross annual salary (Blue Card salary base)',
+      region: 'national',
+      unit: 'eur-per-year',
+      value: 29540,
+      effectiveFrom: '2026-06-30',
+      source: {
+        url: 'https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-2142',
+        title: 'Orden PJC/44/2026, umbrales salariales tarjeta azul UE (Ley 14/2013)',
+        accessed: '2026-07-18',
+      },
+      reviewBy: '2026-12-31',
+      note:
+        'The INE average gross ANNUAL salary that the EU Blue Card / highly qualified salary floor is a multiple of (Ley 14/2013 art 71 bis; salary thresholds set by ministerial order, Orden PJC/44/2026). The Blue Card floor is 1.4x this figure, so storing the average and the 1.4x multiple lets the floor self-update when the average is revised. VALUE IS DERIVED AND DRAFT: the audit records the current floor at about EUR 41,356/yr (from ~end-June 2026; EUR 39,269.92 from 30 Jan 2026), so 41,356 / 1.4 = about EUR 29,540. VERIFY the exact INE average base against the Orden PJC/44/2026 text / the INE figure it cites before flipping to verified - do not treat 29,540 as confirmed. reviewBy is set short because the order was already republished once mid-2026 when INE updated; re-check for the next revision. Used only to DISPLAY the computed floor on the Blue Card route; it anchors no eligibility criterion (the salary check stays a lawyer-route).',
+      status: 'draft',
+    },
   ],
 };

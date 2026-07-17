@@ -157,7 +157,7 @@ module.exports = {
           },
           reviewBy: '2027-07-06',
           note:
-            'A real, existing relationship of at least 3 months with the employer (or the client base, for the self-employed) at the date of application, and the company must have been operating for at least 1 year. The 1-year company age is folded into this criterion note rather than asked separately: it is the employer\'s fact, not the applicant\'s, and the checker asks people about themselves.',
+            'A real, existing relationship of at least 3 months with the employer (or the client base, for the self-employed) at the date of application, and the company must have been operating for at least 1 year. The 1-year company age is folded into this criterion note rather than asked separately: it is the employer\'s fact, not the applicant\'s, and the checker asks people about themselves. AUDIT 2026-07-18 verification actions for Olivia: (1) confirm the "company operating >= 1 year" claim against the current UGE FAQ / Ley 14/2013 art 74 - it is asserted from firm guidance, not yet pinned to the official page; (2) mandatory Social Security registration (RETA for the self-employed, or a non-resident-employer arrangement for employees) is the single most common reason DNV applications stall - it is surfaced in nextSteps rather than modelled as a gating criterion (it is procedural, not a yes/no the applicant self-assesses), a deliberate choice to confirm.',
           status: 'draft',
         },
         {
@@ -612,7 +612,7 @@ module.exports = {
           },
           reviewBy: '2027-07-06',
           note:
-            'RD 1155/2024 requires the worker to hold the training and professional qualification legally required for the role, recognised or homologated where the profession is regulated. AUDIT 2026-07-14: re-pin the article - art. 75.1 is the difficult-coverage occupation catalogue, not the qualifications rule; confirm the correct RD 1155/2024 article before verifying. Reuses the universityDegree askable type as the closest fit ("qualification the job requires"); many roles need no degree, so the label is worded around the job\'s own requirement rather than a degree as such. Flagged for Olivia in the notes file as an imperfect vocabulary match.',
+            'RD 1155/2024 requires the worker to hold the training and professional qualification legally required for the role, recognised or homologated where the profession is regulated. AUDIT 2026-07-14/2026-07-18: art. 75.1 is the difficult-coverage (shortage) OCCUPATION CATALOGUE and must NOT be cited as the qualifications basis - it is a different rule. The qualifications requirement sits elsewhere in the RD 1155/2024 cuenta-ajena provisions; the exact article is deliberately left uncited here rather than guessed. VERIFICATION ACTION for Olivia: read the current Hoja 12 / RD 1155/2024 cuenta-ajena section and pin the correct qualifications article before flipping this criterion to verified. Reuses the universityDegree askable type as the closest fit ("qualification the job requires"); many roles need no degree, so the label is worded around the job\'s own requirement rather than a degree as such.',
           status: 'draft',
         },
         {
@@ -1134,6 +1134,8 @@ module.exports = {
           id: 'visa.blue-card.salary-threshold',
           type: 'blueCardSalaryAssessment',
           value: true,
+          figureId: 'income-refs.ine-average-annual',
+          displayMultiple: 1.4,
           label: 'Your gross salary meets the current Blue Card threshold for the year',
           effectiveFrom: '2026-01-30',
           source: {
@@ -1143,7 +1145,7 @@ module.exports = {
           },
           reviewBy: '2027-01-31',
           note:
-            'The salary floor is 1.4x the INE average gross annual salary, set by ministerial order and moving mid-year when INE republishes: about 39,270 EUR/yr from 30 Jan 2026, rising to about 41,356 EUR/yr from ~end June 2026 (reduced ~31,416 / 33,085 for shortage occupations or recent graduates). Modelled as a lawyerRoute condition because it is an annual, moving, employer-verified figure and the route is employer-led, so it never auto-grants. When an INE-average income figure is added to the spine this can become a minIncomeMultiple (1.4x).',
+            'The salary floor is 1.4x the INE average gross annual salary, set by ministerial order and moving mid-year when INE republishes: about 39,270 EUR/yr from 30 Jan 2026, rising to about 41,356 EUR/yr from ~end June 2026 (reduced ~31,416 / 33,085 for shortage occupations or recent graduates). Modelled as a lawyerRoute condition (type blueCardSalaryAssessment) so it NEVER auto-grants: it is an annual, moving, employer-verified figure and the route is employer-led. DISPLAY ONLY: figureId + displayMultiple (1.4) let the checker SHOW the current computed floor (income-refs.ine-average-annual x 1.4) so the figure self-updates from the spine, exactly as the ITP/IPREM figures do, WITHOUT the salary answer ever gating eligibility. The engine returns unknown for this lawyer-route type before it looks at figureId, so no threshold is computed and there is no annual-vs-monthly answer-key clash; the figureId only pulls the (verified) INE figure into the build and ship-gates the route on it.',
           status: 'draft',
         },
         {

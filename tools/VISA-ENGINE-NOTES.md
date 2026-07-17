@@ -149,6 +149,50 @@ flags mean the multiple is what officials apply, not what the law prints.
    "rarely relevant", which the applicability vocabulary cannot say. If you
    would rather UK/US see arraigo evaluated, flip those to `applies`.
 
+## Accuracy-audit closure (2026-07-18) and what still NEEDS YOUR EYES
+
+The July accuracy audit (`els-visa-itp-accuracy-audit-2026-07.md`) fixes are
+applied, all still `draft`. Four routes were ADDED and three rules corrected:
+
+- **Arraigo familiar** rewritten to RD 1155/2024 scope (parent of an EU/EEA/Swiss
+  minor, or carer of a disabled EU/EEA/Swiss national); it no longer covers
+  family of Spanish citizens.
+- **`visa.familiar-espanol`** added: the art. 94 5-year card for the non-EU
+  family of a Spanish citizen (the route arraigo familiar used to cover). Always
+  lawyer-routes.
+- **`visa.self-employed`** added: the ordinary autonomo / cuenta propia route
+  (Hoja 14), distinct from the ENISA entrepreneur visa. Always lawyer-routes.
+- **`visa.blue-card`** added: EU Blue Card / highly qualified professional.
+- **`visa.eu-family-member`** added: stub closing the dangling pointer from
+  family reunification (non-EU family of an EEA/Swiss citizen). Always lawyer-routes.
+- **Entrepreneur means** corrected to 100% IPREM + 50%/family member (was a wrong
+  200% + 75%/25%), verified against the UGE Criterios PDF; kept draft.
+- **Student** medical-certificate criterion added; **family reunification**
+  citation fixed to arts 65-68; **NLV** health cover widened to "public or
+  private" and re-pinned to arts 60-63.
+
+**Blue Card salary floor - self-updating DISPLAY figure (new pattern).** Item 2
+of the audit asked for the floor as a 1.4x INE-average multiplier that
+self-updates. It is modelled as a lawyer-route (never auto-grants), AND the
+salary criterion now carries `figureId: income-refs.ine-average-annual` +
+`displayMultiple: 1.4`. The engine ignores these (a lawyer-route type returns
+unknown before it looks at figureId), so eligibility is untouched; the checker
+uses them only to SHOW the computed floor (figure x 1.4), which self-updates from
+the spine like the IPREM/SMI figures. Because the criterion carries the figureId,
+the build ship-gates the whole Blue Card route on that figure being verified.
+The figure value (EUR 29,540, giving a floor of ~EUR 41,356) is DERIVED and draft
+- VERIFY the exact INE base against Orden PJC/44/2026 before flipping it.
+
+**Two verification actions still open (both LOW, both draft, flagged in-rule):**
+1. **Work permit qualifications article** (`visa.work-employee.qualifications`):
+   art. 75.1 is the shortage-occupation catalogue, NOT the qualifications rule.
+   The correct RD 1155/2024 cuenta-ajena article is deliberately left uncited
+   rather than guessed - pin it from Hoja 12 / the reglamento at verification.
+2. **DNV company age + Social Security** (`visa.digital-nomad.relationship-3-months`):
+   confirm the "company operating >= 1 year" claim against the UGE FAQ / Ley
+   14/2013 art 74, and note that mandatory RETA / Social Security registration is
+   surfaced in nextSteps rather than modelled as a gating criterion (deliberate).
+
 ## Vocabulary wrinkles to know about (deliberate, safe-direction)
 
 - The employed work permit's qualifications criterion reuses the

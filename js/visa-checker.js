@@ -291,6 +291,41 @@
     return tpl(monthlyTpl, { amount: fmtEUR(threshold.monthlyFloor) });
   }
 
+  // Display-only computed floor for a lawyer-route criterion that references a
+  // spine figure (the Blue Card salary floor). The number comes entirely from
+  // the spine - figure value x the criterion's displayMultiple - so this file
+  // authors neither the euro nor the multiple. It NEVER gates eligibility (the
+  // criterion stays a lawyer-route and evaluates as unknown); it only shows the
+  // applicant the current bar. Returns null unless BOTH the criterion's display
+  // config and the (verified, embedded) figure are present, so a verified-only
+  // build that has not embedded the figure simply shows nothing.
+  var displayFloorByCritId = null;
+  function buildDisplayFloorIndex() {
+    displayFloorByCritId = {};
+    var figs = {};
+    (data.figures || []).forEach(function (f) { figs[f.id] = f; });
+    (data.rules || []).forEach(function (rule) {
+      (rule.criteria || []).forEach(function (entry) {
+        var leaves = entry && entry.anyOf ? entry.anyOf : [entry];
+        leaves.forEach(function (c) {
+          if (!c || !c.figureId || typeof c.displayMultiple !== 'number') return;
+          var fig = figs[c.figureId];
+          if (!fig || typeof fig.value !== 'number') return;
+          displayFloorByCritId[c.id] = {
+            amount: Math.round(fig.value * c.displayMultiple * 100) / 100,
+            multiple: c.displayMultiple,
+          };
+        });
+      });
+    });
+  }
+  function displayFloorLine(critId) {
+    if (displayFloorByCritId === null) buildDisplayFloorIndex();
+    var d = displayFloorByCritId[critId];
+    if (!d) return null;
+    return tpl(copy.outcomes.salaryFloorLine, { amount: fmtEUR(d.amount), multiple: d.multiple });
+  }
+
   function criteriaList(result) {
     var ul = el('ul', 'visa-criteria');
     result.criteria.forEach(function (c) {
@@ -299,6 +334,8 @@
       li.appendChild(el('span', 'visa-criterion-label', c.label));
       var tline = thresholdLine(c.threshold);
       if (tline) li.appendChild(el('p', 'visa-criterion-threshold', tline));
+      var dline = displayFloorLine(c.id);
+      if (dline) li.appendChild(el('p', 'visa-criterion-threshold', dline));
       if (c.userNote) li.appendChild(el('p', 'visa-criterion-note', c.userNote));
       ul.appendChild(li);
     });

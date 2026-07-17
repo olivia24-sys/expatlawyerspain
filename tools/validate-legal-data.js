@@ -538,6 +538,25 @@ function checkEligibilityCriterion(rule, c, seenCritIds) {
     bad(c, `${t}: inclusive, when present, must be a boolean.`);
   }
 
+  // Display-only figure on a NON-threshold criterion (e.g. the Blue Card
+  // salary floor): figureId + displayMultiple let the checker SHOW a computed
+  // euro floor without the criterion ever anchoring eligibility (the engine
+  // returns unknown for a lawyer-route type before it looks at figureId). It
+  // still pulls the figure into the build and ship-gates the rule on it, so
+  // the figure must resolve and the multiple must be a positive number.
+  if (!ELIG_THRESHOLD.has(t)) {
+    if ('displayMultiple' in c || c.figureId) {
+      if (!c.figureId || typeof c.figureId !== 'string') {
+        bad(c, 'displayMultiple needs a figureId referencing a spine figure.');
+      } else if (!spine.getFigure(c.figureId)) {
+        bad(c, `display figureId "${c.figureId}" does not resolve to any figure in the spine.`);
+      }
+      if (typeof c.displayMultiple !== 'number' || !Number.isFinite(c.displayMultiple) || c.displayMultiple <= 0) {
+        bad(c, 'a display figureId needs a positive numeric displayMultiple.');
+      }
+    }
+  }
+
   // The user-facing label. Euro amounts are banned in labels: thresholds
   // are computed from the referenced figure so they update themselves.
   if (!c.label || typeof c.label !== 'string' || !c.label.trim()) {

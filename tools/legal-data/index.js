@@ -155,7 +155,7 @@ const regions = {
 };
 
 // Units a figure's `value` / band `rate` can be expressed in.
-const units = ['percent', 'eur', 'eur-per-month'];
+const units = ['percent', 'eur', 'eur-per-month', 'eur-per-year'];
 
 // Hosts that count as an OFFICIAL source. A figure may only be
 // status: 'verified' if its source.url host is (a subdomain of) one of
