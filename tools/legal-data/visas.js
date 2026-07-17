@@ -211,7 +211,7 @@ module.exports = {
           },
           reviewBy: '2027-02-28',
           note:
-            'Means: 200% of the monthly SMI for the applicant, plus 75% of the SMI for the first family member and 25% for each further member. OPEN QUESTION carried on the SMI figure (income-refs.smi-monthly): whether UGE applies 200% of the 14-payment monthly SMI or of the annualised monthly average (higher). Settle both together when verifying. reviewBy tracks the SMI\'s own annual revision.',
+            'Means: 200% of the monthly SMI for the applicant, plus 75% of the SMI for the first family member and 25% for each further member. AUDIT 2026-07-14: the official UGE FAQ confirms the base is the 14-payment monthly SMI (EUR 1,221 -> 200% = EUR 2,442), NOT the annualised monthly average - the open question is resolved in favour of the encoded figure. reviewBy tracks the SMI\'s own annual revision.',
           userNote:
             'The income floor moves every year with the Spanish minimum wage, and the authorities have at times read it against a higher annualised figure. Treat the number shown as the minimum, and budget a margin above it.',
           status: 'draft',
@@ -353,7 +353,7 @@ module.exports = {
           id: 'visa.non-lucrative.health-insurance',
           type: 'healthInsurance',
           value: true,
-          label: 'You have full private health cover with an insurer authorised to operate in Spain',
+          label: 'You have full health cover valid in Spain, public or from an insurer authorised to operate here',
           effectiveFrom: '2011-06-30',
           source: {
             url: 'https://www.inclusion.gob.es/web/migraciones/w/autorizacion-inicial-de-residencia-temporal-no-lucrativa',
@@ -414,7 +414,7 @@ module.exports = {
       },
       reviewBy: '2027-07-06',
       note:
-        'The classic passive-means residence route under LO 4/2000 and its reglamento. effectiveFrom marks the RD 557/2011 era; the current reglamento is RD 1155/2024 (in force 20 May 2025) - re-pin the article references to the new text when verifying. Consular pages (e.g. exteriores.gob.es New York/Chicago NLV pages) carry the applicant-facing requirements list.',
+        'The classic passive-means residence route under LO 4/2000 and its reglamento. effectiveFrom marks the RD 557/2011 era; the current reglamento is RD 1155/2024 (in force 20 May 2025), applicant-facing requirements at arts 60-63 (confirmed by the ELS audit 2026-07-14 against Hoja 6). Consular pages (e.g. exteriores.gob.es New York/Chicago NLV pages) carry the applicant-facing requirements list.',
       status: 'draft',
     },
 
@@ -528,6 +528,22 @@ module.exports = {
             'A criminal record certificate covering Spain and countries of residence in the last 5 years is required where the stay exceeds six months. Short courses under six months do not need it, but the checker asks the broader question so a longer stay is covered.',
           status: 'draft',
         },
+        {
+          id: 'visa.student.medical-certificate',
+          type: 'medicalCertificate',
+          value: true,
+          label: 'You can obtain a medical certificate confirming no disease of public-health concern',
+          effectiveFrom: '2025-05-20',
+          source: {
+            url: 'https://www.inclusion.gob.es/en/web/migraciones/w/estancia-por-estudios',
+            title: 'Ministerio de Inclusión: Autorización de estancia por estudios (Hoja 1)',
+            accessed: '2026-07-14',
+          },
+          reviewBy: '2027-07-06',
+          note:
+            'Hoja 1 requires a medical certificate per the 2005 International Health Regulations confirming no disease of serious public-health concern; waived only where the long-stay authorisation is requested from inside Spain. Added 2026-07-14 from the ELS accuracy audit (the NLV rule already carries the equivalent criterion; the student rule was missing it).',
+          status: 'draft',
+        },
       ],
       nextSteps: [
         'Get your admission letter and proof of paid fees first. Nothing moves without it.',
@@ -596,7 +612,7 @@ module.exports = {
           },
           reviewBy: '2027-07-06',
           note:
-            'RD 1155/2024 art 75 requires the worker to hold the training and professional qualification legally required for the role, recognised or homologated where the profession is regulated. Reuses the universityDegree askable type as the closest fit ("qualification the job requires"); many roles need no degree, so the label is worded around the job\'s own requirement rather than a degree as such. Flagged for Olivia in the notes file as an imperfect vocabulary match.',
+            'RD 1155/2024 requires the worker to hold the training and professional qualification legally required for the role, recognised or homologated where the profession is regulated. AUDIT 2026-07-14: re-pin the article - art. 75.1 is the difficult-coverage occupation catalogue, not the qualifications rule; confirm the correct RD 1155/2024 article before verifying. Reuses the universityDegree askable type as the closest fit ("qualification the job requires"); many roles need no degree, so the label is worded around the job\'s own requirement rather than a degree as such. Flagged for Olivia in the notes file as an imperfect vocabulary match.',
           status: 'draft',
         },
         {
@@ -702,7 +718,7 @@ module.exports = {
           },
           reviewBy: '2027-01-31',
           note:
-            'Hoja 8 (RD 1155/2024 arts 69-70): a household of two (sponsor plus one reunited member) needs 150% of the monthly IPREM, and each further member adds 50% of the IPREM. ENCODING: the checker\'s dependants answer counts family members joining BEYOND the applicant, and the 1.5 base already covers sponsor + applicant, so first AND additional are both 0.5 (each extra member adds 50%; a first:0 encoding would understate the bar for one extra member, a false-positive vector caught in the Fable review). A reduced test using the Ingreso Mínimo Vital applies where the unit includes minors: that alternative is NOT anchored to IPREM and is flagged for Olivia rather than modelled here. reviewBy tracks the IPREM annual revision.',
+            'Hoja 8 (RD 1155/2024 arts 65-68; article cite corrected from 69-70 per the ELS audit 2026-07-14): a household of two (sponsor plus one reunited member) needs 150% of the monthly IPREM, and each further member adds 50% of the IPREM. ENCODING: the checker\'s dependants answer counts family members joining BEYOND the applicant, and the 1.5 base already covers sponsor + applicant, so first AND additional are both 0.5 (each extra member adds 50%; a first:0 encoding would understate the bar for one extra member, a false-positive vector caught in the Fable review). A reduced test using the Ingreso Mínimo Vital applies where the unit includes minors: that alternative is NOT anchored to IPREM and is flagged for Olivia rather than modelled here. reviewBy tracks the IPREM annual revision.',
           userNote:
             'The income shown is the sponsor\'s, not yours, and it is the requirement authorities scrutinise most. Where children are being reunited a lower means test tied to the Minimum Vital Income can apply, so a lawyer can confirm which figure fits your family.',
           status: 'draft',
@@ -756,7 +772,7 @@ module.exports = {
       },
       reviewBy: '2027-07-06',
       note:
-        'The general family reunification route under LO 4/2000 (arts 16-19) and RD 1155/2024 (arts 65-70, in force 20 May 2025), which reformed the means and housing rules. This is the non-EU route; family of EEA/Swiss citizens use the RD 240/2007 EU family-member card instead, as the applicabilityNote says. Rule-level source covers existence, applicability and process.',
+        'The general family reunification route under LO 4/2000 (arts 16-19) and RD 1155/2024 (arts 65-68, in force 20 May 2025; corrected from 65-70 per the ELS audit 2026-07-14), which reformed the means and housing rules. This is the non-EU route; family of EEA/Swiss citizens use the RD 240/2007 EU family-member card instead, as the applicabilityNote says. Rule-level source covers existence, applicability and process.',
       status: 'draft',
     },
 
@@ -802,7 +818,7 @@ module.exports = {
               id: 'visa.arraigo.family-tie',
               type: 'familyMemberSpanishResident',
               value: true,
-              label: 'Or a close family member is a Spanish citizen or legal resident',
+              label: 'Or you are the parent of an EU, EEA or Swiss minor living in Spain, or the carer of a disabled EU, EEA or Swiss national',
               effectiveFrom: '2025-05-20',
               source: {
                 url: 'https://www.inclusion.gob.es/en/web/migraciones/w/autorizacion-residencia-temporal-por-circunstancias-excepcionale-1',
@@ -811,7 +827,7 @@ module.exports = {
               },
               reviewBy: '2027-07-06',
               note:
-                'Arraigo familiar (Hoja 26): a qualifying family tie, principally to a Spanish citizen, with no minimum residence period. The askable familyMemberSpanishResident question is broader than the legal test (which turns on the exact relationship and, for some ties, citizenship rather than residence), which is safe here: a yes can never auto-grant because the variant-assessment lawyer-route below caps the whole route at need-more-info. Confirm the qualifying relationships against Hoja 26 when verifying.',
+                'Arraigo familiar (Hoja 26), CORRECTED per the ELS audit 2026-07-14: under RD 1155/2024 (in force 20 May 2025) arraigo familiar NO LONGER covers family of Spanish citizens. It now covers only (a) the parent/guardian of a minor who is a national of another EU/EEA/Switzerland state, or (b) a family member supporting a disabled EU/EEA/Swiss national, with no minimum residence period. Family of a SPANISH citizen (spouse of a Spaniard, parent of a Spanish minor child) now use the separate "familiar de persona con nacionalidad espanola" 5-year card (art. 94 RD 1155/2024) - a route not yet modelled in this engine (flagged for addition). Family of a legal (non-EU) resident use family reunification. The askable familyMemberSpanishResident question is broader than any single legal test, which is safe here because a yes can never auto-grant - the variant-assessment lawyer-route below caps the whole route at need-more-info. Confirm against the current Hoja 26 when verifying.',
               status: 'draft',
             },
           ],
@@ -840,7 +856,7 @@ module.exports = {
         'Get the social-integration report from your Autonomous Community early where your route needs one. It takes time to issue.',
       ],
       userNote:
-        'Arraigo is the route people most often get wrong on their own. The five variants each turn on different proof, and applying under the wrong one can lose you the chance. This is the point to get a lawyer, before you file anything.',
+        'Arraigo is the route people most often get wrong on their own. The five variants each turn on different proof, and applying under the wrong one can lose you the chance. This is the point to get a lawyer, before you file anything. Note: if your close family member is a Spanish citizen (a Spanish spouse, or you are the parent of a Spanish child), arraigo is not your route since 2025 - you likely need the separate residence card for family of a Spanish national. A lawyer will point you to the right one.',
       effectiveFrom: '2025-05-20',
       source: {
         url: 'https://www.inclusion.gob.es/en/web/migraciones/w/autorizacion-residencia-temporal-por-circunstancias-excepcionales.-arraigo-social',
@@ -893,10 +909,10 @@ module.exports = {
               id: 'visa.entrepreneur.income',
               type: 'minIncomeMultiple',
               figureId: 'income-refs.iprem-monthly',
-              multiple: 2,
-              dependants: { first: 0.75, additional: 0.25 },
+              multiple: 1,
+              dependants: { first: 0.5, additional: 0.5 },
               basis: 'regular funds to support yourself while the business establishes, separate from the business capital',
-              label: 'You can support yourself and any family with funds of at least 200% of the IPREM each month',
+              label: 'You can support yourself and any family with funds of at least 100% of the IPREM each month',
               effectiveFrom: '2013-09-29',
               source: {
                 url: 'https://www.inclusion.gob.es/en/web/unidadgrandesempresas/emprendedores',
@@ -905,16 +921,16 @@ module.exports = {
               },
               reviewBy: '2027-01-31',
               note:
-                'Ley 14/2013 art 62 requires sufficient means for the applicant and family but does not fix a figure in the law. UGE practice mirrors the other Ley 14/2013 permits: about 200% of the monthly IPREM for the applicant, 75% for the first family member and 25% for each further member. THIS MULTIPLE IS UGE PRACTICE, NOT A STATUTORY FIGURE, and is flagged in the notes file for Olivia to confirm against the current UGE means guidance before verifying.',
+                'Ley 14/2013 art 62 requires sufficient means but does not fix a figure in the law; UGE practice governs. CORRECTED + VERIFIED 2026-07-14 against the official UGE "Criterios de aplicacion de la Ley 14/2013" PDF (Criterio 1.3): the entrepreneur (titular) means is 100% of the monthly IPREM; a family unit of two (titular + one) needs 150% IPREM, and each further member adds 50% IPREM. So multiple 1 with dependants {first 0.5, additional 0.5}. The earlier 200% + 75%/25% encoding was wrong and over-stated the bar. Figure kept status draft pending Olivia flipping it to verified, but the primary source is confirmed.',
               status: 'draft',
             },
             {
               id: 'visa.entrepreneur.savings',
               type: 'minSavingsMultiple',
               figureId: 'income-refs.iprem-monthly',
-              multiple: 2,
+              multiple: 1,
               months: 12,
-              dependants: { first: 0.75, additional: 0.25 },
+              dependants: { first: 0.5, additional: 0.5 },
               basis: 'savings covering your first year, separate from the business capital, evidenced by bank statements',
               label: 'Or you hold savings covering that amount for the first year',
               effectiveFrom: '2013-09-29',
@@ -925,7 +941,7 @@ module.exports = {
               },
               reviewBy: '2027-01-31',
               note:
-                'A lump sum covering the first year is accepted in place of monthly means, on the same UGE practice as the income leaf (200% IPREM x 12 plus family additions). Same caveat: the multiple is UGE practice, not a figure in Ley 14/2013, and is flagged for Olivia to confirm.',
+                'A lump sum covering the first year is accepted in place of monthly means, on the same UGE practice as the income leaf (100% IPREM x 12 plus family additions). CORRECTED + VERIFIED 2026-07-14 against the UGE Criterios PDF (Criterio 1.3), same basis as the income leaf: 100% IPREM titular, 150% for a unit of two, +50% per further member.',
               status: 'draft',
             },
           ],
@@ -1061,6 +1077,304 @@ module.exports = {
       reviewBy: '2027-07-06',
       note:
         'The EU free-movement registration under RD 240/2007, which transposes Directive 2004/38/EC. Applicability is the INVERSE of every other rule here: it applies ONLY to eea-swiss and is not-applicable to uk/us/other, who are third-country nationals. Art 3 obliges anyone staying over three months to register; art 7 sets the worker / sufficient-resources / student conditions. Rule-level source is the BOE consolidated text. The means figures are administrative practice, flagged for verification.',
+      status: 'draft',
+    },
+
+    // --- EU Blue Card / Highly Qualified Professional (added 2026-07-14) -------
+    {
+      id: 'visa.blue-card',
+      label: 'EU Blue Card (highly qualified professional)',
+      officialName: 'Tarjeta azul UE / profesional altamente cualificado (Ley 14/2013)',
+      summary:
+        'For university-educated or highly experienced professionals with a Spanish job offer paying above a set salary threshold.',
+      applicability: {
+        uk: 'applies',
+        us: 'applies',
+        'eea-swiss': 'not-needed',
+        other: 'applies',
+      },
+      applicabilityNotes: {
+        'eea-swiss':
+          'EEA and Swiss citizens can work in Spain without a permit. You register as an EU resident instead.',
+      },
+      criteria: [
+        {
+          id: 'visa.blue-card.job-offer',
+          type: 'jobOfferInSpain',
+          value: true,
+          label: 'You have a job offer or contract from a Spanish employer for a highly qualified role',
+          effectiveFrom: '2026-01-30',
+          source: {
+            url: 'https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-2142',
+            title: 'Orden PJC/44/2026, umbrales salariales tarjeta azul UE',
+            accessed: '2026-07-14',
+          },
+          reviewBy: '2027-01-31',
+          note:
+            'The Blue Card / highly qualified professional route (Ley 14/2013 art 71 bis, transposing Directive (EU) 2021/1883) needs a work contract for a highly qualified post. Employer-led, processed by the UGE. Reuses the jobOfferInSpain askable type.',
+          status: 'draft',
+        },
+        {
+          id: 'visa.blue-card.qualification',
+          type: 'universityDegree',
+          value: true,
+          label: 'You hold a university degree, or equivalent higher professional skills or experience',
+          effectiveFrom: '2026-01-30',
+          source: {
+            url: 'https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-2142',
+            title: 'Orden PJC/44/2026, umbrales salariales tarjeta azul UE',
+            accessed: '2026-07-14',
+          },
+          reviewBy: '2027-01-31',
+          note:
+            'Higher professional qualification: a university degree, or (for the Blue Card) the required years of equivalent professional experience in the sector. Reuses the universityDegree askable type.',
+          status: 'draft',
+        },
+        {
+          id: 'visa.blue-card.salary-threshold',
+          type: 'blueCardSalaryAssessment',
+          value: true,
+          label: 'Your gross salary meets the current Blue Card threshold for the year',
+          effectiveFrom: '2026-01-30',
+          source: {
+            url: 'https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-2142',
+            title: 'Orden PJC/44/2026, umbrales salariales tarjeta azul UE',
+            accessed: '2026-07-14',
+          },
+          reviewBy: '2027-01-31',
+          note:
+            'The salary floor is 1.4x the INE average gross annual salary, set by ministerial order and moving mid-year when INE republishes: about 39,270 EUR/yr from 30 Jan 2026, rising to about 41,356 EUR/yr from ~end June 2026 (reduced ~31,416 / 33,085 for shortage occupations or recent graduates). Modelled as a lawyerRoute condition because it is an annual, moving, employer-verified figure and the route is employer-led, so it never auto-grants. When an INE-average income figure is added to the spine this can become a minIncomeMultiple (1.4x).',
+          status: 'draft',
+        },
+        {
+          id: 'visa.blue-card.criminal-record',
+          type: 'cleanCriminalRecord',
+          value: true,
+          label: 'You have no criminal record in the countries you have lived in over the last five years',
+          effectiveFrom: '2026-01-30',
+          source: {
+            url: 'https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-2142',
+            title: 'Orden PJC/44/2026, umbrales salariales tarjeta azul UE',
+            accessed: '2026-07-14',
+          },
+          reviewBy: '2027-01-31',
+          note: 'Standard Ley 14/2013 clean-record requirement, five-year window.',
+          status: 'draft',
+        },
+      ],
+      nextSteps: [
+        'The Blue Card is employer-led: your Spanish employer applies to the UGE for a highly qualified worker, and the salary in the contract must clear the year’s threshold.',
+        'Check the current salary floor before you rely on it: it is set by ministerial order and revised when the national average salary is updated, so the figure moves within the year.',
+        'Once approved, you collect the visa at the consulate, travel, and register for your TIE card and social security on arrival.',
+        'A lawyer or your employer confirms whether your salary and role qualify, and whether the Blue Card or the national highly qualified permit is the better fit.',
+      ],
+      userNote:
+        'The Blue Card is the usual route for salaried professionals earning roughly 40,000 euros a year or more. The exact threshold is 1.4 times the national average salary and it changed mid-2026, so treat any figure as the minimum and confirm the current one.',
+      effectiveFrom: '2026-01-30',
+      source: {
+        url: 'https://www.boe.es/diario_boe/txt.php?id=BOE-A-2026-2142',
+        title: 'Orden PJC/44/2026, de 27 de enero, umbrales salariales tarjeta azul UE (Ley 14/2013)',
+        accessed: '2026-07-14',
+      },
+      reviewBy: '2027-01-31',
+      note:
+        'Added 2026-07-14 from the ELS accuracy audit (the engine had no highly qualified / Blue Card route, so professionals earning ~40k+ only saw the standard work permit). Ley 14/2013 art 71 bis, transposing Directive (EU) 2021/1883; salary thresholds in Orden PJC/44/2026 (BOE-A-2026-2142). A parallel national highly qualified professional route exists with category thresholds; not separately modelled. Salary is a lawyerRoute condition so the rule never auto-grants until an INE-average figure is added to the spine.',
+      status: 'draft',
+    },
+
+    // --- Family of a Spanish national, art 94 (added 2026-07-14) ---------------
+    {
+      id: 'visa.familiar-espanol',
+      label: 'Residence as family of a Spanish national',
+      officialName: 'Residencia de familiar de persona con nacionalidad espanola (art. 94 RD 1155/2024)',
+      summary:
+        'For the non-EU spouse, partner, child or dependent parent of a Spanish citizen who wants to live in Spain.',
+      applicability: {
+        uk: 'applies',
+        us: 'applies',
+        'eea-swiss': 'not-needed',
+        other: 'applies',
+      },
+      applicabilityNotes: {
+        'eea-swiss':
+          'EEA and Swiss citizens do not need this route; you register as an EU resident. This card is for the non-EU family of a Spanish citizen.',
+      },
+      criteria: [
+        {
+          id: 'visa.familiar-espanol.family-tie',
+          type: 'familyMemberSpanishResident',
+          value: true,
+          label: 'A close family member (spouse, registered partner, child or dependent parent) is a Spanish citizen',
+          effectiveFrom: '2025-05-20',
+          source: {
+            url: 'https://www.inclusion.gob.es/documents/d/migraciones/instrucciones-sem-2-2025-sobre-la-residencia-temporal-de-familiares-de-personas-con-nacionalidad-espanola',
+            title: 'Instrucciones SEM 2/2025, familiares de persona con nacionalidad espanola',
+            accessed: '2026-07-14',
+          },
+          reviewBy: '2027-07-06',
+          note:
+            'RD 1155/2024 art 94 created a 5-year residence card for family of a Spanish citizen (spouse/registered partner, direct descendants, dependent direct ascendants, and the carer of a Spanish minor), with full work rights. This replaced the old arraigo-familiar route for Spanish-citizen family. Reuses the familyMemberSpanishResident askable type; the exact qualifying relationship is confirmed by the lawyer-route below.',
+          status: 'draft',
+        },
+        {
+          id: 'visa.familiar-espanol.relationship-assessment',
+          type: 'spanishNationalFamilyAssessment',
+          value: true,
+          label: 'A lawyer confirms your exact relationship qualifies for this route',
+          effectiveFrom: '2025-05-20',
+          source: {
+            url: 'https://www.inclusion.gob.es/documents/d/migraciones/instrucciones-sem-2-2025-sobre-la-residencia-temporal-de-familiares-de-personas-con-nacionalidad-espanola',
+            title: 'Instrucciones SEM 2/2025, familiares de persona con nacionalidad espanola',
+            accessed: '2026-07-14',
+          },
+          reviewBy: '2027-07-06',
+          note:
+            'The qualifying relationships and their proof (marriage vs registered/stable partnership, dependency for adult children and ascendants, carer of a Spanish minor) are fact-specific, so this is a lawyerRoute condition: the rule surfaces as need-more-info with "a lawyer can confirm", never auto-granting.',
+          status: 'draft',
+        },
+      ],
+      nextSteps: [
+        'This is now the route for the non-EU family of a Spanish citizen, not arraigo familiar, which was narrowed in 2025.',
+        'Gather proof of the relationship (marriage or registered-partnership certificate, birth certificates, or evidence of dependency) and of your family member’s Spanish nationality.',
+        'It is applied for from inside Spain at the Immigration Office and grants a 5-year card with the right to work.',
+        'A lawyer confirms your relationship qualifies and which documents your case needs.',
+      ],
+      userNote:
+        'If you are married to, or the child or dependent parent of, a Spanish citizen, this is usually your route. It gives a 5-year card and the right to work, and is separate from family reunification (which is for joining a non-EU resident).',
+      effectiveFrom: '2025-05-20',
+      source: {
+        url: 'https://www.inclusion.gob.es/documents/d/migraciones/instrucciones-sem-2-2025-sobre-la-residencia-temporal-de-familiares-de-personas-con-nacionalidad-espanola',
+        title: 'Instrucciones SEM 2/2025 (art. 94 RD 1155/2024), familiares de persona con nacionalidad espanola',
+        accessed: '2026-07-14',
+      },
+      reviewBy: '2027-07-06',
+      note:
+        'Added 2026-07-14 from the ELS accuracy audit. RD 1155/2024 art 94 + SEM 2/2025. A very common expat scenario (married to a Spaniard) that previously had no clean route in the engine and was mis-served by arraigo familiar. Always lawyer-routes.',
+      status: 'draft',
+    },
+
+    // --- Self-employed / autonomo, cuenta propia (added 2026-07-14) ------------
+    {
+      id: 'visa.self-employed',
+      label: 'Self-employed work permit (autonomo)',
+      officialName: 'Residencia temporal y trabajo por cuenta propia',
+      summary:
+        'For people setting up as a freelancer or running their own business in Spain: the ordinary self-employed route, not the innovative-startup one.',
+      applicability: {
+        uk: 'applies',
+        us: 'applies',
+        'eea-swiss': 'not-needed',
+        other: 'applies',
+      },
+      applicabilityNotes: {
+        'eea-swiss':
+          'EEA and Swiss citizens can work self-employed in Spain without a permit. You register as an EU resident instead.',
+      },
+      criteria: [
+        {
+          id: 'visa.self-employed.business-viability',
+          type: 'selfEmployedBusinessViability',
+          value: true,
+          label: 'You have a viable business plan and meet the investment, licences and qualifications the activity needs',
+          effectiveFrom: '2025-05-20',
+          source: {
+            url: 'https://www.inclusion.gob.es/en/web/migraciones/w/autorizacion-inicial-de-residencia-temporal-y-trabajo-por-cuenta-propia',
+            title: 'Ministerio de Inclusion: trabajo por cuenta propia (Hoja 14)',
+            accessed: '2026-07-14',
+          },
+          reviewBy: '2027-07-06',
+          note:
+            'Hoja 14 (RD 1155/2024): a self-employed permit needs a viable project (often endorsed by a self-employment association report), sufficient investment and funds, and any licences and professional qualifications the activity requires. Assessed case by case, so this is a lawyerRoute condition and the rule never auto-grants. Distinct from the Ley 14/2013 entrepreneur visa, which needs an ENISA innovation report.',
+          status: 'draft',
+        },
+        {
+          id: 'visa.self-employed.criminal-record',
+          type: 'cleanCriminalRecord',
+          value: true,
+          label: 'You have no criminal record in the countries you have lived in over the last five years',
+          effectiveFrom: '2025-05-20',
+          source: {
+            url: 'https://www.inclusion.gob.es/en/web/migraciones/w/autorizacion-inicial-de-residencia-temporal-y-trabajo-por-cuenta-propia',
+            title: 'Ministerio de Inclusion: trabajo por cuenta propia (Hoja 14)',
+            accessed: '2026-07-14',
+          },
+          reviewBy: '2027-07-06',
+          note: 'Standard clean-record requirement, five-year window, as for the employed permit.',
+          status: 'draft',
+        },
+      ],
+      nextSteps: [
+        'This is the ordinary autonomo route: use it for a normal freelance business or trade, not the innovative-startup entrepreneur visa.',
+        'Prepare a business plan and get it endorsed by a recognised self-employment association, and gather proof of funds, any licences, and your qualifications.',
+        'Order your criminal record certificate for the last five years and have it legalised or apostilled.',
+        'A lawyer or gestor confirms whether your plan and funds clear the bar and handles the application.',
+      ],
+      userNote:
+        'If you want to freelance or run an ordinary business in Spain, this is your route, not the entrepreneur visa (which is only for innovative projects that pass an ENISA report). Approval turns on a viable plan and enough funds.',
+      effectiveFrom: '2025-05-20',
+      source: {
+        url: 'https://www.inclusion.gob.es/en/web/migraciones/w/autorizacion-inicial-de-residencia-temporal-y-trabajo-por-cuenta-propia',
+        title: 'Ministerio de Inclusion: trabajo por cuenta propia (Hoja 14, RD 1155/2024)',
+        accessed: '2026-07-14',
+      },
+      reviewBy: '2027-07-06',
+      note:
+        'Added 2026-07-14 from the ELS accuracy audit. The ordinary cuenta propia route (Hoja 14, RD 1155/2024), distinct from the ENISA entrepreneur visa. Freelancers were previously funnelled toward the stricter entrepreneur route. Always lawyer-routes (viability is assessed).',
+      status: 'draft',
+    },
+
+    // --- EU family-member card, RD 240/2007 (added 2026-07-14) -----------------
+    {
+      id: 'visa.eu-family-member',
+      label: 'EU family member card',
+      officialName: 'Tarjeta de familiar de ciudadano de la Union (RD 240/2007)',
+      summary:
+        'For the non-EU family of an EU, EEA or Swiss citizen who is living in Spain.',
+      applicability: {
+        uk: 'applies',
+        us: 'applies',
+        'eea-swiss': 'not-needed',
+        other: 'applies',
+      },
+      applicabilityNotes: {
+        'eea-swiss':
+          'As an EEA or Swiss citizen you register directly as an EU resident; this card is for your non-EU family members.',
+      },
+      criteria: [
+        {
+          id: 'visa.eu-family-member.eu-relationship',
+          type: 'euCitizenFamilyAssessment',
+          value: true,
+          label: 'You are the family member of an EU, EEA or Swiss citizen who is living in or moving to Spain',
+          effectiveFrom: '2007-04-02',
+          source: {
+            url: 'https://www.boe.es/buscar/act.php?id=BOE-A-2007-4184',
+            title: 'Real Decreto 240/2007, tarjeta de familiar de ciudadano de la Union',
+            accessed: '2026-07-14',
+          },
+          reviewBy: '2027-07-06',
+          note:
+            'RD 240/2007 gives the non-EU family (spouse/registered partner, descendants under 21 or dependent, dependent ascendants) of an EEA/Swiss citizen exercising free movement in Spain a residence card with work rights. Modelled as a single lawyerRoute condition: the engine has no askable for "your family member is an EEA/Swiss citizen", the relationships are fact-specific, and this closes the dangling pointer from the family-reunification rule. Always surfaces as need-more-info + "a lawyer can confirm".',
+          status: 'draft',
+        },
+      ],
+      nextSteps: [
+        'Use this route if the family member you are joining is an EU, EEA or Swiss citizen. If they are a non-EU resident, use family reunification; if they are a Spanish citizen, use the family-of-a-Spanish-national route.',
+        'Gather proof of the relationship and of your family member’s EU/EEA/Swiss nationality and residence or work in Spain.',
+        'The card is applied for from inside Spain and gives the right to live and work here.',
+        'A lawyer confirms which of the three family routes fits your situation.',
+      ],
+      userNote:
+        'Which family route you need depends entirely on your relative’s status: EU/EEA/Swiss citizen (this card), non-EU legal resident (family reunification), or Spanish citizen (family of a Spanish national). A lawyer will point you to the right one.',
+      effectiveFrom: '2007-04-02',
+      source: {
+        url: 'https://www.boe.es/buscar/act.php?id=BOE-A-2007-4184',
+        title: 'Real Decreto 240/2007, de 16 de febrero (tarjeta de familiar de ciudadano de la Union)',
+        accessed: '2026-07-14',
+      },
+      reviewBy: '2027-07-06',
+      note:
+        'Added 2026-07-14 from the ELS accuracy audit as a stub closing the dangling pointer (the family-reunification rule already tells EEA family to use this route, but no rule modelled it). RD 240/2007. Always lawyer-routes.',
       status: 'draft',
     },
   ],

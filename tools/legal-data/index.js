@@ -102,6 +102,10 @@ const eligibilityConditionTypes = {
     'familyDependencyProof',
     'sponsorMeansAndHousing',
     'exceptionalCircumstances',
+    'blueCardSalaryAssessment', // Blue Card salary threshold (annual, 1.4x INE avg, moves) - employer/lawyer confirms
+    'spanishNationalFamilyAssessment', // exact relationship to a Spanish citizen - lawyer confirms
+    'selfEmployedBusinessViability', // autonomo business-plan viability, association report - lawyer confirms
+    'euCitizenFamilyAssessment', // relationship to an EEA/Swiss citizen exercising free movement - lawyer confirms
   ],
 };
 

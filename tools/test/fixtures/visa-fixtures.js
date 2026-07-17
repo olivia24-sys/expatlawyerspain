@@ -291,11 +291,12 @@ const scenarios = [
       dependants: 0,
       healthInsurance: true,
       cleanCriminalRecord: true,
+      medicalCertificate: true,
     },
     expected: { outcome: 'eligible' },
   },
   {
-    name: 'Student: 599.99 monthly and savings unanswered -> need-more-info (savings could still qualify)',
+    name: 'Student: 599.99 monthly, savings and medical certificate unanswered -> need-more-info',
     visa: 'visa.student',
     answers: {
       nationality: 'us',
@@ -305,7 +306,7 @@ const scenarios = [
       healthInsurance: true,
       cleanCriminalRecord: true,
     },
-    expected: { outcome: 'need-more-info', missing: ['savings'] },
+    expected: { outcome: 'need-more-info', missing: ['savings', 'medicalCertificate'] },
   },
   {
     name: 'Work permit: everything satisfied -> STILL need-more-info with the lawyer-route flag (the national employment test can never auto-grant)',
@@ -373,17 +374,67 @@ const scenarios = [
     expected: { outcome: 'need-more-info' },
   },
   {
-    name: 'Entrepreneur: project, 1,200.00 monthly (200% x 600 IPREM), alone, compliant -> eligible',
+    name: 'Entrepreneur: project, 600.00 monthly (100% x 600 IPREM, corrected 2026-07-14), alone, compliant -> eligible',
     visa: 'visa.entrepreneur',
     answers: {
       nationality: 'us',
       innovativeBusinessProject: true,
-      monthlyIncome: 1200,
+      monthlyIncome: 600,
       dependants: 0,
       healthInsurance: true,
       cleanCriminalRecord: true,
     },
     expected: { outcome: 'eligible' },
+  },
+  {
+    name: 'Entrepreneur: project, 599.99 monthly (below the corrected 100% x 600 bar), savings unanswered -> need-more-info',
+    visa: 'visa.entrepreneur',
+    answers: {
+      nationality: 'us',
+      innovativeBusinessProject: true,
+      monthlyIncome: 599.99,
+      dependants: 0,
+      healthInsurance: true,
+      cleanCriminalRecord: true,
+    },
+    expected: { outcome: 'need-more-info' },
+  },
+  {
+    name: 'Blue Card: job offer + degree + clean record, salary is a lawyer-route -> need-more-info, never eligible',
+    visa: 'visa.blue-card',
+    answers: {
+      nationality: 'uk',
+      jobOfferInSpain: true,
+      universityDegree: true,
+      cleanCriminalRecord: true,
+    },
+    expected: { outcome: 'need-more-info' },
+  },
+  {
+    name: 'Family of a Spanish national: family tie answered, relationship is a lawyer-route -> need-more-info, never eligible',
+    visa: 'visa.familiar-espanol',
+    answers: {
+      nationality: 'us',
+      familyMemberSpanishResident: true,
+    },
+    expected: { outcome: 'need-more-info' },
+  },
+  {
+    name: 'Self-employed (autonomo): clean record answered, viability is a lawyer-route -> need-more-info, never eligible',
+    visa: 'visa.self-employed',
+    answers: {
+      nationality: 'uk',
+      cleanCriminalRecord: true,
+    },
+    expected: { outcome: 'need-more-info' },
+  },
+  {
+    name: 'EU family member: relationship is a lawyer-route -> need-more-info, never eligible',
+    visa: 'visa.eu-family-member',
+    answers: {
+      nationality: 'us',
+    },
+    expected: { outcome: 'need-more-info' },
   },
   {
     name: 'EU registration: EEA citizen working in Spain -> eligible (the one route that evaluates for eea-swiss)',
