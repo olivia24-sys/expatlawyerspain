@@ -30,6 +30,15 @@
   ! Content-Security-Policy-Report-Only
   Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors *; base-uri 'none'; form-action 'none'
   X-Robots-Tag: noindex
+  # The widget JS/CSS/HTML are unversioned and were being served stale after a
+  # deploy (a long edge/browser cache kept the old file even though the new one
+  # shipped). Always-revalidate makes the origin authoritative: cacheable, but
+  # revalidated before reuse, so a deploy is picked up on the next request while
+  # unchanged assets still return cheap 304s. Fonts live at /fonts/, not here, so
+  # their long cache is untouched. On deploy, also purge the widget URLs (see
+  # tools/WIDGET-FRAMEWORK-NOTES.md deploy runbook) to flush copies cached before
+  # this rule existed.
+  Cache-Control: public, max-age=0, must-revalidate
 
 # /embed/* is the loader partners <script src> from their own pages. Edge
 # cached, but short enough that a loader fix rolls out within the hour.

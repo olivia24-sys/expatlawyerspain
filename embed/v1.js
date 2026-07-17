@@ -100,7 +100,12 @@
     frame.setAttribute('title', 'ExpatLawyerSpain: English-speaking lawyers in Spain');
     frame.setAttribute('loading', 'lazy');
     // Isolation: sandboxed, and deliberately WITHOUT allow-same-origin.
-    frame.setAttribute('sandbox', 'allow-scripts allow-popups allow-popups-to-escape-sandbox');
+    // allow-forms is required: widgets that calculate on native form submission
+    // (the ITP calculator) never fire their submit handler without it, so
+    // Calculate does nothing when embedded. It is additive and safe - it only
+    // grants a capability, breaks no existing embedder, and the widget CSP still
+    // carries form-action 'none' so a submission cannot navigate or exfiltrate.
+    frame.setAttribute('sandbox', 'allow-scripts allow-popups allow-popups-to-escape-sandbox allow-forms');
     frame.style.width = '100%';
     frame.style.border = '0';
     frame.style.display = 'block';

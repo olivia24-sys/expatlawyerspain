@@ -176,8 +176,14 @@ Unknown `type` values are ignored, not errors, which is what lets the
 contract grow later.
 
 **The sandbox model:** the iframe carries
-`sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox"` —
-deliberately **without** `allow-same-origin`. Because `allow-same-origin` is
+`sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox allow-forms"` —
+deliberately **without** `allow-same-origin`. `allow-forms` is present because a
+widget that calculates on native form submission (the ITP calculator) never
+fires its `submit` handler in a sandbox that omits it — the browser aborts the
+submission before the event, so Calculate does nothing when embedded. It is
+additive and safe: it only grants a capability, breaks no existing embedder, and
+the frame CSP still carries `form-action 'none'` so a submission cannot navigate
+or exfiltrate (the widgets `preventDefault()` anyway). Because `allow-same-origin` is
 omitted, the browser treats the frame's origin as opaque, so every
 `postMessage` from inside it legitimately arrives at the loader with
 `event.origin === "null"`. That means the loader cannot authenticate
@@ -386,17 +392,37 @@ live site before that. Before or at the first real deploy:
    it has to be added by hand. Suggested starting point: around 100
    requests per 10 seconds per IP, block for 10 seconds on breach. Tune from
    there once real traffic patterns are visible.
-3. **After deploy, verify with curl:**
+3. **Purge the widget assets from the Cloudflare cache.** The widget
+   JS/CSS/HTML are unversioned and `/widgets/*` now carries
+   `Cache-Control: public, max-age=0, must-revalidate` — but a copy cached
+   under an older rule can still be served until it is flushed, so a fresh
+   deploy can otherwise go on serving stale code. In the Cloudflare dashboard →
+   Caching → **Purge Custom URLs**, purge (or Purge Everything):
+   - `https://expatlawyerspain.com/widgets/v1/itp-calculator`
+   - `https://expatlawyerspain.com/widgets/v1/itp-calculator.js`
+   - `https://expatlawyerspain.com/widgets/v1/itp-calculator.css`
+   - `https://expatlawyerspain.com/widgets/v1/widget.css`
+   - `https://expatlawyerspain.com/widgets/v1/itp-calculator-data.js`
+   - `https://expatlawyerspain.com/js/calc-engine.js` (shared with the on-site
+     page; sits outside `/widgets/*` so the header rule does not cover it, but
+     it changes rarely — purge it when it does)
+   - `https://expatlawyerspain.com/embed/v1.js`
+4. **After deploy, verify with curl:**
    - `curl -s https://expatlawyerspain.com/v1/firms` returns the JSON
      envelope and the response includes `Access-Control-Allow-Origin: *`.
-   - `curl -sI https://expatlawyerspain.com/widgets/v1/firm-directory` shows
-     **no** `X-Frame-Options` header and **does** show the strict
-     `Content-Security-Policy`.
+   - `curl -sI https://expatlawyerspain.com/widgets/v1/itp-calculator` shows
+     **no** `X-Frame-Options` header, the strict enforced
+     `Content-Security-Policy` (incl. `font-src 'self'` and `form-action
+     'none'`), and `Cache-Control: public, max-age=0, must-revalidate`.
    - `curl -sI https://expatlawyerspain.com/` still shows
      `X-Frame-Options: DENY`.
-4. **Walk `/embed-demo` on production** in a real browser and confirm the
-   widget renders, resizes, and its links work.
-5. **When a real partner embeds the widget**, hand them the snippet from
+5. **Walk `/embed-demo` and `/embed-itp` on production** in a real browser and
+   confirm the widget renders, resizes, and its links work. For the ITP
+   calculator, in a **fresh/incognito** context (no cache-buster) confirm the
+   running JS is fresh — it contains "See if you qualify" and NOT "Refine your
+   result on the full" — and that **Calculate computes inside the cross-origin
+   sandboxed embed** (the `allow-forms` path), not only on the standalone frame.
+6. **When a real partner embeds the widget**, hand them the snippet from
    section 4 with their own `data-partner` value filled in, and once it's
    live check GA4 for traffic tagged `utm_campaign=<partner>` to confirm
    attribution is actually flowing.

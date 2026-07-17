@@ -13,6 +13,13 @@
    does not load this stylesheet, so it keeps the system stack). */
 body {
   font-family: 'Libre Franklin', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  /* Cap the widget so it does not stretch full-width in a wide/full-bleed
+     partner container. 440px matches the design mockup and the /embed-itp demo
+     frame. The loader keeps the iframe at width:100%; the content caps and
+     centres. Vertical margins stay 0, so contentHeight() stays exact and the
+     full-bleed header/footer negative margins still reach the body edges. */
+  max-width: 440px;
+  margin: 0 auto;
 }
 
 /* The relief flow reveals questions progressively: the JS toggles the `hidden`
@@ -112,8 +119,19 @@ body {
    the focus ring moves to the label. Copy on the labels is unchanged. */
 .itp-type {
   display: flex;
+  /* Reset the column direction inherited from .itp-field (this fieldset carries
+     both classes): the two segments sit side by side, matching the mockup
+     .toggle. The legend takes a full-width row above them via flex-wrap. */
+  flex-direction: row;
   flex-wrap: wrap;
   gap: 8px;
+}
+
+/* Only stack on very narrow screens, where two segments would be cramped. */
+@media (max-width: 360px) {
+  .itp-type {
+    flex-direction: column;
+  }
 }
 
 .itp-type legend {

@@ -129,7 +129,10 @@
   // Idempotent: a link that already carries the widget UTM set is left alone,
   // so repeated calls can never stack duplicate params.
   function applyUtmToStaticLinks() {
-    ['els-footer-link', 'els-powered-link'].forEach(function (id) {
+    // 'els-powered-link' was dropped from the frame footer (the loader supplies
+    // the single host-page "Powered by" attribution). Only the directory link
+    // remains in-frame.
+    ['els-footer-link'].forEach(function (id) {
       var link = document.getElementById(id);
       if (!link) return;
       var href = link.getAttribute('href') || '';
