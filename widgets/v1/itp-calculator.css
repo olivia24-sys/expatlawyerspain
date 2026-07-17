@@ -235,44 +235,67 @@ body {
   color: var(--text-light);
 }
 
-table.cost-table.itp-breakdown {
-  width: 100%;
-  border-collapse: collapse;
+/* The working: simple label/value rows inside the result card, divided from the
+   hero figure by a hairline (mockup .bd). The hero figure is the total, so there
+   is no separate total row. */
+.itp-breakdown {
+  margin-top: 13px;
+  border-top: 1px solid var(--sand);
+  padding-top: 11px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.itp-breakdown-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
   font-size: 13px;
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
 }
 
-table.cost-table.itp-breakdown th,
-table.cost-table.itp-breakdown td {
-  text-align: left;
-  padding: 8px 10px;
-  border-bottom: 1px solid var(--sand);
-}
-
-table.cost-table.itp-breakdown th {
+.itp-breakdown-label {
   color: var(--text-light);
+}
+
+.itp-breakdown-amount {
+  font-weight: 500;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+/* Regional caveats, collapsed behind a native disclosure so the default view
+   stays a quick figure. */
+.itp-note-details {
+  margin-top: 12px;
+}
+
+.itp-note-details summary {
+  cursor: pointer;
+  color: var(--primary);
   font-weight: 600;
-  font-size: 12px;
+  font-size: 12.5px;
+  list-style: none;
 }
 
-table.cost-table.itp-breakdown td:nth-child(2),
-table.cost-table.itp-breakdown td:nth-child(3),
-table.cost-table.itp-breakdown th:nth-child(2),
-table.cost-table.itp-breakdown th:nth-child(3) {
-  text-align: right;
+.itp-note-details summary::-webkit-details-marker {
+  display: none;
 }
 
-table.cost-table.itp-breakdown tr:last-child th,
-table.cost-table.itp-breakdown tr:last-child td {
-  border-bottom: 0;
-}
-
-.itp-breakdown-total {
+.itp-note-details summary::before {
+  content: "+ ";
   font-weight: 700;
-  color: var(--navy);
+}
+
+.itp-note-details[open] summary::before {
+  content: "\2212 ";
+}
+
+.itp-note-text {
+  margin: 8px 0 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--text-light);
 }
 
 .callout {
@@ -299,62 +322,64 @@ table.cost-table.itp-breakdown tr:last-child td {
   font-weight: 600;
 }
 
-.itp-sources {
-  font-size: 12px;
-  color: var(--text-light);
-}
-
-.itp-sources strong {
-  display: block;
-  color: var(--navy);
-  font-size: 12px;
-  margin-bottom: 4px;
-}
-
-.itp-sources ul {
-  margin: 0;
-  padding-left: 18px;
-}
-
-.itp-sources a {
-  color: var(--primary);
-}
-
-/* --- refine: the relief flow, promoted to the primary post-calc action ---- */
+/* --- refine: the reduced-rate flow, collapsed behind a toggle ------------- */
 
 .itp-refine {
   margin-top: 12px;
 }
 
-/* Prominent card with a filled terracotta heading that reads as the primary
-   CTA (mockup .refine + terracotta accent). */
-.itp-refine-details {
-  background: var(--card-bg);
-  border: 1px solid var(--primary);
-  border-radius: var(--radius);
-  padding: 0;
-  overflow: hidden;
+/* Collapsed reduced-rate trigger (mockup .relief-btn): a sand button with a
+   check icon; clicking it reveals the questions card below. */
+.itp-relief-btn {
+  width: 100%;
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--navy);
+  background: var(--sand);
+  border: 0;
+  border-radius: 8px;
+  padding: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
-.itp-refine-primary-heading {
+.itp-relief-btn::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  background: center / contain no-repeat
+    url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%23C94F1A'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M9%2011l3%203L22%204'/%3E%3Cpath%20d='M21%2012v7a2%202%200%200%201-2%202H5a2%202%200%200%201-2-2V5a2%202%200%200%201%202-2h11'/%3E%3C/svg%3E");
+}
+
+.itp-relief-btn:hover {
+  filter: brightness(0.97);
+}
+
+/* The revealed questions card (mockup .refine). */
+.itp-refine-details {
+  margin-top: 13px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+
+.itp-refine-heading {
   font-weight: 600;
-  font-size: 15px;
-  color: #fff;
-  background: var(--primary);
-  padding: 12px 14px;
+  font-size: 14px;
+  color: var(--navy);
+  margin-bottom: 12px;
 }
 
 .itp-refine-body {
   display: flex;
   flex-direction: column;
   gap: 13px;
-  padding: 14px;
-}
-
-.itp-refine-intro {
-  margin: 0;
-  font-size: 13px;
-  color: var(--text-light);
 }
 
 .itp-refine-q {
@@ -531,86 +556,21 @@ table.cost-table.itp-breakdown tr:last-child td {
   margin-top: 12px;
 }
 
-/* The "where these figures come from" footnote, at the very bottom so it does
-   not interrupt the result. */
-.itp-sources-block {
-  margin-top: 14px;
-  padding-top: 12px;
-  border-top: 1px solid var(--border);
-}
-
-/* Soft-sand CTA card holding the secondary lawyer link (mockup CTA card). */
-.itp-widget-cta {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  background: var(--sand);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 14px;
-  margin-top: 4px;
-}
-
-.itp-widget-cta-heading {
-  margin: 0;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--navy);
-}
-
-.itp-widget-cta-link {
-  display: inline-block;
+/* The single lawyer CTA: full-width navy button (mockup .cta). */
+.itp-cta-btn {
+  display: block;
+  text-align: center;
+  font: inherit;
   font-size: 14px;
   font-weight: 500;
-  color: #fff;
-  background: var(--primary);
-  border-radius: 8px;
-  padding: 11px 12px;
-  text-decoration: none;
-  text-align: center;
-}
-
-.itp-widget-cta-link:hover {
-  filter: brightness(0.94);
-}
-
-/* The lawyer CTA is the single (last) link in the card: navy, per the mockup's
-   primary button treatment. */
-.itp-widget-cta-link:last-child {
+  color: var(--bg);
   background: var(--navy);
+  border-radius: 8px;
+  padding: 12px;
+  text-decoration: none;
 }
 
-.itp-widget-cta-link:last-child:hover {
-  filter: none;
+.itp-cta-btn:hover {
   background: #0e2842;
 }
 
-/* Footer: a full-bleed bar (negative margins cancel the body padding) carrying
-   BOTH referral links kept from the UI/UX pass - the directory link and the
-   "Powered by" brand link - centered, matching the mockup's .w-foot. */
-.els-footer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  margin: 16px -12px -12px;
-  padding: 12px 16px;
-  background: var(--card-bg);
-  border-top: 1px solid var(--border);
-  text-align: center;
-}
-
-.els-footer a {
-  font-size: 11.5px;
-  color: var(--text-light);
-  text-decoration: none;
-}
-
-.els-footer a:hover {
-  text-decoration: underline;
-}
-
-.els-powered {
-  font-weight: 600;
-  color: var(--navy);
-}

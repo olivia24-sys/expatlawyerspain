@@ -112,13 +112,14 @@
     frame.style.height = DEFAULT_HEIGHT + 'px';
 
     // The visible attribution link stays in the HOST page's own DOM (it also
-    // replaces the snippet's fallback anchor as the crawlable link).
+    // replaces the snippet's fallback anchor as the crawlable link). It points
+    // at the homepage - the single "Powered by ExpatLawyerSpain" backlink.
     var attribution = doc.createElement('p');
     attribution.style.margin = '4px 0 0';
     attribution.style.fontSize = '12px';
     attribution.style.lineHeight = '1.4';
     var link = doc.createElement('a');
-    link.setAttribute('href', DEFAULT_ORIGIN + '/lawyers');
+    link.setAttribute('href', DEFAULT_ORIGIN);
     link.setAttribute('target', '_blank');
     link.setAttribute('rel', 'noopener');
     link.textContent = 'Powered by ExpatLawyerSpain';

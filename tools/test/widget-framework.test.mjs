@@ -339,7 +339,7 @@ test('loader mounts: sandbox without allow-same-origin, attribution link in host
   const attribution = container.children.find((c) => c.tagName === 'p');
   assert.ok(attribution, 'attribution stays in the host DOM');
   const link = attribution.children[0];
-  assert.equal(link.attributes.href, 'https://expatlawyerspain.com/lawyers');
+  assert.equal(link.attributes.href, 'https://expatlawyerspain.com');
   assert.equal(link.attributes.rel, 'noopener');
 });
 
@@ -507,20 +507,20 @@ test('itp-calculator frame HTML: no inline script/style/handlers, noindexed', ()
     'no third-party URLs in the frame HTML');
 });
 
-test('itp-calculator frame HTML: functional H1, single in-frame attribution', () => {
+test('itp-calculator frame HTML: functional H1, no in-frame attribution (loader supplies it)', () => {
   const html = read('widgets/v1/itp-calculator.html');
   // The header logo/wordmark was replaced by a functional title.
   assert.match(html, /<h1 class="itp-title">/, 'functional H1 present');
-  assert.ok(!/els-header/.test(html), 'no ELS logo header (moved brand to footer)');
-  // The directory link is the single in-frame attribution and must stay live.
-  assert.match(html, /id="els-footer-link"[^>]*href="https:\/\/expatlawyerspain\.com\/lawyers"/,
-    'directory footer link -> /lawyers');
-  // The in-frame "Powered by" was removed: the loader injects one host-page
-  // "Powered by" attribution, so carrying it here too doubled it on every embed.
-  // Locking its absence keeps exactly one "Powered by" on an embed.
-  assert.ok(!/els-powered-link/.test(html), 'in-frame Powered by link removed (loader supplies the single one)');
+  assert.ok(!/els-header/.test(html), 'no ELS logo header');
+  // The frame carries NO attribution/footer link of its own: the single, crawlable
+  // "Powered by ExpatLawyerSpain" backlink is injected by the loader into the host
+  // page's DOM. A link inside this noindex sandboxed frame would not be crawlable,
+  // so it is not repeated here (and would otherwise duplicate on every embed).
+  assert.ok(!/els-footer-link/.test(html), 'no in-frame directory link');
+  assert.ok(!/els-powered-link/.test(html), 'no in-frame Powered by link');
   const markup = html.replace(/<!--[\s\S]*?-->/g, '');
-  assert.ok(!/Powered by/i.test(markup), 'no visible "Powered by" text in the frame (single attribution comes from the loader)');
+  assert.ok(!/Powered by/i.test(markup), 'no visible "Powered by" text in the frame');
+  assert.ok(!/Free directory/i.test(markup), 'no in-frame directory line');
 });
 
 test('itp-calculator frame JS: textContent-only rendering, no dangerous sinks', () => {

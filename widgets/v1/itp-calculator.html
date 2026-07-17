@@ -22,11 +22,11 @@
   </div>
   <fieldset class="itp-field itp-type">
     <legend>What are you buying?</legend>
-    <label><input type="radio" name="itp-type" value="resale" checked> A resale property</label>
-    <label><input type="radio" name="itp-type" value="new-build"> A new build from a developer</label>
+    <label><input type="radio" name="itp-type" value="resale" checked> Resale</label>
+    <label><input type="radio" name="itp-type" value="new-build"> New build</label>
   </fieldset>
   <div class="itp-field">
-    <label for="itp-price">Declared purchase price</label>
+    <label for="itp-price">Declared purchase price (€)</label>
     <input id="itp-price" type="text" inputmode="decimal" placeholder="350,000" required>
   </div>
   <button type="submit">Calculate the tax</button>
@@ -34,13 +34,9 @@
 <div id="itp-result" class="itp-result" hidden aria-live="polite"></div>
 <div id="itp-refine" class="itp-refine" hidden></div>
 <div id="itp-secondary-cta" class="itp-secondary-cta" hidden></div>
-<div id="itp-sources" class="itp-sources-block" hidden></div>
-<div class="els-footer">
-  <!-- Single in-frame attribution: the directory link. The "Powered by
-       ExpatLawyerSpain -> /lawyers" line is injected by the loader into the HOST
-       page's own DOM (embed/v1.js), so carrying it here too would double it on
-       every embed. Dropped here; kept there as the single, crawlable backlink. -->
-  <a id="els-footer-link" href="https://expatlawyerspain.com/lawyers" target="_blank" rel="noopener">Free directory of verified English-speaking lawyers across Spain.</a>
-</div>
+<!-- No in-frame footer/attribution: the single "Powered by ExpatLawyerSpain"
+     link is injected by the loader (embed/v1.js) into the HOST page's own DOM,
+     where it is a crawlable backlink. An in-frame link would sit inside a
+     noindex sandboxed iframe and is not crawlable, so it is not repeated here. -->
 </body>
 </html>
