@@ -281,6 +281,24 @@ ELS's to steal.
    the Cloudflare dashboard at deploy time — see the deploy runbook, section
    9. It does not exist yet as code; there is nothing to grep for.
 
+## 6b. Widgets on this framework so far
+
+- **`firm-directory`** — the original: fetches the read-only `/v1/firms` API.
+- **`itp-calculator`** — bundles its verified data as a static
+  `/widgets/v1/itp-calculator-data.js` module (no API); calc-engine.js evaluates.
+- **`visa-checker`** (added 2026-07-18, DRAFT-GATED) — the eligibility engine as a
+  widget. Same static-data-module pattern as the ITP widget: no `/v1` route,
+  `tools/build-widget-visa-data.js` writes `widgets/v1/visa-checker-data.js`
+  (verified-only; `--draft-local` writes `draftPreview` for a local screenshot
+  only, never committed). Frame `widgets/v1/visa-checker.{html,js,css}` derives
+  from `js/visa-checker.js`. **It ships EMPTY until Olivia verifies >=1 visa rule**
+  (the builder writes an empty module at 0 verified rather than dying, so the frame
+  data script never 404s; the frame renders the honest "no routes yet" state). The
+  standalone `/spain-visa-checker` page + its sitemap/llms entries + the pre-staged
+  blog cluster-links all light up together at verification. See
+  `tools/VISA-ENGINE-NOTES.md`. A `visa-checker` verified-only tripwire in the test
+  suite fails if a `--draft-local` build is ever committed.
+
 ## 7. How to add a new widget on this framework
 
 Worked example: adding `/widgets/v1/itp-calculator`.
