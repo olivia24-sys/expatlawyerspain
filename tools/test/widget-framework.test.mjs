@@ -644,3 +644,96 @@ test('itp-calculator engine parity: the widget data drives the engine correctly'
   assert.ok(['reliefs-unavailable', 'standard-only'].includes(holiday.reliefStatus),
     `holiday-home buyer got unexpected reliefStatus ${JSON.stringify(holiday.reliefStatus)}`);
 });
+
+// ---------------------------------------------------------------------------
+// Visa checker widget frame (widgets/v1/visa-checker.*). Same discipline as the
+// ITP frame: no inline anything, textContent-only rendering, the frozen resize
+// protocol, first-party assets, and a verified-only data module that can never
+// carry a draft rule or a draftPreview flag onto a partner's page.
+// ---------------------------------------------------------------------------
+
+test('visa-checker frame HTML: no inline script/style/handlers, noindexed', () => {
+  const html = read('widgets/v1/visa-checker.html');
+  assert.ok(!/<script(?![^>]*\bsrc=)/i.test(html), 'no inline <script> blocks');
+  assert.ok(!/<style[\s>]/i.test(html), 'no inline <style> blocks');
+  assert.ok(!/\son\w+\s*=/i.test(html), 'no inline event handlers');
+  assert.ok(!/style\s*=\s*"/i.test(html), 'no style= attributes (CSP style-src self)');
+  assert.match(html, /<meta name="robots" content="noindex">/);
+  assert.ok(!/https?:\/\/(?!expatlawyerspain\.com)/.test(html.replace(/<!--[\s\S]*?-->/g, '')),
+    'no third-party URLs in the frame HTML');
+});
+
+test('visa-checker frame HTML: functional H1, no in-frame attribution (loader supplies it)', () => {
+  const html = read('widgets/v1/visa-checker.html');
+  assert.match(html, /<h1 class="visa-title">/, 'functional H1 present');
+  assert.ok(!/els-header/.test(html), 'no ELS logo header');
+  // No in-frame attribution: the single crawlable "Powered by ExpatLawyerSpain"
+  // backlink is injected by the loader into the host page's DOM (a link inside
+  // this noindex sandboxed frame would not be crawlable).
+  const markup = html.replace(/<!--[\s\S]*?-->/g, '');
+  assert.ok(!/Powered by/i.test(markup), 'no visible "Powered by" text in the frame');
+  // Mounts the three eligibility-checker divs the renderer fills.
+  assert.match(html, /id="visa-checker-gate"/);
+  assert.match(html, /id="visa-checker-questions"/);
+  assert.match(html, /id="visa-checker-results"/);
+});
+
+test('visa-checker frame JS: textContent-only rendering, no dangerous sinks', () => {
+  const js = stripComments(read('widgets/v1/visa-checker.js'));
+  for (const sink of ['innerHTML', 'outerHTML', 'insertAdjacentHTML', 'document.write', 'eval(', 'new Function']) {
+    assert.ok(!js.includes(sink), `forbidden sink in visa-checker.js: ${sink}`);
+  }
+  assert.ok(js.includes('textContent'), 'rendering must use textContent');
+  assert.ok(js.includes('els: 1'), 'postMessage payloads must carry the protocol version');
+  // Resize hardening, mirroring the ITP frame.
+  assert.ok(/addEventListener\(\s*'load'\s*,\s*postResize/.test(js), 're-posts els:resize on window load');
+  assert.ok(js.includes('ResizeObserver'), 'observes body height for reflow');
+  assert.ok(js.includes('document.fonts.ready'), 're-posts height once web fonts settle');
+  // Outbound ELS links are UTM-stamped and absolute (attribution flows through
+  // them since GA4 cannot run inside the cross-origin frame).
+  assert.ok(js.includes('utm_source=els-widget'), 'outbound ELS links carry the ELS UTM set');
+});
+
+test('visa-checker widget CSS: first-party only, no third-party fetches', () => {
+  const css = read('widgets/v1/widget.css') + '\n' + read('widgets/v1/visa-checker.css');
+  assert.match(css, /@font-face/, 'brand @font-face declared (via widget.css)');
+  assert.match(css, /url\(\s*['"]?\/fonts\/[^)'"]*\.woff2/, 'fonts served first-party from /fonts/');
+  assert.ok(!/url\(\s*['"]?https?:/i.test(css), 'no third-party url() in widget CSS');
+  assert.ok(!/@import/.test(css), 'no @import in widget CSS');
+});
+
+// THE TRIPWIRE. The committed visa data module must be verified-only: it may be
+// empty (0 verified rules today), but if it carries any rule/criterion/figure it
+// must be 'verified', and it must NEVER carry draftPreview. This fails if a
+// --draft-local preview build is left committed.
+test('visa-checker data module: verified-only, no drafts, no draftPreview', () => {
+  const sandbox = { window: {} };
+  vm.runInNewContext(read('widgets/v1/visa-checker-data.js'), sandbox);
+  const data = sandbox.window.ELS_ELIGIBILITY_VISA;
+
+  assert.ok(data && typeof data === 'object', 'ELS_ELIGIBILITY_VISA must be an object');
+  assert.ok(Array.isArray(data.rules), 'rules must be an array');
+  assert.ok(Array.isArray(data.figures), 'figures must be an array');
+  assert.ok(!('draftPreview' in data), 'committed data module must NOT carry draftPreview (a --draft-local build leaked)');
+
+  function leaves(rule) {
+    const out = [];
+    (rule.criteria || []).forEach((c) => {
+      if (c && Array.isArray(c.anyOf)) c.anyOf.forEach((l) => out.push(l));
+      else out.push(c);
+    });
+    return out;
+  }
+  for (const r of data.rules) {
+    assert.equal(r.status, 'verified', `rule ${r.id} has status ${JSON.stringify(r.status)}, expected 'verified'`);
+    for (const c of leaves(r)) {
+      assert.equal(c.status, 'verified', `criterion ${c.id} has status ${JSON.stringify(c.status)}, expected 'verified'`);
+    }
+  }
+  for (const f of data.figures) {
+    assert.equal(f.status, 'verified', `figure ${f.id} has status ${JSON.stringify(f.status)}, expected 'verified'`);
+  }
+
+  const copy = sandbox.window.ELS_VISA_COPY;
+  assert.ok(copy && copy.checker && typeof copy.checker === 'object', 'ELS_VISA_COPY.checker must be an object');
+});

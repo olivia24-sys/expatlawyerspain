@@ -1,0 +1,672 @@
+/* ExpatLawyerSpain visa-checker widget styles, v1.
+   Loads AFTER widget.css and reuses its custom properties (--primary, --navy,
+   --bg, --card-bg, --text, --text-light, --border, --sand, --verified,
+   --radius) and its first-party @font-face declarations (Fraunces, Libre
+   Franklin). This file mirrors the structure and conventions of
+   itp-calculator.css (same repo, same frame contract): a full-bleed navy
+   title bar, card surfaces on --card-bg with 1px --border and var(--radius),
+   a segmented-option pattern for radios built from a visually hidden input
+   plus a :has(:checked) styled label, and .cta-btn for the outbound link.
+   Nothing external is loaded here: no imported stylesheets, no webfonts, no
+   remote url(). The one non same-origin asset reference is a data: URI icon,
+   permitted by the frame CSP img-src 'self' data:, the same pattern
+   itp-calculator.css already uses for its title icon.
+   Pure CSS only: the DOM built by visa-checker.js and the markup in
+   visa-checker.html are unchanged by this file. */
+
+/* Type the widget in the ELS brand fonts, scoped to this frame only. */
+body {
+  font-family: 'Libre Franklin', system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  /* Cap the widget so it does not stretch full-width in a wide/full-bleed
+     partner container, the same mechanism itp-calculator.css uses (a
+     max-width plus auto margins on body). The visa checker shows richer
+     content per result (criteria lists, sources, a CTA block) than the ITP
+     calculator's single figure, so the cap sits wider, at 680px, comfortably
+     inside the 640 to 720px range the design calls for. The loader keeps the
+     iframe at width:100%; the content caps and centres itself. Vertical
+     margins stay 0 so the JS's contentHeight() measurement of the body
+     bounding rect stays exact, and the full-bleed title bar's negative
+     margins still reach the body edges. */
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+/* The JS toggles the `hidden` attribute on the questions box and the
+   results box, and on individual question fieldsets. Several selectors
+   below carry a layout `display` (flex), which would otherwise beat the UA
+   [hidden] rule. Make the hidden attribute authoritative, mirroring
+   itp-calculator.css. */
+[hidden] {
+  display: none !important;
+}
+
+/* --- title: navy header bar, matching itp-title's treatment ------------- */
+
+.visa-title {
+  margin: -12px -12px 0;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-family: 'Fraunces', Georgia, serif;
+  font-optical-sizing: auto;
+  font-size: 16px;
+  line-height: 1.25;
+  font-weight: 500;
+  color: var(--bg);
+  background: var(--navy);
+}
+
+/* Decorative check-in-document icon, cream stroke, as a data: URI background
+   (no HTML change, no third-party fetch; covered by the frame CSP img-src
+   'self' data:). The same mark used by itp-title, kept for visual
+   consistency across the widget family. */
+.visa-title::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  background: center / contain no-repeat
+    url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%23FAF5ED'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M9%2011l3%203L22%204'/%3E%3Cpath%20d='M21%2012v7a2%202%200%200%201-2%202H5a2%202%200%200%201-2-2V5a2%202%200%200%201%202-2h11'/%3E%3C/svg%3E");
+}
+
+.visa-lead {
+  margin: 12px 0 16px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--text-light);
+}
+
+/* --- the gate: nationality, a fieldset of side-by-side options ---------- */
+
+.visa-gate {
+  border: 0;
+  padding: 0;
+  margin: 0 0 16px;
+}
+
+.visa-gate-legend {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--navy);
+  padding: 0;
+  margin-bottom: 4px;
+}
+
+.visa-gate-help {
+  margin: 0 0 10px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--text-light);
+}
+
+/* Side-by-side options, not a stacked list: an explicit lesson carried over
+   from the ITP widget's segmented toggle. Wraps to as many rows as needed;
+   each option keeps a sensible minimum width rather than stretching thin. */
+.visa-gate-opts {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.visa-gate-opt {
+  flex: 1 1 140px;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-weight: 500;
+  font-size: 13.5px;
+  color: var(--navy);
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 10px;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+
+.visa-gate-opt:has(input:checked) {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+
+.visa-gate-opt:has(input:focus-visible) {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.visa-gate-opt input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  margin: 0;
+  pointer-events: none;
+}
+
+/* Stack only on very narrow screens, where two-plus segments get cramped. */
+@media (max-width: 360px) {
+  .visa-gate-opts {
+    flex-direction: column;
+  }
+}
+
+/* --- progressive questions ------------------------------------------------ */
+
+#visa-checker-questions {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.visa-q {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 13px 14px;
+}
+
+.visa-q-legend,
+.visa-q-label {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--navy);
+  padding: 0;
+}
+
+.visa-q-help {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--text-light);
+}
+
+/* Yes/no pairs: the same side-by-side segmented pattern as the gate, tinted
+   navy rather than terracotta when picked, so the primary nationality choice
+   and the in-flow follow-up answers read as visually distinct steps. */
+.visa-q-opts {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.visa-q-opt {
+  flex: 1 1 100px;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-weight: 500;
+  font-size: 13px;
+  color: var(--navy);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 9px 8px;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+
+.visa-q-opt:has(input:checked) {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: #fff;
+}
+
+.visa-q-opt:has(input:focus-visible) {
+  outline: 2px solid var(--navy);
+  outline-offset: 2px;
+}
+
+.visa-q-opt input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  margin: 0;
+  pointer-events: none;
+}
+
+@media (max-width: 360px) {
+  .visa-q-opts {
+    flex-direction: column;
+  }
+}
+
+.visa-q-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.visa-q-unit {
+  flex: 0 0 auto;
+  font-size: 12.5px;
+  color: var(--text-light);
+}
+
+.visa-field-input {
+  font: inherit;
+  font-size: 14px;
+  color: var(--text);
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  width: 100%;
+}
+
+.visa-field-input:focus {
+  outline: none;
+  border-color: var(--navy);
+  box-shadow: 0 0 0 3px rgba(19, 51, 86, 0.10);
+}
+
+/* --- results ---------------------------------------------------------- */
+
+#visa-checker-results {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.visa-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.visa-group-heading {
+  font-family: 'Fraunces', Georgia, serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 0;
+}
+
+.visa-group-blurb {
+  margin: -4px 0 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--text-light);
+}
+
+/* State tints for the four outcome cards. Kept local to this file rather
+   than added to widget.css's shared tokens, since they are one-off reads on
+   top of the shared palette rather than reusable brand colours. The green
+   and its tint match the callout tint itp-calculator.css already uses for
+   its own positive note (.itp-refine-panel), so a "this route looks open"
+   read stays consistent across the two widgets. */
+:root {
+  --visa-eligible-tint: #EAF2ED;
+  --visa-eligible-border: #C4DACB;
+  --visa-info-tint: #EEF2F6;
+  --visa-info-border: #D6DFE7;
+  --visa-danger: #A23B2F;
+  --visa-danger-tint: #F6E9E6;
+  --visa-danger-border: #E3CCC6;
+}
+
+.visa-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--border);
+  border-radius: var(--radius);
+  padding: 15px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.visa-card-eligible {
+  background: var(--visa-eligible-tint);
+  border-color: var(--visa-eligible-border);
+  border-left-color: var(--verified);
+}
+
+.visa-card-need-more-info {
+  background: var(--visa-info-tint);
+  border-color: var(--visa-info-border);
+  border-left-color: var(--navy);
+}
+
+.visa-card-not-eligible {
+  background: var(--visa-danger-tint);
+  border-color: var(--visa-danger-border);
+  border-left-color: var(--visa-danger);
+}
+
+.visa-card-not-needed {
+  background: var(--sand);
+  border-color: var(--border);
+  border-left-color: var(--text-light);
+}
+
+.visa-card-head {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.visa-card-label {
+  margin: 0;
+  font-size: 15.5px;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+.visa-card-official {
+  margin: 0;
+  font-size: 12px;
+  font-style: italic;
+  color: var(--text-light);
+}
+
+.visa-card-summary {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.visa-outcome-line {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.visa-lawyer-route {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+.visa-missing {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--text-light);
+}
+
+/* --- criteria list ------------------------------------------------------ */
+
+.visa-criteria {
+  list-style: none;
+  margin: 2px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-top: 1px solid var(--sand);
+  padding-top: 10px;
+}
+
+.visa-criterion {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 8px;
+}
+
+.visa-criterion-marker {
+  flex: 0 0 auto;
+  min-width: 16px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.visa-criterion-met .visa-criterion-marker {
+  color: var(--verified);
+}
+
+.visa-criterion-not-met .visa-criterion-marker {
+  color: var(--visa-danger);
+}
+
+.visa-criterion-unknown .visa-criterion-marker {
+  color: var(--text-light);
+}
+
+.visa-criterion-label {
+  flex: 1 1 auto;
+  font-size: 13.5px;
+  color: var(--text);
+}
+
+.visa-criterion-threshold {
+  flex-basis: 100%;
+  margin: 0 0 0 24px;
+  font-size: 12px;
+  color: var(--text-light);
+}
+
+.visa-criterion-note {
+  flex-basis: 100%;
+  margin: 0 0 0 24px;
+  font-size: 12px;
+  font-style: italic;
+  color: var(--text-light);
+}
+
+/* --- supporting blocks inside a result card ----------------------------- */
+
+.callout {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--navy);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.callout p {
+  margin: 4px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.visa-usernote strong {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+.visa-nextsteps {
+  font-size: 13px;
+  color: var(--text);
+}
+
+.visa-nextsteps strong {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 4px;
+}
+
+.visa-nextsteps ol {
+  margin: 0;
+  padding-left: 18px;
+  line-height: 1.6;
+}
+
+.visa-sources {
+  font-size: 12.5px;
+}
+
+.visa-sources strong {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 4px;
+}
+
+.visa-sources ul {
+  margin: 0;
+  padding-left: 18px;
+  line-height: 1.6;
+}
+
+.visa-sources a {
+  color: var(--primary);
+}
+
+.visa-figures-checked {
+  margin: 2px 0 6px;
+  font-size: 11.5px;
+  font-style: italic;
+  color: var(--text-light);
+}
+
+/* --- the CTA block on every result card ---------------------------------- */
+
+.visa-cta {
+  margin-top: 2px;
+  padding-top: 12px;
+  border-top: 1px solid var(--sand);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.visa-cta-heading {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+.visa-cta p {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--text-light);
+}
+
+.visa-cta-actions {
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Solid primary button, matching itp-calculator.css's form submit and the
+   ELS brand CTA colour: terracotta fill, white text. */
+.cta-btn,
+.visa-cta-primary {
+  display: block;
+  text-align: center;
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #fff;
+  background: var(--primary);
+  border: 0;
+  border-radius: 8px;
+  padding: 11px 14px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.cta-btn:hover,
+.visa-cta-primary:hover {
+  filter: brightness(0.94);
+}
+
+/* Lighter text-link secondary action, no fill. */
+.visa-cta-secondary {
+  display: block;
+  text-align: center;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--navy);
+  text-decoration: none;
+  padding: 4px 0;
+}
+
+.visa-cta-secondary:hover {
+  text-decoration: underline;
+}
+
+/* --- the EEA/Swiss "you don't need a visa" panel ------------------------- */
+
+.visa-notneeded {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.visa-notneeded-heading {
+  font-family: 'Fraunces', Georgia, serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.25;
+  color: var(--navy);
+  margin: 0;
+}
+
+.visa-notneeded-lead {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.visa-notneeded-notes {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--text-light);
+}
+
+.visa-notneeded-register {
+  font-family: 'Fraunces', Georgia, serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-size: 15px;
+  color: var(--navy);
+  margin: 4px 0 0;
+}
+
+/* --- disclaimer and empty state ------------------------------------------ */
+
+.visa-disclaimer {
+  margin: 4px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--sand);
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--text-light);
+}
+
+.visa-empty {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--text-light);
+  text-align: center;
+}
