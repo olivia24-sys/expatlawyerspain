@@ -416,15 +416,53 @@ live site before that. Before or at the first real deploy:
    under an older rule can still be served until it is flushed, so a fresh
    deploy can otherwise go on serving stale code. In the Cloudflare dashboard →
    Caching → **Purge Custom URLs**, purge (or Purge Everything):
+
+   ITP calculator:
    - `https://expatlawyerspain.com/widgets/v1/itp-calculator`
    - `https://expatlawyerspain.com/widgets/v1/itp-calculator.js`
    - `https://expatlawyerspain.com/widgets/v1/itp-calculator.css`
-   - `https://expatlawyerspain.com/widgets/v1/widget.css`
    - `https://expatlawyerspain.com/widgets/v1/itp-calculator-data.js`
+
+   Firm directory:
+   - `https://expatlawyerspain.com/widgets/v1/firm-directory`
+   - `https://expatlawyerspain.com/widgets/v1/firm-directory.js`
+
+   Shared by every widget — **easy to forget, and skipping it leaves every
+   widget on the old styles**:
+   - `https://expatlawyerspain.com/widgets/v1/widget.css`
+
+   Outside `/widgets/*`:
+   - `https://expatlawyerspain.com/embed/v1.js`
    - `https://expatlawyerspain.com/js/calc-engine.js` (shared with the on-site
      page; sits outside `/widgets/*` so the header rule does not cover it, but
      it changes rarely — purge it when it does)
-   - `https://expatlawyerspain.com/embed/v1.js`
+
+   When adding a widget, add its frame URL and any widget-specific `.js`/`.css`/
+   `-data.js` to this list. The list is maintained by hand and has silently
+   drifted before.
+
+   > **`must-revalidate` does NOT save you from a header-only change.** If a
+   > deploy changes `_headers` but leaves an asset's bytes untouched, the edge
+   > revalidates, the origin answers `304 Not Modified`, and Cloudflare reuses
+   > its **cached headers** along with the cached body. The old header is then
+   > served indefinitely, no matter what the new deploy says. `must-revalidate`
+   > only protects against a stale *body*.
+   >
+   > This bit us on 2026-07-21: the widget-CSP iOS fix (see section 3) deployed
+   > correctly and `curl` against the origin showed the new CSP, but real
+   > visitors kept getting the old one. `firm-directory.js` was the only widget
+   > file serving the new header — because that commit happened to edit a
+   > comment inside it, so its bytes changed and the cache refetched. The
+   > untouched files (`itp-calculator`, `widget.css`, `itp-calculator.css`) all
+   > kept the broken policy until a Purge Everything.
+   >
+   > **So: any deploy that touches `_headers` requires a purge, even when no
+   > asset changed — especially then.** And when checking whether a header
+   > change is live, a plain `curl` can read a cached edge response; add a
+   > cache-buster (`?cb=$RANDOM`) to see what the origin is really serving, and
+   > compare the two to detect exactly this situation. `cf-cache-status:
+   > REVALIDATED` on a header-only deploy means the change has NOT reached
+   > users.
 4. **After deploy, verify with curl:**
    - `curl -s https://expatlawyerspain.com/v1/firms` returns the JSON
      envelope and the response includes `Access-Control-Allow-Origin: *`.
