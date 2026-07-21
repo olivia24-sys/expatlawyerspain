@@ -451,6 +451,37 @@ test('_headers: global DENY intact; /widgets/* detaches it and adds a strict CSP
   assert.ok(text.indexOf('\n/*') < text.indexOf('/widgets/*'), '/widgets/* must come AFTER /* in _headers');
 });
 
+// The widget frame is sandboxed WITHOUT allow-same-origin, so it runs in an
+// OPAQUE origin. WebKit does not resolve 'self' there (Blink and Gecko do), so
+// a 'self'-only policy meant default-src 'none' blocked all script, style and
+// font inside the frame on every iOS browser while desktop looked fine. Each
+// fetch directive must therefore ALSO name the origin literally. Regression
+// guard: reverting to bare 'self' silently kills the widget on iOS, and no
+// desktop or local test would catch it.
+test("_headers: /widgets/* CSP names its origin explicitly (opaque-origin sandbox can't use 'self')", () => {
+  const w = headerBlocks()['/widgets/*'];
+  const csp = w.find((l) => l.startsWith('Content-Security-Policy:'));
+
+  for (const directive of ['script-src', 'style-src', 'font-src', 'img-src', 'connect-src']) {
+    const match = csp.match(new RegExp(`${directive} ([^;]+)`));
+    assert.ok(match, `widget CSP must set ${directive} (default-src is 'none')`);
+    assert.ok(
+      match[1].includes('https://expatlawyerspain.com'),
+      `${directive} must name the origin explicitly, not rely on 'self' ` +
+        '(WebKit cannot resolve it in the sandboxed opaque origin)'
+    );
+  }
+
+  // Testability, not a browser requirement: CF branch previews are served from
+  // *.expatlawyerspain-96m.pages.dev, where the prod origin does not match. If
+  // this is dropped, the fix cannot be verified on iOS before it reaches prod.
+  assert.match(
+    csp,
+    /https:\/\/\*\.expatlawyerspain-96m\.pages\.dev/,
+    'widget CSP must cover CF preview origins so the iOS path is testable pre-deploy'
+  );
+});
+
 // ---------------------------------------------------------------------------
 // Widget frame files: static security review (no inline handlers, no
 // innerHTML-family rendering, CSP-compatible)

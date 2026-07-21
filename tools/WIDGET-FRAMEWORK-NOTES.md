@@ -248,9 +248,27 @@ ELS's to steal.
    Function` — checked by a static scan in `widget-framework.test.mjs`
    ("widget frame JS: textContent-only rendering, no dangerous sinks"). The
    CSP itself is enforced (not report-only) in `_headers` under
-   `/widgets/*`: `default-src 'none'; script-src 'self'; style-src 'self';
-   img-src 'self' data:; connect-src 'self'`, with no `unsafe-inline`
-   anywhere.
+   `/widgets/*`: `default-src 'none'` with `script-src` / `style-src` /
+   `img-src` / `font-src` / `connect-src` each allowing only the
+   ExpatLawyerSpain origin, and no `unsafe-inline` anywhere.
+
+   **Those directives name the origin literally, and must keep doing so.**
+   `embed/v1.js` sandboxes the frame without `allow-same-origin`, so the
+   document has an *opaque* origin. `'self'` in an opaque origin is a
+   cross-engine divergence — Blink and Gecko resolve it against the precursor
+   origin, WebKit does not. While the policy said only `'self'`, `default-src
+   'none'` blocked every script, stylesheet and font in the frame on WebKit,
+   i.e. on every browser on iOS: the ITP widget showed Times, native controls
+   and an empty region dropdown on iPhone while working on desktop Chrome.
+   Live from the 2026-07-17 launch until 2026-07-20. Adding the origin grants
+   nothing extra (it is the same origin `'self'` already meant); `'self'` is
+   kept beside it as the tighter grant where it does resolve. The
+   `*.expatlawyerspain-96m.pages.dev` entry exists so CF branch previews can
+   be tested on a real iPhone before deploy. Guarded by the `_headers` test
+   "CSP names its origin explicitly" in `widget-framework.test.mjs`.
+
+   Corollary for anything new under `/widgets/*`: **desktop testing cannot
+   validate the frame's CSP.** Verify on a physical WebKit device.
 5. **`X-Frame-Options: DENY` everywhere except `/widgets/*`.** The global
    `/*` block in `_headers` sets `X-Frame-Options: DENY` for the whole site;
    only the `/widgets/*` block detaches it (`! X-Frame-Options`) and replaces
