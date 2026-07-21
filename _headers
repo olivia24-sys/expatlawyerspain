@@ -25,10 +25,26 @@
 # enforced Content-Security-Policy, add "! Content-Security-Policy" above the
 # Content-Security-Policy line here, or /widgets/* will be governed by the
 # intersection of both policies.
+#
+# DO NOT "simplify" the CSP below back to bare 'self'. The origins are spelled
+# out on purpose. embed/v1.js sandboxes the widget iframe WITHOUT
+# allow-same-origin (that omission is the whole isolation story - see the
+# comment there), so the frame document runs in an OPAQUE origin. 'self' in an
+# opaque origin is a cross-engine divergence: Blink and Gecko resolve it
+# against the precursor origin, WebKit does not. With 'self' as the only
+# source, default-src 'none' therefore blocked every script, stylesheet and
+# font inside the frame on WebKit - which is every browser on iOS. The widget
+# rendered in Times with native controls and a dead region dropdown on iPhone
+# while working perfectly on desktop Chrome (found 2026-07-20; shipped broken
+# since the framework went live 2026-07-17). Naming the origin explicitly
+# resolves regardless of engine and grants nothing extra - it is the same
+# single origin 'self' already meant. 'self' is kept alongside it because it
+# is the tighter grant wherever it does resolve. The *.pages.dev entry is what
+# makes the fix testable on CF branch previews.
 /widgets/*
   ! X-Frame-Options
   ! Content-Security-Policy-Report-Only
-  Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors *; base-uri 'none'; form-action 'none'
+  Content-Security-Policy: default-src 'none'; script-src 'self' https://expatlawyerspain.com https://*.expatlawyerspain-96m.pages.dev; style-src 'self' https://expatlawyerspain.com https://*.expatlawyerspain-96m.pages.dev; img-src 'self' data: https://expatlawyerspain.com https://*.expatlawyerspain-96m.pages.dev; font-src 'self' https://expatlawyerspain.com https://*.expatlawyerspain-96m.pages.dev; connect-src 'self' https://expatlawyerspain.com https://*.expatlawyerspain-96m.pages.dev; frame-ancestors *; base-uri 'none'; form-action 'none'
   X-Robots-Tag: noindex
   # The widget JS/CSS/HTML are unversioned and were being served stale after a
   # deploy (a long edge/browser cache kept the old file even though the new one

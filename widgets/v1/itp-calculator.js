@@ -1,8 +1,11 @@
 /*!
  * ExpatLawyerSpain itp-calculator widget frame, v1.
  * Runs inside a sandboxed cross-origin iframe under a strict CSP
- * (default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'
- * data:; connect-src 'self'). No dependencies, ES2017+.
+ * (default-src 'none', with script/style/img/font/connect allowed from the
+ * ExpatLawyerSpain origin only). The sandbox omits allow-same-origin, so this
+ * document has an OPAQUE origin and the CSP in _headers must name that origin
+ * literally rather than rely on 'self' - WebKit does not resolve 'self' here.
+ * No dependencies, ES2017+.
  *
  * Derived from js/itp-calculator.js (the on-site /itp-calculator-spain
  * renderer). The maths and figures are unchanged - window.ELSCalc does the
