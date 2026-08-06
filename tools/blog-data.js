@@ -48,7 +48,7 @@ module.exports = {
       title: 'Property Law Guides for Expats in Spain | ExpatLawyerSpain',
       description: 'Guides to buying property in Spain, Spanish property taxes, conveyancing, NIE numbers and legal checks for foreign buyers. Learn what to check before you sign, pay a deposit or complete a purchase.',
       h1: 'Property Law Guides for Expats in Spain',
-      hero: 'Guides to buying property in Spain, Spanish property taxes, conveyancing, NIE numbers and legal checks for foreign buyers. Learn what to check before you sign, pay a deposit or complete a purchase.',
+      hero: 'Guides to buying property in Spain, Spanish property taxes, conveyancing, NIE numbers and legal checks for foreign buyers. Buying here works differently from the UK or US: there is no conveyancing solicitor by default, the notario checks the deed but not your interests, and some unpaid property debts pass to you on completion. These guides explain what to check before you sign, what each tax actually costs, and the exact points where a Spanish property lawyer earns their fee.',
     },
     immigration: {
       dir: 'immigration',
