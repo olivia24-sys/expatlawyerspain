@@ -132,3 +132,57 @@ untouched. Fix the message in `blog-data.js` and run again.
 - The card wording lives here in `blog-data.js`, on purpose: the cards use
   shorter, punchier copy than the posts' own SEO descriptions, so they are kept
   separate.
+
+---
+
+# Blog post schema — how every post gets its JSON-LD
+
+## What this is
+
+Separate from the listing pages above, every **blog post** carries a
+`BlogPosting` + `BreadcrumbList` structured-data block in its `<head>`. Google
+and the AI engines (ChatGPT, Perplexity, AI Overviews) read it to identify the
+post and pull facts out of it. Added August 2026 (analytics action list, task 1).
+
+- **`build-blog-schema.js`** — reads `blog-data.js` plus each post's own `<head>`
+  (canonical URL, meta description, og:image, the `<h1>`) and writes one JSON-LD
+  block per post, between these markers:
+
+  ```
+  <!-- BLOGPOSTING SCHEMA (generated) -->
+  ...
+  <!-- /BLOGPOSTING SCHEMA -->
+  ```
+
+- The two dates come from `published` and `updated` fields in `blog-data.js`.
+  These were seeded once from git history. **When you materially update a post,
+  bump its `updated` date** in `blog-data.js` and re-run the script.
+
+## How to run it
+
+```
+node tools/build-blog-schema.js
+```
+
+`--check` shows what would change without writing (exits non-zero if anything
+would change, handy before a deploy). Re-running when nothing changed reports
+`no change` on every line — it only ever replaces the marked block.
+
+## What it deliberately does NOT do
+
+- It does not touch any existing **FAQPage** schema. Six posts have FAQ blocks;
+  those are left exactly as they are (Google dropped FAQ rich results in June
+  2026, so we neither remove nor add them).
+- It does not touch the listing pages, the money/city pages, or the homepage.
+- `author` is the Organization, never a person, because the brand voice bans
+  first-person bylines.
+
+## When you add a NEW post
+
+Add it to `blog-data.js` (as you already do for the listings) **with
+`published` and `updated` dates**, then run both builders:
+
+```
+node tools/build-blog-listings.js
+node tools/build-blog-schema.js
+```

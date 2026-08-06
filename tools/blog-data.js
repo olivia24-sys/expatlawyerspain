@@ -116,6 +116,8 @@ module.exports = {
   posts: [
     {
       slug: 'retire-in-spain',
+      published: '2026-06-25',
+      updated: '2026-07-07',
       tag: 'Immigration',
       title: 'Retire in Spain: Visas, Tax and Healthcare Explained (2026)',
       desc: 'The Non-Lucrative Visa, how pensions are taxed, healthcare options including the S1 form, the 90-day rule and property for UK and US retirees.',
@@ -126,6 +128,8 @@ module.exports = {
     },
     {
       slug: 'getting-married-in-spain',
+      published: '2026-06-25',
+      updated: '2026-07-07',
       tag: 'Family Law',
       title: 'Getting Married in Spain as a Foreigner: The Legal Guide (2026)',
       desc: 'Civil vs religious ceremonies, the documents foreigners need, registering a foreign marriage, prenuptial agreements and name changes.',
@@ -136,6 +140,8 @@ module.exports = {
     },
     {
       slug: 'beckham-law-spain',
+      published: '2026-06-10',
+      updated: '2026-07-07',
       tag: 'Tax and Immigration',
       title: 'Beckham Law Spain 2026: Tax Benefits for New Residents',
       desc: 'Flat 24% tax for qualifying new residents, who qualifies, income conditions, the six-month deadline and the Digital Nomad Visa connection.',
@@ -146,6 +152,8 @@ module.exports = {
     },
     {
       slug: 'capital-gains-tax-spain',
+      published: '2026-06-10',
+      updated: '2026-07-07',
       tag: 'Tax and Property Law',
       title: 'Capital Gains Tax Spain for Non-Residents: Complete Guide (2026)',
       desc: "How Spain's 19% non-resident CGT rate works, the 3% retention rule, deductible costs, Modelo 210 and double-tax issues for UK, US and Irish sellers.",
@@ -154,6 +162,8 @@ module.exports = {
     },
     {
       slug: 'wealth-tax-spain',
+      published: '2026-07-02',
+      updated: '2026-07-07',
       tag: 'Tax and Fiscal',
       title: 'Wealth Tax Spain: The Non-Resident Guide (2026)',
       desc: 'Who pays wealth tax in Spain, the 700,000 euro threshold, regional rebates in Madrid and Andalucia, and the Solidarity Tax on large fortunes.',
@@ -162,6 +172,8 @@ module.exports = {
     },
     {
       slug: 'moving-to-spain-from-uk',
+      published: '2026-06-06',
+      updated: '2026-07-07',
       tag: 'Moving to Spain',
       title: 'Moving to Spain from the UK: The Complete Legal Guide After Brexit (2026)',
       desc: 'Visas, the 90-day rule, NIE, TIE, healthcare, tax, property, banking and wills for British nationals planning a move to Spain.',
@@ -172,6 +184,8 @@ module.exports = {
     },
     {
       slug: 'spain-non-eu-property-tax',
+      published: '2026-05-26',
+      updated: '2026-07-10',
       tag: 'Tax and Property Law',
       title: "Spain's 100% Property Tax for Non-EU Buyers: What You Need to Know",
       desc: "Spain's proposed 100% tax on non-EU property buyers has caused alarm. Here is what has actually passed into law, who could be affected, and what UK and other non-EU buyers should do now.",
@@ -182,6 +196,8 @@ module.exports = {
     },
     {
       slug: 'digital-nomad-visa-spain',
+      published: '2026-05-20',
+      updated: '2026-07-07',
       tag: 'Immigration',
       title: 'Digital Nomad Visa Spain: Requirements, Tax and How to Apply (2026)',
       desc: "Income thresholds, remote work rules, Beckham Law, tax issues and application steps for Spain's Digital Nomad Visa.",
@@ -190,6 +206,8 @@ module.exports = {
     },
     {
       slug: 'non-lucrative-visa-spain',
+      published: '2026-05-20',
+      updated: '2026-07-07',
       tag: 'Immigration',
       title: 'Non-Lucrative Visa Spain: Requirements, Income and How to Apply (2026)',
       desc: "Passive income rules, health insurance, documentation and common mistakes for Spain's Non-Lucrative Visa.",
@@ -198,6 +216,8 @@ module.exports = {
     },
     {
       slug: 'golden-visa-spain-guide',
+      published: '2026-04-22',
+      updated: '2026-07-07',
       tag: 'Residency',
       title: 'Golden Visa Spain: Abolished. What Now? (2026)',
       desc: "Spain's Golden Visa has ended. Compare the main alternative residency routes for remote workers, retirees and non-EU nationals.",
@@ -206,6 +226,8 @@ module.exports = {
     },
     {
       slug: 'spanish-legal-glossary',
+      published: '2026-05-13',
+      updated: '2026-07-07',
       tag: 'Admin',
       title: 'Spanish Legal Glossary: 76 Key Terms Explained in English',
       desc: 'Plain-English definitions of Spanish legal terms expats encounter when buying property, applying for residency, paying tax or dealing with wills.',
@@ -214,6 +236,8 @@ module.exports = {
     },
     {
       slug: 'english-speaking-lawyer-spain',
+      published: '2026-04-22',
+      updated: '2026-07-07',
       tag: 'Admin',
       title: 'How to Find an English-Speaking Lawyer in Spain (2026)',
       desc: 'What to look for, what to pay, and how to find a trusted English-speaking lawyer in Spain by city and specialty.',
@@ -224,6 +248,8 @@ module.exports = {
     },
     {
       slug: 'spanish-property-taxes-foreign-owners',
+      published: '2026-05-13',
+      updated: '2026-07-10',
       tag: 'Tax and Property Law',
       title: 'Spanish Property Taxes for Foreign Owners: The Complete 2026 Guide',
       desc: 'ITP, IBI, non-resident property tax, capital gains tax, Plusvalia and Wealth Tax explained in plain English for foreign owners.',
@@ -232,6 +258,8 @@ module.exports = {
     },
     {
       slug: 'buying-property-spain-foreigner',
+      published: '2026-05-12',
+      updated: '2026-07-10',
       tag: 'Property Law',
       title: 'Buying Property in Spain as a Foreigner: The Complete Legal Guide',
       desc: 'The full purchase process, costs, taxes, legal checks and why foreign buyers should use an English-speaking property lawyer.',
@@ -240,6 +268,8 @@ module.exports = {
     },
     {
       slug: 'conveyancing-spain',
+      published: '2026-06-19',
+      updated: '2026-07-10',
       tag: 'Property Law',
       title: 'Conveyancing in Spain: What It Means and Who Does It',
       desc: "Spain doesn't have conveyancing in the UK sense. Here's what the notario does, what a property lawyer does, and why you need both.",
@@ -248,6 +278,8 @@ module.exports = {
     },
     {
       slug: 'property-lawyer-spain',
+      published: '2026-04-22',
+      updated: '2026-07-10',
       tag: 'Property Law',
       title: 'Do I Need a Lawyer to Buy Property in Spain?',
       desc: "Not legally required, but here's why almost every expert says you should never buy without one.",
@@ -256,6 +288,8 @@ module.exports = {
     },
     {
       slug: 'nie-number-spain-lawyer',
+      published: '2026-04-22',
+      updated: '2026-07-07',
       tag: 'Immigration',
       title: 'NIE Number Spain: What It Is and Do You Need a Lawyer?',
       desc: 'Everything expats need to know about the NIE: how to get one, how long it takes, and when a lawyer helps.',
@@ -264,6 +298,8 @@ module.exports = {
     },
     {
       slug: 'inheritance-law-spain-expats',
+      published: '2026-04-22',
+      updated: '2026-07-07',
       tag: 'Wills & Inheritance',
       title: 'Spanish Inheritance Law for Expats (2026)',
       desc: 'Forced heirship, Spanish wills, inheritance tax by region and what expats need to know before assets pass to heirs.',
