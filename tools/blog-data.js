@@ -13,7 +13,7 @@
 
 module.exports = {
   // Bump this when the CSS cache-busting version changes elsewhere on the site.
-  cssVersion: 'redesign-20260626-16',
+  cssVersion: 'redesign-20260707-a11y',
 
   // The pill/filter nav shown at the top of every listing page.
   // `key` links to a page below ('all' = the main /blog/ index).
