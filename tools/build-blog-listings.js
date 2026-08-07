@@ -71,6 +71,15 @@ function head(page, canonical) {
   <title>${esc(page.title)}</title>
   <meta name="description" content="${escAttr(page.description)}"/>
   <link rel="canonical" href="${canonical}" />
+  <meta property="og:title" content="${escAttr(page.title)}" />
+  <meta property="og:description" content="${escAttr(page.description)}" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="${canonical}" />
+  <meta property="og:image" content="${SITE}/images/social-preview.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="${escAttr(page.title)}" />
+  <meta name="twitter:description" content="${escAttr(page.description)}" />
+  <meta name="twitter:image" content="${SITE}/images/social-preview.png" />
   <link rel="alternate" type="text/markdown" href="/llms.txt" title="ExpatLawyerSpain LLM summary" />
   <link rel="alternate" type="text/markdown" href="/llms-full.txt" title="ExpatLawyerSpain full LLM context" />
   <link rel="icon" href="/favicon.png" type="image/png"/>
